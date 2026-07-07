@@ -1,0 +1,18 @@
+import { useLeadForm } from './LeadFormContext';
+
+export default function StickyApplyBar() {
+  const { open } = useLeadForm();
+  return (
+    <div className="sticky-bar">
+      <button className="sticky-whatsapp" aria-label="Chat on WhatsApp" onClick={(e) => {
+        e.preventDefault();
+        window.open('https://wa.me/911234567890?text=Hi%2C%20I%27m%20interested%20in%20the%20Germany%20Nursing%20Program', '_blank');
+      }}>
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+          <path fill="currentColor" d="M16.01 3C9.38 3 4 8.36 4 14.97c0 2.3.65 4.45 1.78 6.28L4 29l8.02-2.1a12.9 12.9 0 0 0 3.99.63c6.63 0 12.01-5.36 12.01-11.97C28.02 8.36 22.64 3 16.01 3zm6.99 16.93c-.3.83-1.74 1.58-2.4 1.68-.62.1-1.4.14-2.26-.14-.52-.16-1.18-.38-2.04-.75-3.58-1.55-5.92-5.16-6.1-5.4-.18-.24-1.46-1.94-1.46-3.7 0-1.76.93-2.62 1.26-2.98.33-.36.72-.45.96-.45.24 0 .48 0 .69.01.22.01.52-.08.81.62.3.72 1.02 2.5 1.11 2.68.09.18.15.4.03.64-.12.24-.18.39-.36.6-.18.21-.38.47-.54.63-.18.18-.37.37-.16.73.21.36.94 1.55 2.02 2.51 1.39 1.24 2.56 1.62 2.94 1.8.38.18.6.15.82-.09.22-.24.94-1.1 1.19-1.48.25-.38.5-.32.84-.19.34.13 2.15 1.01 2.52 1.2.37.18.62.27.71.42.09.15.09.86-.21 1.69z"/>
+        </svg>
+      </button>
+      <button className="btn btn-primary sticky-apply" onClick={() => open('sticky-bar')}>Apply Now</button>
+    </div>
+  );
+}
