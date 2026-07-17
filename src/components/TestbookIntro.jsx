@@ -1,5 +1,6 @@
 import Reveal from './Reveal';
 import logo from '../assets/brand/logo.jpg';
+import { images } from '../assets/images';
 
 const points = [
   { value: '2014', label: 'Founded by IIT Bombay & IIT Delhi alumni' },
@@ -31,6 +32,15 @@ export default function TestbookIntro() {
             </div>
           </Reveal>
         </div>
+
+        <Reveal delay={0.14} className="testbook-intro-image-wrap">
+          <img
+            src={images.germanyHospital}
+            alt="German hospital — partner placement facility"
+            className="testbook-intro-image"
+          />
+          <span className="testbook-intro-image-caption">Partner hospitals across Germany</span>
+        </Reveal>
       </div>
     </section>
   );

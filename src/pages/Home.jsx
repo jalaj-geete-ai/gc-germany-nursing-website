@@ -43,7 +43,6 @@ export default function Home() {
 
       <section className="section">
         <div className="container">
-          <Reveal><span className="eyebrow">Where you could be placed</span></Reveal>
           <Reveal delay={0.06}><h2 className="section-title">Hospitals across Germany, hiring now</h2></Reveal>
           <Reveal delay={0.12}>
             <p className="map-intro-text">A few of the cities where our partner hospitals are actively hiring (illustrative — your exact placement depends on your profile and the hospitals recruiting at the time).</p>

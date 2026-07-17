@@ -24,14 +24,12 @@ export default function Footer() {
 
         <div className="footer-col">
           <h4 className="footer-heading">Get in touch</h4>
-          <a href="tel:+918527712345">+91 85277 12345</a>
-          <a href="mailto:germany@testbook.com">germany@testbook.com</a>
-          <span>Mon–Sat, 9 AM – 8 PM IST</span>
+          <a href="mailto:support.gc@testbook.com">support.gc@testbook.com</a>
         </div>
 
         <div className="footer-col">
           <h4 className="footer-heading">Follow</h4>
-          <a href="https://www.instagram.com/testbook.com" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://www.instagram.com/globalcareersbytestbook?igsh=MThyZm85ZmVtOWl1Zg==" target="_blank" rel="noreferrer">Instagram</a>
           <a href="https://www.linkedin.com/company/testbook" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="https://www.youtube.com/@testbook" target="_blank" rel="noreferrer">YouTube</a>
         </div>
