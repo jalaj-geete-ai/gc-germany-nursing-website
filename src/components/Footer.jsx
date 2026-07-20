@@ -24,6 +24,7 @@ export default function Footer() {
 
         <div className="footer-col">
           <h4 className="footer-heading">Get in touch</h4>
+          <a href="tel:+918882604341">+91 88826 04341</a>
           <a href="mailto:support.gc@testbook.com">support.gc@testbook.com</a>
         </div>
 
@@ -37,7 +38,11 @@ export default function Footer() {
 
       <div className="container footer-bottom">
         <span>© {new Date().getFullYear()} Global Careers by Testbook. All rights reserved.</span>
-        <span>Made with care, for every nurse chasing a bigger life.</span>
+        <div className="footer-compliance">
+          <span className="compliance-badge">🔒 DPDP Act 2023 Compliant</span>
+          <span className="compliance-badge">🇪🇺 GDPR Compliant</span>
+          <Link to="/terms" className="footer-link-plain">Terms &amp; Conditions</Link>
+        </div>
       </div>
     </footer>
   );

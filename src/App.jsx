@@ -7,6 +7,7 @@ import StickyApplyBar from './components/StickyApplyBar';
 import EngagementTriggers from './components/EngagementTriggers';
 import LeadFormModal from './components/LeadFormModal';
 import { LeadFormProvider } from './components/LeadFormContext';
+import CookieConsent from './components/CookieConsent';
 
 import Home from './pages/Home';
 import LifeInGermany from './pages/LifeInGermany';
@@ -42,6 +43,7 @@ export default function App() {
         <StickyApplyBar />
         <EngagementTriggers />
         <LeadFormModal />
+        <CookieConsent />
       </LeadFormProvider>
     </HashRouter>
   );
