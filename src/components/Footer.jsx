@@ -29,7 +29,7 @@ export default function Footer() {
 
         <div className="footer-col">
           <h4 className="footer-heading">Follow</h4>
-          <a href="https://www.instagram.com/globalcareersbytestbook?igsh=MThyZm85ZmVtOWl1Zg==" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://www.instagram.com/globalcareersbytestbook/" target="_blank" rel="noreferrer">Instagram</a>
           <a href="https://www.linkedin.com/company/testbook" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="https://www.youtube.com/@testbook" target="_blank" rel="noreferrer">YouTube</a>
         </div>

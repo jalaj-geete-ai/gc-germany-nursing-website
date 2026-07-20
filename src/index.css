@@ -1085,3 +1085,200 @@ ul{margin:0;padding:0;}
   .testbook-intro-image-wrap { display: none; }
   .testbook-intro-grid { grid-template-columns: auto 1fr !important; }
 }
+
+/* ═══════════════════════════════════════════════
+   TESTBOOK INTRO V2
+═══════════════════════════════════════════════ */
+.testbook-intro-v2 { background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 60%, #f5f3ff 100%); padding: 70px 0; }
+.tbi-header { display: grid; grid-template-columns: auto 1fr; gap: 48px; align-items: center; margin-bottom: 48px; }
+.tbi-logo-wrap { display: flex; align-items: center; justify-content: center; }
+.tbi-logo { width: 220px; max-width: 100%; }
+.tbi-title { font-size: clamp(22px, 2.6vw, 30px); margin-bottom: 24px; }
+.tbi-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+.tbi-stat { display: flex; flex-direction: column; gap: 4px; }
+.tbi-stat strong { font-size: 26px; color: var(--blue-deep); font-family: 'IBM Plex Mono', monospace; }
+.tbi-stat span { font-size: 12.5px; color: var(--ink-soft); max-width: 180px; line-height: 1.45; }
+
+/* Hall of Fame strip */
+.tbi-hof { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 28px 32px; }
+.tbi-hof-label { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 24px; }
+.tbi-hof-tb-icon { width: 20px; height: 20px; border-radius: 4px; }
+.tbi-hof-cards { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+.tbi-hof-card { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 100px; }
+.tbi-hof-avatar-ring { position: relative; width: 72px; height: 72px; border-radius: 50%; border: 3px solid #f59e0b; padding: 3px; background: #fff; }
+.tbi-hof-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.tbi-hof-star { position: absolute; top: -4px; right: -4px; font-size: 16px; }
+.tbi-hof-name { font-size: 13px; font-weight: 700; color: var(--ink); text-align: center; }
+.tbi-hof-rank { font-size: 11.5px; color: #22c55e; font-weight: 600; text-align: center; }
+.tbi-hof-foot { font-size: 13px; color: var(--ink-soft); line-height: 1.6; border-top: 1px solid var(--line); padding-top: 16px; margin: 0; }
+.tbi-hof-foot em { color: var(--blue-deep); font-style: normal; font-weight: 600; }
+
+@media (max-width: 700px) {
+  .tbi-header { grid-template-columns: 1fr; text-align: center; }
+  .tbi-stats { justify-content: center; }
+  .tbi-hof-cards { justify-content: center; }
+}
+
+/* ═══════════════════════════════════════════════
+   PATHWAY INFOGRAPHIC
+═══════════════════════════════════════════════ */
+.one-stop-v2 { background: linear-gradient(160deg, #f0f9ff 0%, #fff 50%, #fdf4ff 100%); padding: 60px 0; }
+.pathway-infographic-wrap { position: relative; display: flex; justify-content: center; }
+.pathway-infographic-frame {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(14, 100, 140, 0.14), 0 4px 16px rgba(0,0,0,0.06);
+}
+.pathway-infographic-img { width: 100%; display: block; }
+.pathway-infographic-glow {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%);
+  pointer-events: none;
+}
+.pathway-floating-badge {
+  position: absolute;
+  bottom: 28px; right: 28px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px 18px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+  border: 1px solid rgba(255,255,255,0.9);
+}
+.pfb-icon { font-size: 24px; }
+.pathway-floating-badge strong { display: block; font-size: 13px; font-weight: 700; color: var(--ink); }
+.pathway-floating-badge span { font-size: 11.5px; color: var(--ink-soft); }
+@media (max-width: 600px) { .pathway-floating-badge { display: none; } }
+
+/* ═══════════════════════════════════════════════
+   GC BUDDY PAGE — HERO
+═══════════════════════════════════════════════ */
+.gcb-hero { position: relative; background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0e4a6e 100%); padding: 120px 0 80px; overflow: hidden; }
+.gcb-hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(20,184,221,0.18) 0%, transparent 60%); pointer-events: none; }
+.gcb-hero-inner { position: relative; z-index: 2; }
+.eyebrow-light { color: rgba(20,184,221,0.9) !important; }
+.gcb-hero-title { font-size: clamp(30px, 4.5vw, 54px); line-height: 1.1; font-weight: 700; color: #fff; margin: 16px 0; max-width: 700px; }
+.gcb-hero-sub { font-size: 17px; color: rgba(255,255,255,0.75); line-height: 1.7; max-width: 560px; margin-bottom: 32px; }
+.gcb-hero-ctas { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.gcb-hero-note { font-size: 13px; color: rgba(255,255,255,0.5); }
+.gcb-hero-pills { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 40px; }
+.gcb-hero-pill { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 20px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.gcb-hero-pill strong { font-size: 22px; font-weight: 800; color: #fff; font-family: 'IBM Plex Mono', monospace; }
+.gcb-hero-pill span { font-size: 11.5px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* ═══════════════════════════════════════════════
+   GC BUDDY — DASHBOARD MOCKUP
+═══════════════════════════════════════════════ */
+.gcb-preview-section { background: #f8fafc; }
+.gcb-preview-sub { color: var(--ink-soft); font-size: 16px; line-height: 1.7; margin-bottom: 32px; max-width: 580px; }
+.gcb-preview-frame { border-radius: 16px; overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.16), 0 4px 16px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; background: #fff; }
+.gcb-preview-bar { display: flex; align-items: center; gap: 6px; background: #f1f5f9; padding: 10px 16px; border-bottom: 1px solid #e2e8f0; }
+.gcb-preview-bar span:not(.gcb-preview-url) { width: 12px; height: 12px; border-radius: 50%; background: #e2e8f0; }
+.gcb-preview-bar span:first-child { background: #fc5c5c; }
+.gcb-preview-bar span:nth-child(2) { background: #fdbc40; }
+.gcb-preview-bar span:nth-child(3) { background: #34c749; }
+.gcb-preview-url { margin-left: 12px; font-size: 12px; color: #94a3b8; font-family: monospace; }
+
+/* Dashboard layout */
+.gcb-dashboard { display: grid; grid-template-columns: 200px 1fr; min-height: 600px; position: relative; }
+.gcb-sidebar { background: #0f172a; padding: 20px 0; display: flex; flex-direction: column; }
+.gcb-sidebar-brand { padding: 0 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 10px; }
+.gcb-de-badge { background: #3b82f6; color: #fff; font-size: 11px; font-weight: 800; border-radius: 6px; padding: 3px 7px; font-family: monospace; }
+.gcb-sidebar-brand strong { display: block; font-size: 13px; color: #fff; font-weight: 700; }
+.gcb-sidebar-brand span { font-size: 10px; color: rgba(255,255,255,0.4); }
+.gcb-sidenav { padding: 12px 0; display: flex; flex-direction: column; }
+.gcb-sidenav-item { text-align: left; background: none; border: none; padding: 9px 20px; font-size: 12.5px; color: rgba(255,255,255,0.55); cursor: default; transition: all 0.15s; border-left: 2px solid transparent; }
+.gcb-sidenav-item.active { color: #fff; background: rgba(59,130,246,0.15); border-left-color: #3b82f6; }
+.gcb-main { padding: 20px; background: #f8fafc; overflow-y: auto; max-height: 600px; display: flex; flex-direction: column; gap: 16px; }
+
+/* Welcome banner */
+.gcb-welcome-banner { background: linear-gradient(135deg, #1e3a5f 0%, #0e4a6e 100%); border-radius: 14px; padding: 20px 24px; display: flex; justify-content: space-between; align-items: flex-start; }
+.gcb-welcome-sub { font-size: 12px; color: rgba(255,255,255,0.6); margin: 0 0 2px; }
+.gcb-welcome-name { font-size: 22px; font-weight: 800; color: #fff; margin: 0 0 6px; }
+.gcb-level-line { font-size: 12px; color: rgba(255,255,255,0.7); margin: 0 0 10px; }
+.gcb-progress-bar { background: rgba(255,255,255,0.15); border-radius: 99px; height: 6px; width: 200px; }
+.gcb-progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #14B8DD, #3b82f6); }
+.gcb-ask-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 10px; padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: default; white-space: nowrap; }
+
+/* Stats row */
+.gcb-stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.gcb-stat-card { background: #fff; border-radius: 12px; padding: 14px 16px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 3px; }
+.gcb-stat-val { font-size: 20px; font-weight: 800; color: #0f172a; font-family: 'IBM Plex Mono', monospace; }
+.gcb-stat-card span:last-child { font-size: 11.5px; color: #64748b; }
+
+/* Section labels */
+.gcb-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #64748b; }
+
+/* Up next */
+.gcb-up-next { display: flex; flex-direction: column; gap: 8px; }
+.gcb-next-item { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 12px 16px; display: flex; align-items: center; gap: 14px; }
+.gcb-next-icon { background: #eff6ff; color: #3b82f6; font-size: 11px; font-weight: 800; padding: 6px 8px; border-radius: 8px; font-family: monospace; white-space: nowrap; }
+.gcb-next-item div { flex: 1; }
+.gcb-next-item strong { font-size: 13px; color: #0f172a; display: block; }
+.gcb-next-item p { font-size: 11px; color: #64748b; margin: 0; }
+.gcb-arrow { color: #3b82f6; font-size: 16px; }
+
+/* Curriculum */
+.gcb-level-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.gcb-level-tab { background: #fff; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 16px; font-size: 12.5px; font-weight: 700; color: #64748b; cursor: pointer; transition: all 0.15s; }
+.gcb-level-tab.active { background: #f0f9ff; }
+.gcb-topics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.gcb-topic-chip { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #334155; display: flex; justify-content: space-between; align-items: center; }
+.gcb-done-badge { background: #dcfce7; color: #16a34a; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 6px; }
+
+/* Quick actions */
+.gcb-actions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.gcb-action-card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: default; }
+.gcb-action-icon { font-size: 24px; margin-bottom: 4px; }
+.gcb-action-card strong { font-size: 12.5px; color: #0f172a; }
+.gcb-action-card span { font-size: 11px; color: #64748b; }
+
+/* Chat panel */
+.gcb-chat-panel { position: absolute; bottom: 0; right: 0; width: 340px; border-left: 1px solid #e2e8f0; background: #fff; }
+.gcb-chat-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #1e3a5f; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
+.gcb-chat-body { display: flex; flex-direction: column; overflow: hidden; }
+.gcb-messages { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; height: 220px; }
+.gcb-msg { display: flex; gap: 8px; align-items: flex-start; }
+.gcb-msg.user { flex-direction: row-reverse; }
+.gcb-lena-dot { background: #3b82f6; color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; }
+.gcb-msg p { font-size: 12px; line-height: 1.55; background: #f1f5f9; border-radius: 10px; padding: 8px 12px; margin: 0; white-space: pre-line; max-width: 220px; }
+.gcb-msg.user p { background: #eff6ff; color: #1e40af; }
+.gcb-chat-input-row { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid #e2e8f0; }
+.gcb-chat-input-row input { flex: 1; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; font-size: 12px; outline: none; }
+.gcb-chat-input-row button { background: #3b82f6; color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 600; cursor: default; }
+
+@media (max-width: 760px) {
+  .gcb-dashboard { grid-template-columns: 1fr; }
+  .gcb-sidebar { display: none; }
+  .gcb-chat-panel { position: static; width: 100%; }
+  .gcb-actions-grid { grid-template-columns: repeat(2, 1fr); }
+  .gcb-topics-grid { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════════════
+   GC BUDDY — FEATURES GRID
+═══════════════════════════════════════════════ */
+.gcb-features-section { background: #fff; }
+.gcb-features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 36px; }
+.gcb-feature-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px 20px; transition: box-shadow 0.2s; }
+.gcb-feature-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+.gcb-feature-icon { font-size: 28px; display: block; margin-bottom: 12px; }
+.gcb-feature-card h3 { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+.gcb-feature-card p { font-size: 13.5px; color: #64748b; line-height: 1.6; }
+@media (max-width: 900px) { .gcb-features-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .gcb-features-grid { grid-template-columns: 1fr; } }
+
+/* ═══════════════════════════════════════════════
+   GC BUDDY — LENA + REFER
+═══════════════════════════════════════════════ */
+.gcb-lena-section { background: linear-gradient(135deg, #f0f9ff 0%, #fdf4ff 100%); }
+.gcb-lena-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.gcb-lena-card, .gcb-refer-card { background: #fff; border-radius: 20px; padding: 32px; display: flex; gap: 20px; align-items: flex-start; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+.gcb-lena-avatar, .gcb-refer-icon { font-size: 40px; flex-shrink: 0; }
+.gcb-lena-card h3, .gcb-refer-card h3 { font-size: 18px; font-weight: 700; margin: 6px 0 10px; color: #0f172a; }
+.gcb-lena-card p, .gcb-refer-card p { font-size: 14px; color: #64748b; line-height: 1.65; }
+@media (max-width: 700px) { .gcb-lena-grid { grid-template-columns: 1fr; } }
+

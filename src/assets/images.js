@@ -11,4 +11,9 @@ export const images = {
   trust1: 'https://images.pexels.com/photos/33674900/pexels-photo-33674900.jpeg?auto=compress&cs=tinysrgb&w=500',
   trust2: 'https://images.pexels.com/photos/34417761/pexels-photo-34417761.jpeg?auto=compress&cs=tinysrgb&w=500',
   germanyHospital: 'https://images.pexels.com/photos/236380/pexels-photo-236380.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  // Testbook Hall of Fame — nurse-adjacent professional portraits (Pexels free license)
+  hof1: 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=200',
+  hof2: 'https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=200',
+  hof3: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=200',
+  hof4: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=200',
 };
