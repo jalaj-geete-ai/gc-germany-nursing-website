@@ -1282,3 +1282,129 @@ ul{margin:0;padding:0;}
 .gcb-lena-card p, .gcb-refer-card p { font-size: 14px; color: #64748b; line-height: 1.65; }
 @media (max-width: 700px) { .gcb-lena-grid { grid-template-columns: 1fr; } }
 
+
+/* ═══════════════════════════════════════════════
+   TESTBOOK INTRO — CONTACT STRIP
+═══════════════════════════════════════════════ */
+.tbi-hof-contact {
+  display: flex; align-items: center; gap: 16px;
+  border-top: 1px solid var(--line, #eee);
+  padding-top: 16px; margin-top: 4px;
+}
+.tbi-hof-contact-label { font-size: 13px; color: var(--ink-soft, #555); font-weight: 600; }
+.tbi-hof-phone {
+  font-size: 17px; font-weight: 800;
+  color: var(--blue-deep, #0e4a6e);
+  text-decoration: none; letter-spacing: 0.02em;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.tbi-hof-phone:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════════════════
+   PATHWAY — NATIVE COMPONENT
+═══════════════════════════════════════════════ */
+.pathway-section {
+  background: linear-gradient(160deg, #eef6ff 0%, #f8faff 50%, #f0fff8 100%);
+  padding: 80px 0;
+}
+.pathway-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Left journey column */
+.pathway-journey {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 20px 0;
+}
+.pathway-country {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  text-align: center;
+}
+.pathway-country-flag { font-size: 28px; }
+.pathway-country strong { font-size: 13px; font-weight: 800; letter-spacing: 0.1em; color: #1e3a5f; }
+.pathway-country-landmark { font-size: 32px; margin-top: 4px; filter: grayscale(0.3); }
+.pathway-hospital-chip {
+  background: #dbeafe; color: #1e40af;
+  font-size: 11px; font-weight: 700;
+  padding: 4px 12px; border-radius: 99px;
+  margin-top: 6px;
+}
+
+/* Spine */
+.pathway-spine {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 16px 0; position: relative; width: 100%;
+}
+.pathway-spine-step {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; position: relative;
+  flex-direction: column; align-items: center;
+}
+.pathway-spine-dot {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: #fff; border: 2px solid #bfdbfe;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.12);
+  z-index: 1; position: relative;
+}
+.pathway-spine-line {
+  width: 2px; height: 24px;
+  background: linear-gradient(180deg, #bfdbfe 0%, #93c5fd 100%);
+  border-radius: 2px;
+}
+.pathway-spine-label {
+  font-size: 12px; font-weight: 600; color: #334155;
+  text-align: center; margin-top: -4px; margin-bottom: 4px;
+}
+.pathway-plane {
+  font-size: 28px; margin: 8px 0;
+  transform: rotate(135deg);
+}
+
+/* Right cards */
+.pathway-right { }
+.pathway-title { font-size: clamp(24px, 3vw, 38px); line-height: 1.15; margin-bottom: 12px; }
+.pathway-subtitle { font-size: 15px; color: #64748b; line-height: 1.6; margin-bottom: 32px; }
+.pathway-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.pathway-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px 18px;
+  position: relative;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.pathway-card:hover { box-shadow: 0 8px 28px rgba(59,130,246,0.12); transform: translateY(-2px); }
+.pathway-card-num {
+  position: absolute; top: -12px; left: 16px;
+  background: #1e3a5f; color: #fff;
+  width: 26px; height: 26px; border-radius: 50%;
+  font-size: 12px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.pathway-card-icon { font-size: 28px; margin-bottom: 10px; margin-top: 4px; }
+.pathway-card h4 { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+.pathway-card p { font-size: 12.5px; color: #64748b; line-height: 1.55; margin: 0; }
+
+@media (max-width: 900px) {
+  .pathway-layout { grid-template-columns: 1fr; }
+  .pathway-journey { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .pathway-spine { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .pathway-spine-line { width: 24px; height: 2px; }
+  .pathway-cards-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .pathway-cards-grid { grid-template-columns: 1fr; }
+}

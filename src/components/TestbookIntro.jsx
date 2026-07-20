@@ -1,5 +1,5 @@
 import Reveal from './Reveal';
-import logo from '../assets/brand/logo.jpg';
+import testbookLogo from '../assets/brand/testbook-only.jpg';
 import { images } from '../assets/images';
 
 const points = [
@@ -20,10 +20,10 @@ export default function TestbookIntro() {
     <section className="section testbook-intro-v2">
       <div className="container">
 
-        {/* Top: Logo + headline + stats */}
+        {/* Top: Testbook logo only + headline + stats */}
         <div className="tbi-header">
           <Reveal className="tbi-logo-wrap">
-            <img src={logo} alt="Global Careers by Testbook" className="tbi-logo" />
+            <img src={testbookLogo} alt="Testbook" className="tbi-logo" />
           </Reveal>
           <div className="tbi-copy">
             <Reveal><span className="eyebrow">A new vertical from Testbook</span></Reveal>
@@ -43,7 +43,7 @@ export default function TestbookIntro() {
           </div>
         </div>
 
-        {/* Bottom: Hall of Fame strip */}
+        {/* Hall of Fame strip */}
         <Reveal delay={0.14}>
           <div className="tbi-hof">
             <p className="tbi-hof-label">
@@ -63,7 +63,12 @@ export default function TestbookIntro() {
                 </div>
               ))}
             </div>
-            <p className="tbi-hof-foot">The same rigour that produced these toppers now powers <em>Global Careers</em> — bringing that track record to nursing careers in Germany.</p>
+
+            {/* Support contact */}
+            <div className="tbi-hof-contact">
+              <span className="tbi-hof-contact-label">📞 Talk to a counsellor</span>
+              <a href="tel:+918882604341" className="tbi-hof-phone">+91 88826 04341</a>
+            </div>
           </div>
         </Reveal>
 
