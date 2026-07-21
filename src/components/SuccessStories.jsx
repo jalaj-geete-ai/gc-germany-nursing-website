@@ -2,6 +2,9 @@ import Reveal from './Reveal';
 import { images } from '../assets/images';
 import nurseMale from '../assets/brand/nurse-male.png';
 import nurseFemale from '../assets/brand/nurse-female.png';
+import rohitPhoto from '../assets/brand/story-rohit.png';
+import sunitaPhoto from '../assets/brand/story-sunita.png';
+import deepakPhoto from '../assets/brand/story-deepak.png';
 
 const stories = [
   {
@@ -33,8 +36,8 @@ const stories = [
     route: 'Pune → Frankfurt',
     before: '₹22,000/mo',
     after: '₹2.6L/mo',
-    quote: 'I had zero German when I started. The structured training gave me confidence I never thought I\'d have in a foreign language.',
-    photo: images.story4,
+    quote: "I had zero German when I started. The structured training gave me confidence I never thought I'd have in a foreign language.",
+    photo: rohitPhoto,
   },
   {
     name: 'Sunita P.',
@@ -42,7 +45,7 @@ const stories = [
     before: '₹28,000/mo',
     after: '₹2.9L/mo',
     quote: 'My family was skeptical, but when I called home after my first German paycheck, that conversation changed everything.',
-    photo: images.story5,
+    photo: sunitaPhoto,
   },
   {
     name: 'Deepak T.',
@@ -50,7 +53,7 @@ const stories = [
     before: '₹20,000/mo',
     after: '₹2.4L/mo',
     quote: 'The team handled my visa paperwork so thoroughly that my application was approved on the first attempt.',
-    photo: images.story6,
+    photo: deepakPhoto,
   },
 ];
 

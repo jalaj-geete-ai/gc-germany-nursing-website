@@ -4,11 +4,11 @@ import { useLeadForm } from './LeadFormContext';
 import logo from '../assets/brand/logo.jpg';
 
 const links = [
-  { to: '/', label: 'Home' },
+  { to: '/',                label: 'Home' },
   { to: '/life-in-germany', label: 'Life in Germany' },
-  { to: '/gc-buddy', label: 'GC Buddy' },
-  { to: '/about', label: 'About' },
-  { to: '/faqs', label: 'FAQs' },
+  { to: '/gc-buddy',        label: 'GC Buddy' },
+  { to: '/about',           label: 'About' },
+  { to: '/faqs',            label: 'FAQs' },
 ];
 
 export default function Navbar() {
@@ -23,28 +23,36 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  // Close menu on route change
   useEffect(() => { setMenuOpen(false); }, [pathname]);
 
   return (
     <nav className={`navbar${scrolled ? ' navbar-scrolled' : ''}`}>
       <div className="navbar-inner">
+
+        {/* Logo */}
         <Link to="/" className="navbar-logo">
           <img src={logo} alt="Global Careers by Testbook" className="navbar-logo-img" />
         </Link>
 
-        {/* Desktop nav */}
-        <div className="nav-links">
+        {/* Desktop tabs */}
+        <div className="nav-tabs">
           {links.map((l) => (
-            <Link key={l.to} to={l.to} className={`nav-link${pathname === l.to ? ' active' : ''}`}>
+            <Link
+              key={l.to}
+              to={l.to}
+              className={`nav-tab${pathname === l.to ? ' nav-tab-active' : ''}`}
+            >
               {l.label}
+              {pathname === l.to && <span className="nav-tab-indicator" />}
             </Link>
           ))}
         </div>
 
         <div className="navbar-right">
-          <button className="btn btn-primary navbar-cta" onClick={() => open('navbar')}>Apply Now</button>
-          {/* Hamburger */}
+          <button className="btn btn-primary navbar-cta" onClick={() => open('navbar')}>
+            Apply Now
+          </button>
+          {/* Hamburger for mobile */}
           <button
             className={`hamburger${menuOpen ? ' open' : ''}`}
             onClick={() => setMenuOpen(v => !v)}
@@ -59,11 +67,18 @@ export default function Navbar() {
       {menuOpen && (
         <div className="mobile-drawer">
           {links.map((l) => (
-            <Link key={l.to} to={l.to} className={`mobile-nav-link${pathname === l.to ? ' active' : ''}`}>
+            <Link
+              key={l.to}
+              to={l.to}
+              className={`mobile-nav-link${pathname === l.to ? ' active' : ''}`}
+            >
               {l.label}
             </Link>
           ))}
-          <button className="btn btn-primary mobile-nav-cta" onClick={() => { open('navbar'); setMenuOpen(false); }}>
+          <button
+            className="btn btn-primary mobile-nav-cta"
+            onClick={() => { open('navbar'); setMenuOpen(false); }}
+          >
             Apply Now →
           </button>
         </div>

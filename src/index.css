@@ -1881,3 +1881,61 @@ ul{margin:0;padding:0;}
 /* Navbar logo — restored to large */
 .navbar-logo-img { height: 64px !important; width: auto; display: block; }
 
+
+/* ═══════════════════════════════════════════════
+   NAVBAR — PROPER TABS WITH INDICATOR
+═══════════════════════════════════════════════ */
+.navbar-logo-img {
+  height: 72px !important;
+  width: auto;
+  display: block;
+}
+
+/* Replace old nav-links with nav-tabs */
+.nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.nav-tab {
+  position: relative;
+  padding: 8px 16px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink-soft, #555);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.nav-tab:hover {
+  color: var(--ink, #111);
+  background: rgba(0,0,0,0.04);
+}
+.nav-tab-active {
+  color: var(--blue-deep, #0e4a6e) !important;
+  background: rgba(14, 74, 110, 0.06);
+}
+.nav-tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2.5px;
+  background: var(--accent, #14B8DD);
+  border-radius: 99px;
+}
+
+/* Hide old nav-links class if it exists */
+.nav-links { display: none !important; }
+
+/* Mobile: hide tabs, show hamburger */
+@media (max-width: 768px) {
+  .nav-tabs { display: none !important; }
+  .navbar-cta { display: none; }
+  .hamburger { display: flex !important; }
+  .navbar-logo-img { height: 54px !important; }
+  .navbar-inner { height: 70px; }
+}
+
