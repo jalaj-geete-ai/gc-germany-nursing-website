@@ -2,7 +2,7 @@ export default function WhatsAppButton() {
   return (
     <a
       className="fab-whatsapp"
-      href="https://wa.me/911234567890?text=Hi%2C%20I%27m%20interested%20in%20the%20Germany%20Nursing%20Program"
+      href="https://wa.me/918882604341?text=Hi%2C%20I%27m%20interested%20in%20the%20Germany%20Nursing%20Program"
       target="_blank"
       rel="noreferrer"
       aria-label="Chat on WhatsApp"

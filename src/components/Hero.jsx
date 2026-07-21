@@ -4,8 +4,6 @@ import Reveal from './Reveal';
 import nursePortrait from '../assets/brand/nurse-portrait.jpg';
 import berlinSkyline from '../assets/brand/berlin-skyline.jpg';
 
-const countries = ['India', 'Philippines', 'Brazil', '& more...'];
-
 export default function Hero() {
   const { open } = useLeadForm();
 
@@ -25,18 +23,6 @@ export default function Hero() {
           <Reveal delay={0.18}>
             <div className="hero-ctas">
               <button className="btn btn-primary" onClick={() => open('hero-apply')}>Apply Now</button>
-              <a href="#success-stories" className="btn btn-secondary">Watch Success Stories</a>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.26}>
-            <div className="hero-countries">
-              <span className="hero-countries-label">Highly skilled, culturally adept healthcare professionals from</span>
-              <div className="hero-countries-pills">
-                {countries.map((c) => (
-                  <span className="hero-country-pill" key={c}>{c}</span>
-                ))}
-              </div>
             </div>
           </Reveal>
         </div>

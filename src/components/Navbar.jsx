@@ -1,53 +1,73 @@
-import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useLeadForm } from './LeadFormContext';
-import logo from '../assets/brand/logo-wordmark.jpg';
+import logo from '../assets/brand/logo.jpg';
 
 const links = [
   { to: '/', label: 'Home' },
   { to: '/life-in-germany', label: 'Life in Germany' },
   { to: '/gc-buddy', label: 'GC Buddy' },
+  { to: '/about', label: 'About' },
   { to: '/faqs', label: 'FAQs' },
 ];
 
 export default function Navbar() {
+  const { open } = useLeadForm();
+  const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { open } = useLeadForm();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    const fn = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', fn, { passive: true });
+    return () => window.removeEventListener('scroll', fn);
   }, []);
 
+  // Close menu on route change
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
+
   return (
-    <header className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
-      <div className="container navbar-inner">
-        <Link to="/" className="navbar-logo" onClick={() => setMenuOpen(false)}>
+    <nav className={`navbar${scrolled ? ' navbar-scrolled' : ''}`}>
+      <div className="navbar-inner">
+        <Link to="/" className="navbar-logo">
           <img src={logo} alt="Global Careers by Testbook" className="navbar-logo-img" />
         </Link>
 
-        <nav className={`navbar-links ${menuOpen ? 'open' : ''}`}>
+        {/* Desktop nav */}
+        <div className="nav-links">
           {links.map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-              onClick={() => setMenuOpen(false)}
-            >
+            <Link key={l.to} to={l.to} className={`nav-link${pathname === l.to ? ' active' : ''}`}>
               {l.label}
-            </NavLink>
+            </Link>
           ))}
-          <button className="btn btn-primary nav-cta" onClick={() => { open('navbar'); setMenuOpen(false); }}>
-            Apply Now
-          </button>
-        </nav>
+        </div>
 
-        <button className="navbar-burger" onClick={() => setMenuOpen((v) => !v)} aria-label="Toggle menu">
-          <span /><span /><span />
-        </button>
+        <div className="navbar-right">
+          <button className="btn btn-primary navbar-cta" onClick={() => open('navbar')}>Apply Now</button>
+          {/* Hamburger */}
+          <button
+            className={`hamburger${menuOpen ? ' open' : ''}`}
+            onClick={() => setMenuOpen(v => !v)}
+            aria-label="Toggle menu"
+          >
+            <span /><span /><span />
+          </button>
+        </div>
       </div>
-    </header>
+
+      {/* Mobile drawer */}
+      {menuOpen && (
+        <div className="mobile-drawer">
+          {links.map((l) => (
+            <Link key={l.to} to={l.to} className={`mobile-nav-link${pathname === l.to ? ' active' : ''}`}>
+              {l.label}
+            </Link>
+          ))}
+          <button className="btn btn-primary mobile-nav-cta" onClick={() => { open('navbar'); setMenuOpen(false); }}>
+            Apply Now →
+          </button>
+        </div>
+      )}
+    </nav>
   );
 }

@@ -1598,3 +1598,258 @@ ul{margin:0;padding:0;}
   color: rgba(255,255,255,0.5);
   text-decoration: underline;
 }
+
+/* ═══════════════════════════════════════════════
+   STATS — DIVIDER LINE
+═══════════════════════════════════════════════ */
+.stat-divider {
+  width: 40px; height: 2px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 2px;
+  margin: 8px 0;
+}
+
+/* ═══════════════════════════════════════════════
+   COMPREHENSIVE MOBILE OPTIMISATION
+   Target: 320px–768px
+═══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Base */
+  html { font-size: 15px; }
+  .container { padding: 0 16px; }
+  .section { padding: 48px 0; }
+  .section-title { font-size: clamp(22px, 6vw, 32px); }
+
+  /* Navbar */
+  .navbar-inner { padding: 0 16px; height: 60px; }
+  .nav-links { display: none; }
+  .navbar-cta { font-size: 13px; padding: 8px 14px; }
+
+  /* Hero */
+  .hero { padding: 80px 0 48px; }
+  .hero-inner {
+    grid-template-columns: 1fr !important;
+    gap: 32px;
+    text-align: center;
+  }
+  .hero-title { font-size: clamp(28px, 8vw, 40px); }
+  .hero-ctas { justify-content: center; }
+  .hero-visual { order: -1; max-width: 280px; margin: 0 auto; }
+  .hero-photo-frame { border-radius: 16px; }
+  .hero-countries { display: none; }
+
+  /* Stats */
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0;
+  }
+  .stat-block {
+    padding: 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    text-align: center;
+  }
+  .stat-block:last-child { border-bottom: none; }
+  .stat-value { font-size: clamp(26px, 7vw, 36px) !important; }
+  .stat-divider { margin: 8px auto; }
+
+  /* Value props */
+  .vp-grid { grid-template-columns: 1fr !important; gap: 16px; }
+  .vp-card { padding: 20px 16px; }
+
+  /* Pathway */
+  .pathway-section-v2 { padding: 0; }
+  .pathway-img { width: 100%; }
+  .pathway-layout { grid-template-columns: 1fr !important; gap: 32px; }
+  .pathway-cards-grid { grid-template-columns: 1fr 1fr !important; gap: 12px; }
+  .pathway-card { padding: 16px 12px; }
+
+  /* Success stories */
+  .story-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+  .story-card { padding: 20px 16px; }
+
+  /* Salary calculator */
+  .salary-calc-inner { flex-direction: column; gap: 24px; }
+  .salary-calc-controls { width: 100%; }
+  .salary-calc-result { width: 100%; text-align: center; }
+
+  /* Competitive advantage */
+  .ca-table { font-size: 12px; }
+  .ca-table th, .ca-table td { padding: 10px 8px; }
+
+  /* Testbook intro */
+  .tbi-header {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+    gap: 24px;
+  }
+  .tbi-logo-wrap { justify-content: center; }
+  .tbi-logo-official { width: 120px; }
+  .tbi-stats { justify-content: center; gap: 20px; }
+  .tbi-stat strong { font-size: 20px; }
+  .tbi-hof { padding: 20px 16px; }
+
+  /* Germany map */
+  .map-section { padding: 40px 0; }
+  .map-grid { grid-template-columns: 1fr !important; }
+
+  /* Success timeline */
+  .timeline-steps { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .timeline-step { width: 100%; flex-direction: row; gap: 16px; }
+  .timeline-connector { display: none; }
+
+  /* GC Buddy hero */
+  .gcb-hero { padding: 90px 0 56px; }
+  .gcb-hero-title { font-size: clamp(24px, 7vw, 36px); }
+  .gcb-hero-pills { gap: 10px; }
+  .gcb-hero-pill { padding: 10px 14px; }
+  .gcb-hero-pill strong { font-size: 18px; }
+
+  /* GC Buddy dashboard */
+  .gcb-dashboard { grid-template-columns: 1fr; }
+  .gcb-sidebar { display: none; }
+  .gcb-stats-row { grid-template-columns: repeat(3,1fr); }
+  .gcb-actions-grid { grid-template-columns: repeat(2,1fr); }
+  .gcb-topics-grid { grid-template-columns: 1fr; }
+  .gcb-chat-panel { position: static; width: 100%; }
+  .gcb-features-grid { grid-template-columns: 1fr 1fr !important; }
+  .gcb-lena-grid { grid-template-columns: 1fr !important; }
+
+  /* Footer */
+  .footer-top {
+    grid-template-columns: 1fr !important;
+    gap: 32px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+  .footer-compliance { justify-content: center; }
+
+  /* Cookie banner */
+  .cookie-inner { flex-direction: column; gap: 16px; }
+  .cookie-actions { flex-direction: row; width: 100%; }
+  .cookie-btn { flex: 1; text-align: center; }
+
+  /* Sticky apply bar */
+  .sticky-bar-inner { flex-direction: column; gap: 8px; padding: 12px 16px; }
+  .sticky-bar-text { font-size: 13px; text-align: center; }
+
+  /* Lead form modal */
+  .modal-card { margin: 16px; padding: 24px 20px; }
+  .field-row { flex-direction: column; gap: 12px; }
+
+  /* FAQs */
+  .faq-jump-nav { flex-wrap: wrap; gap: 8px; }
+
+  /* About / page hero */
+  .page-hero { padding: 100px 0 48px; }
+  .page-hero-title { font-size: clamp(26px, 7vw, 40px); }
+
+  /* Terms */
+  .terms-container { grid-template-columns: 1fr !important; }
+  .terms-toc { display: none; }
+
+  /* Life in Germany cost table */
+  .cost-grid { grid-template-columns: 1fr !important; gap: 16px; }
+
+  /* One stop approach */
+  .one-stop-grid { grid-template-columns: 1fr !important; }
+
+  /* CTA Banner */
+  .cta-banner-inner { flex-direction: column; gap: 20px; text-align: center; }
+  .cta-banner-copy { text-align: center; }
+}
+
+/* Extra small — 375px and below */
+@media (max-width: 400px) {
+  .hero-title { font-size: 26px; }
+  .section-title { font-size: 20px; }
+  .stat-value { font-size: 24px !important; }
+  .pathway-cards-grid { grid-template-columns: 1fr !important; }
+  .gcb-stats-row { grid-template-columns: 1fr 1fr; }
+  .gcb-features-grid { grid-template-columns: 1fr !important; }
+  .cookie-actions { flex-direction: column; }
+  .modal-card { margin: 8px; padding: 20px 16px; }
+}
+
+/* Tablet — 769px–1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero-inner { gap: 32px; }
+  .hero-title { font-size: 36px; }
+  .story-grid { grid-template-columns: repeat(2,1fr) !important; }
+  .gcb-features-grid { grid-template-columns: repeat(2,1fr) !important; }
+  .pathway-cards-grid { grid-template-columns: repeat(2,1fr) !important; }
+  .tbi-hof-cards { gap: 16px; }
+  .footer-top { grid-template-columns: 1fr 1fr !important; gap: 24px; }
+}
+
+/* ═══════════════════════════════════════════════
+   HAMBURGER MENU
+═══════════════════════════════════════════════ */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: 8px;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--ink, #111);
+  border-radius: 2px;
+  transition: all 0.25s;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-drawer {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  gap: 4px;
+}
+.mobile-nav-link {
+  display: block;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink, #111);
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background 0.15s;
+}
+.mobile-nav-link:hover,
+.mobile-nav-link.active { background: #f0f9ff; color: var(--accent, #14B8DD); }
+.mobile-nav-cta {
+  margin-top: 12px;
+  width: 100%;
+  text-align: center;
+  padding: 14px;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+  .nav-links { display: none !important; }
+  .navbar-cta { display: none; }
+  .navbar-right { display: flex; align-items: center; }
+}
+@media (min-width: 769px) {
+  .mobile-drawer { display: none !important; }
+  .hamburger { display: none !important; }
+}
