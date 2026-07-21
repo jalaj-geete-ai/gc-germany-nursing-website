@@ -3,7 +3,7 @@ import CTABanner from '../components/CTABanner';
 import CostCalculator from '../components/CostCalculator';
 import LifeHeroAccordion from '../components/LifeHeroAccordion';
 import ligSectionBg from '../assets/brand/lig-section-bg.jpg';
-import costNurseHero from '../assets/brand/cost-nurse-hero.jpg';
+import costNurseHero from '../assets/brand/nurse-female.png';
 import costLivingroom from '../assets/brand/cost-livingroom.jpg';
 import costTram from '../assets/brand/cost-tram.jpg';
 import costGroceries from '../assets/brand/cost-groceries.jpg';

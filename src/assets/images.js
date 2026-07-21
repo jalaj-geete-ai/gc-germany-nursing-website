@@ -3,15 +3,12 @@
 export const images = {
   heroNurse: 'https://images.pexels.com/photos/35724802/pexels-photo-35724802.jpeg?auto=compress&cs=tinysrgb&w=1000',
   story1: 'https://images.pexels.com/photos/30722675/pexels-photo-30722675.jpeg?auto=compress&cs=tinysrgb&w=600',
-  story2: 'https://images.pexels.com/photos/30340703/pexels-photo-30340703.jpeg?auto=compress&cs=tinysrgb&w=600',
-  story3: 'https://images.pexels.com/photos/31499386/pexels-photo-31499386.jpeg?auto=compress&cs=tinysrgb&w=600',
   story4: 'https://images.pexels.com/photos/6129507/pexels-photo-6129507.jpeg?auto=compress&cs=tinysrgb&w=600',
   story5: 'https://images.pexels.com/photos/5214958/pexels-photo-5214958.jpeg?auto=compress&cs=tinysrgb&w=600',
   story6: 'https://images.pexels.com/photos/6551937/pexels-photo-6551937.jpeg?auto=compress&cs=tinysrgb&w=600',
   trust1: 'https://images.pexels.com/photos/33674900/pexels-photo-33674900.jpeg?auto=compress&cs=tinysrgb&w=500',
   trust2: 'https://images.pexels.com/photos/34417761/pexels-photo-34417761.jpeg?auto=compress&cs=tinysrgb&w=500',
   germanyHospital: 'https://images.pexels.com/photos/236380/pexels-photo-236380.jpeg?auto=compress&cs=tinysrgb&w=1200',
-  // Testbook Hall of Fame — nurse-adjacent professional portraits (Pexels free license)
   hof1: 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=200',
   hof2: 'https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=200',
   hof3: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=200',
