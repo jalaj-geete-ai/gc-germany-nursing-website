@@ -1939,3 +1939,213 @@ ul{margin:0;padding:0;}
   .navbar-inner { height: 70px; }
 }
 
+
+/* ═══════════════════════════════════════════════
+   COMPREHENSIVE MOBILE PASS — FINAL
+   No visual changes on desktop. Only mobile fixes.
+═══════════════════════════════════════════════ */
+
+/* ── Global mobile base ── */
+@media (max-width: 768px) {
+
+  /* Ensure nothing overflows horizontally */
+  body, html { overflow-x: hidden; }
+  * { box-sizing: border-box; }
+  img { max-width: 100%; height: auto; }
+
+  /* ── Navbar ── */
+  .navbar-inner { padding: 0 16px; gap: 10px; height: 70px; }
+  .nav-tabs { display: none !important; }
+  .navbar-cta { display: none !important; }
+  .navbar-logo-img { height: 52px !important; }
+  .hamburger { display: flex !important; }
+
+  /* ── Hero ── */
+  .hero { padding: 84px 0 48px; }
+  .hero-inner {
+    grid-template-columns: 1fr !important;
+    gap: 28px;
+    text-align: center;
+  }
+  .hero-title { font-size: clamp(26px, 7.5vw, 38px) !important; line-height: 1.2; }
+  .hero-ctas { justify-content: center; flex-wrap: wrap; gap: 12px; }
+  .hero-visual { order: -1; max-width: 260px; margin: 0 auto; }
+  .hero-badge, .hero-countries, .hero-stats-pill { display: none; }
+
+  /* ── Stats ── */
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+    padding: 0 4px;
+  }
+  .stat-block { padding: 20px 16px !important; border-radius: 14px; }
+  .stat-value { font-size: 24px !important; }
+  .stat-label { font-size: 13px !important; }
+
+  /* ── Story cards ── */
+  .story-grid { grid-template-columns: 1fr !important; gap: 14px; }
+  .story-card { padding: 18px 16px; }
+  .story-avatar-img { width: 44px; height: 44px; }
+
+  /* ── Competitive advantage table ── */
+  .compare-row { grid-template-columns: 1.6fr 1fr 1fr !important; font-size: 12px; }
+  .compare-row > * { padding: 10px 6px !important; }
+  .ca-table { font-size: 11.5px; overflow-x: auto; display: block; }
+
+  /* ── Why us / value props ── */
+  .why-layout { grid-template-columns: 1fr !important; gap: 24px; }
+  .why-badge-grid { grid-template-columns: 1fr 1fr !important; }
+  .why-grid { grid-template-columns: 1fr !important; }
+  .value-360-grid { grid-template-columns: 1fr 1fr !important; }
+
+  /* ── Pathway ── */
+  .pathway-section-v2 { padding: 0; }
+  .pathway-img { width: 100%; min-width: 0; }
+  .pathway-layout { grid-template-columns: 1fr !important; gap: 24px; }
+  .pathway-cards-grid { grid-template-columns: 1fr 1fr !important; gap: 10px; }
+  .pathway-card { padding: 14px 10px; }
+  .pathway-card h4 { font-size: 12.5px; }
+  .pathway-card p { font-size: 11.5px; }
+  .pathway-title { font-size: clamp(22px, 6vw, 28px) !important; }
+
+  /* ── Germany map ── */
+  .germany-map-wrap { grid-template-columns: 1fr !important; }
+  .germany-map-img { width: 100%; }
+
+  /* ── Salary calculator ── */
+  .calc-bar-row { grid-template-columns: 80px 1fr 80px !important; font-size: 11.5px; gap: 8px; }
+  .calc-result-wrap { flex-direction: column; gap: 16px; text-align: center; }
+
+  /* ── Testbook intro ── */
+  .tbi-header { grid-template-columns: 1fr !important; text-align: center; gap: 20px; }
+  .tbi-logo-wrap { justify-content: center; }
+  .tbi-logo-official { width: 110px; }
+  .tbi-stats { justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .tbi-stat strong { font-size: 18px; }
+  .tbi-hof { padding: 16px 12px; }
+  .tbi-hof-track { gap: 18px; }
+  .tbi-hof-avatar-ring { width: 58px; height: 58px; }
+  .tbi-hof-name { font-size: 11px; }
+  .tbi-hof-rank { font-size: 10px; }
+
+  /* ── Life in Germany page ── */
+  .life-page-hero-inner { grid-template-columns: 1fr !important; gap: 24px; }
+  .life-grid { grid-template-columns: 1fr !important; }
+  .life-showcase-grid { grid-template-columns: 1fr 1fr !important; }
+  .pr-track { grid-template-columns: 1fr 1fr !important; }
+  .lig-cost-photo { width: 100%; border-radius: 14px; }
+  .lig-cost-inner { flex-direction: column !important; gap: 24px; }
+
+  /* ── About page ── */
+  .about-grid { grid-template-columns: 1fr !important; }
+  .about-numbers-grid { grid-template-columns: 1fr 1fr !important; }
+  .about-testbook-grid { grid-template-columns: 1fr !important; gap: 24px; }
+  .about-growth-row { grid-template-columns: 1fr !important; gap: 24px; }
+
+  /* ── FAQs page ── */
+  .faq-jump-nav { flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .faq-jump-btn { font-size: 12px; padding: 7px 12px; }
+  .faq-section-title { font-size: 18px; }
+
+  /* ── GC Buddy hero ── */
+  .gcb-hero { padding: 88px 0 52px; }
+  .gcb-hero-title { font-size: clamp(22px, 6.5vw, 32px) !important; }
+  .gcb-hero-sub { font-size: 14.5px; }
+  .gcb-hero-ctas { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .gcb-hero-pills { gap: 8px; }
+  .gcb-hero-pill { padding: 10px 14px; }
+  .gcb-hero-pill strong { font-size: 16px; }
+
+  /* ── GC Buddy dashboard ── */
+  .gcb-dashboard { grid-template-columns: 1fr; }
+  .gcb-sidebar { display: none; }
+  .gcb-main { padding: 14px; gap: 12px; max-height: none; }
+  .gcb-stats-row { grid-template-columns: repeat(3,1fr); gap: 8px; }
+  .gcb-stat-card { padding: 10px 8px; }
+  .gcb-stat-val { font-size: 16px; }
+  .gcb-actions-grid { grid-template-columns: repeat(2,1fr); gap: 8px; }
+  .gcb-topics-grid { grid-template-columns: 1fr; }
+  .gcb-next-item { padding: 10px 12px; }
+  .gcb-welcome-banner { flex-direction: column; gap: 12px; }
+  .gcb-progress-bar { width: 100%; }
+  .gcb-chat-panel { position: static; width: 100%; }
+  .gcb-features-grid { grid-template-columns: 1fr 1fr !important; gap: 12px; }
+  .gcb-feature-card { padding: 18px 14px; }
+  .gcb-lena-grid { grid-template-columns: 1fr !important; }
+
+  /* ── Terms page ── */
+  .terms-container { grid-template-columns: 1fr !important; }
+  .terms-toc { display: none; }
+  .terms-block h2 { font-size: 15px; }
+
+  /* ── Page heroes (About, FAQ, Terms, LIG) ── */
+  .page-hero { padding: 96px 0 44px; }
+  .page-hero-title { font-size: clamp(24px, 7vw, 36px) !important; }
+  .page-hero-sub { font-size: 14px; }
+
+  /* ── Footer ── */
+  .footer-top { grid-template-columns: 1fr !important; gap: 28px; }
+  .footer-col { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; }
+  .footer-brand { padding-bottom: 0; }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    font-size: 12px;
+  }
+  .footer-compliance { justify-content: center; flex-wrap: wrap; gap: 8px; }
+
+  /* ── Modal ── */
+  .modal-backdrop { align-items: flex-end; padding: 0; }
+  .modal-card {
+    margin: 0;
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: 24px 20px 32px;
+    width: 100%;
+  }
+  .field-row { flex-direction: column; gap: 12px; }
+  .modal-title { font-size: 18px; }
+  .form-submit { font-size: 14px; padding: 14px; }
+
+  /* ── Sticky bar ── */
+  .sticky-bar { padding: 10px 16px; }
+  .sticky-bar-inner { gap: 10px; }
+  .sticky-apply { font-size: 14px; padding: 11px 20px; }
+
+  /* ── CTA Banner ── */
+  .cta-banner-inner { flex-direction: column; gap: 20px; text-align: center; padding: 28px 20px; }
+  .cta-banner-copy { text-align: center; }
+  .cta-banner-title { font-size: clamp(20px, 5.5vw, 26px); }
+
+  /* ── Cookie banner ── */
+  .cookie-banner { bottom: 0; border-radius: 16px 16px 0 0; width: 100%; }
+  .cookie-inner { flex-direction: column; gap: 14px; padding: 18px 16px; }
+  .cookie-actions { flex-direction: row; width: 100%; gap: 10px; }
+  .cookie-btn { flex: 1; padding: 12px; font-size: 13px; }
+
+  /* ── WhatsApp FAB ── */
+  .fab-whatsapp { width: 50px; height: 50px; bottom: 76px; right: 16px; }
+
+  /* ── Section titles ── */
+  .section { padding: 44px 0; }
+  .section-title { font-size: clamp(20px, 6vw, 28px); }
+  .eyebrow { font-size: 10.5px; }
+}
+
+/* ── Extra small — 390px and below ── */
+@media (max-width: 390px) {
+  .pathway-cards-grid { grid-template-columns: 1fr !important; }
+  .gcb-stats-row { grid-template-columns: 1fr 1fr !important; }
+  .gcb-features-grid { grid-template-columns: 1fr !important; }
+  .tbi-stats { flex-direction: column; align-items: center; }
+  .stats-grid { padding: 0; }
+  .hero-title { font-size: 24px !important; }
+  .section-title { font-size: 20px; }
+  .value-360-grid { grid-template-columns: 1fr !important; }
+  .why-badge-grid { grid-template-columns: 1fr !important; }
+  .life-showcase-grid { grid-template-columns: 1fr !important; }
+  .pr-track { grid-template-columns: 1fr !important; }
+}
