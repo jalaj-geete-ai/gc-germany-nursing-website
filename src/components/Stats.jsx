@@ -3,9 +3,19 @@ import Reveal from './Reveal';
 
 const stats = [
   { value: '100%',            sub: 'End-to-End Guidance',          icon: '🎯' },
-  { value: 'A1 → B2',        sub: 'German Language Support',       icon: '🇩🇪' },
+  { value: 'A1 → B2',        sub: 'German Language Support',       icon: null, flag: true },
   { value: 'India → Germany', sub: 'Complete Migration Assistance', icon: '✈️' },
 ];
+
+function GermanFlag() {
+  return (
+    <svg width="36" height="24" viewBox="0 0 36 24" style={{ borderRadius: 3, display: 'block' }}>
+      <rect width="36" height="8" fill="#000" />
+      <rect y="8" width="36" height="8" fill="#D00" />
+      <rect y="16" width="36" height="8" fill="#FFCE00" />
+    </svg>
+  );
+}
 
 export default function Stats() {
   return (
@@ -18,13 +28,23 @@ export default function Stats() {
               whileHover={{ y: -6, scale: 1.03 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
-              <motion.span
-                className="stat-icon"
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 2.5 + i * 0.4, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                {s.icon}
-              </motion.span>
+              {s.flag ? (
+                <motion.span
+                  className="stat-icon"
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 2.9, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  <GermanFlag />
+                </motion.span>
+              ) : (
+                <motion.span
+                  className="stat-icon"
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 2.5 + i * 0.4, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  {s.icon}
+                </motion.span>
+              )}
               <h3 className="stat-value mono">{s.value}</h3>
               <p className="stat-label">{s.sub}</p>
             </motion.div>
