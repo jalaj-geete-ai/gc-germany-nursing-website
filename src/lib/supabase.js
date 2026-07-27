@@ -15,88 +15,60 @@ function normalisePhone(raw = '') {
 }
 
 /**
- * Submits a website lead.
+ * Qualifications the Germany Nursing Program currently caters to.
+ * Anything outside this list (e.g. "Other") is politely turned away.
+ */
+const QUALIFIED_QUALIFICATIONS = ['GNM', 'B.Sc Nursing', 'Post Basic B.Sc', 'M.Sc Nursing'];
+
+export function isQualified(qualification) {
+  return QUALIFIED_QUALIFICATIONS.includes((qualification || '').trim());
+}
+
+/**
+ * Submits a website eligibility-form lead.
  *
  * Behaviour:
- *  - source is always stored as "website" → shows as "website" in the
- *    📥 Social Media Leads tab of the BD dashboard.
- *  - Dedup rule 1: if phone already exists in form_leads → skip (return
- *    { skipped: true, reason: 'form_leads' }).
- *  - Dedup rule 2: if phone already exists in the users table (CRM v2 /
- *    video funnel) → skip (return { skipped: true, reason: 'users' }).
- *  - New lead → round-robin BD assignment via bd_counter, then insert.
+ *  - Qualification gate: if the qualification is not a recognised nursing
+ *    qualification, the lead is NOT stored and NOT assigned. Returns
+ *    { qualified: false } so the UI can show a polite "we only cater to a
+ *    specific audience — we'll reach out if that changes" message. The user
+ *    should therefore not expect a call.
+ *  - Qualified lead: inserted into v2_staging with source = "website" and
+ *    status = "pending". The BD Team Lead assigns these to BDs from the
+ *    staging queue (source 'website' is auto_assign=false in
+ *    v2_pipeline_config, i.e. manual assignment).
+ *  - Duplicate detection against the live CRM (v2_leads, by phone) is handled
+ *    automatically by the BEFORE INSERT trigger trg_v2_staging_dedup, which
+ *    marks the row status='duplicate' / duplicate_of. No client-side dedup or
+ *    round-robin is needed.
  */
 export async function submitLead({ name, phone, email, qualification, experience }) {
-  const cleanPhone = normalisePhone(phone);
-
-  // ── 1. Dedup: check form_leads AND users (CRM v2) in parallel ──────────
-  const [flRes, usersRes] = await Promise.all([
-    db.from('form_leads')
-      .select('id, lead_phone, bd_name')
-      .eq('lead_phone', cleanPhone)
-      .maybeSingle(),
-
-    db.from('users')
-      .select('id, phone')
-      .eq('phone', cleanPhone)
-      .maybeSingle(),
-  ]);
-
-  if (flRes.data) {
-    // Already in Social Media / Form Leads — skip silently (no duplicate)
-    return { skipped: true, reason: 'form_leads', bd: flRes.data.bd_name };
+  // ── 1. Qualification gate ──────────────────────────────────────────────
+  if (!isQualified(qualification)) {
+    return { qualified: false };
   }
 
-  if (usersRes.data) {
-    // Already in CRM v2 (video funnel users table) — skip silently
-    return { skipped: true, reason: 'users' };
-  }
-
-  // ── 2. Round-robin BD assignment (mirrors bd_dashboard logic) ──────────
-  const [bdRes, ctrRes] = await Promise.all([
-    db.from('bd_members').select('name').eq('is_active', true).order('name'),
-    db.from('bd_counter').select('next_idx').eq('id', 1).single(),
-  ]);
-
-  const BDS    = (bdRes.data || []).map((b) => b.name);
-  const idx    = ctrRes.data?.next_idx ?? 0;
-  const bdName = BDS.length ? BDS[idx % BDS.length] : null;
-
-  // ── 3. Build payload ───────────────────────────────────────────────────
-  const notes = [
-    `Qualification: ${qualification}`,
-    `Experience: ${experience}`,
-  ].join(' | ');
-
+  // ── 2. Ingest into V2 staging for manual TL assignment ─────────────────
   const payload = {
-    lead_name:          name.trim(),
-    lead_phone:         cleanPhone,
-    lead_email:         email?.trim() || null,
-    source:             'website',          // shows as "website" in the dashboard
-    notes,
-    bd_name:            bdName,
-    call_status:        'not_called',
-    lead_status:        'pending',
-    call_duration_mins: 0,
-    uploaded_at:        new Date().toISOString(),
-    updated_at:         new Date().toISOString(),
+    name:   name.trim(),
+    phone:  normalisePhone(phone),
+    source: 'website',
+    status: 'pending',
+    source_detail: {
+      email:         email?.trim() || null,
+      qualification,
+      experience,
+      form:          'germany_nursing_eligibility',
+    },
   };
 
   const { data, error } = await db
-    .from('form_leads')
+    .from('v2_staging')
     .insert(payload)
     .select()
     .single();
 
   if (error) throw error;
 
-  // ── 4. Advance the round-robin counter ─────────────────────────────────
-  if (BDS.length) {
-    await db
-      .from('bd_counter')
-      .update({ next_idx: (idx + 1) % BDS.length })
-      .eq('id', 1);
-  }
-
-  return { skipped: false, data };
+  return { qualified: true, data };
 }
