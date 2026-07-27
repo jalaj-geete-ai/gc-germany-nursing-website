@@ -8,6 +8,7 @@ import EngagementTriggers from './components/EngagementTriggers';
 import LeadFormModal from './components/LeadFormModal';
 import { LeadFormProvider } from './components/LeadFormContext';
 import CookieConsent from './components/CookieConsent';
+import { initAnalyticsFromConsent, trackPageView } from './lib/analytics';
 
 import Home from './pages/Home';
 import LifeInGermany from './pages/LifeInGermany';
@@ -18,7 +19,9 @@ import Terms from './pages/Terms';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  // If the visitor already accepted marketing cookies, boot analytics once.
+  useEffect(() => { initAnalyticsFromConsent(); }, []);
+  useEffect(() => { window.scrollTo(0, 0); trackPageView(pathname); }, [pathname]);
   return null;
 }
 

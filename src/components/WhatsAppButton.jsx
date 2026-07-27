@@ -1,3 +1,5 @@
+import { trackWhatsAppClick } from '../lib/analytics';
+
 export default function WhatsAppButton() {
   return (
     <a
@@ -6,6 +8,7 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noreferrer"
       aria-label="Chat on WhatsApp"
+      onClick={() => trackWhatsAppClick('fab')}
     >
       <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
         <path

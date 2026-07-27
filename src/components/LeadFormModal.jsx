@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useLeadForm } from './LeadFormContext';
 import { submitLead } from '../lib/supabase';
 import Icon from './Icon';
+import { trackLeadSubmit, trackQualifiedLead } from '../lib/analytics';
 
 const initialForm = { name: '', phone: '', email: '', qualification: '', experience: '' };
 
@@ -46,9 +47,12 @@ export default function LeadFormModal() {
       // Qualification gate: non-nursing profiles are politely turned away
       // (not stored, no BD call) — show the "not our audience" screen.
       // Everyone else (new lead or CRM duplicate) sees the success screen.
+      trackLeadSubmit(source);
       if (result.qualified === false) {
         setRejected(true);
       } else {
+        // Conversion: a qualified lead reached v2_staging
+        trackQualifiedLead({ source, qualification: form.qualification });
         setSubmitted(true);
       }
     } catch (err) {

@@ -1,4 +1,5 @@
 import { useLeadForm } from './LeadFormContext';
+import { trackWhatsAppClick } from '../lib/analytics';
 
 export default function StickyApplyBar() {
   const { open } = useLeadForm();
@@ -6,6 +7,7 @@ export default function StickyApplyBar() {
     <div className="sticky-bar">
       <button className="sticky-whatsapp" aria-label="Chat on WhatsApp" onClick={(e) => {
         e.preventDefault();
+        trackWhatsAppClick('sticky');
         window.open('https://wa.me/918882604341?text=Hi%2C%20I%27m%20interested%20in%20the%20Germany%20Nursing%20Program', '_blank');
       }}>
         <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
