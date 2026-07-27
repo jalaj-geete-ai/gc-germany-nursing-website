@@ -61,12 +61,13 @@ export default function SuccessStories() {
   return (
     <section className="section stories">
       <div className="container">
-        <Reveal><h2 className="section-title">From ₹30K to ₹2.5L+ a month</h2></Reveal>
+        <Reveal><span className="eyebrow">Representative journeys</span></Reveal>
+        <Reveal delay={0.04}><h2 className="section-title">Real journeys to a German nursing career</h2></Reveal>
         <div className="story-grid">
           {stories.map((s, i) => (
             <Reveal delay={0.08 * i} key={s.name} className="story-card">
               <div className="story-top">
-                <img src={s.photo} alt={s.name} className="story-avatar-img" />
+                <img src={s.photo} alt={s.name} className="story-avatar-img" loading="lazy" decoding="async" />
                 <div>
                   <strong className="story-name">{s.name}</strong>
                   <p className="story-route mono">{s.route}</p>
@@ -81,6 +82,10 @@ export default function SuccessStories() {
             </Reveal>
           ))}
         </div>
+        <p className="stories-disclaimer">
+          Representative journeys based on typical participant outcomes. Individual results vary; actual
+          salary depends on role, location, employer and recognition status.
+        </p>
       </div>
     </section>
   );

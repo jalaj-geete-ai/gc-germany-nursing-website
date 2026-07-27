@@ -2,9 +2,9 @@ import { motion } from 'framer-motion';
 
 // Stylized (not geographically precise) Germany outline with example city markers.
 const cities = [
-  { name: 'Hamburg', x: 150, y: 90, hospitals: '8 partner hospitals' },
-  { name: 'Berlin', x: 245, y: 125, hospitals: '12 partner hospitals' },
-  { name: 'Munich', x: 195, y: 345, hospitals: '9 partner hospitals' },
+  { name: 'Hamburg', x: 150, y: 90, hospitals: 'Partner hospitals hiring' },
+  { name: 'Berlin', x: 245, y: 125, hospitals: 'Partner hospitals hiring' },
+  { name: 'Munich', x: 195, y: 345, hospitals: 'Partner hospitals hiring' },
 ];
 
 const routePath = `M${cities[0].x} ${cities[0].y} Q 200 100, ${cities[1].x} ${cities[1].y} T ${cities[2].x} ${cities[2].y}`;

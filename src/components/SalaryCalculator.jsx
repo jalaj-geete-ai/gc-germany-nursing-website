@@ -2,13 +2,16 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useLeadForm } from './LeadFormContext';
 
+// Base monthly salary (EUR) — floor is €2,800, the site-wide "starting from" figure.
 const baseByQualification = {
-  GNM: 2600,
-  'B.Sc Nursing': 2800,
-  'Post Basic / M.Sc': 3100,
+  GNM: 2800,
+  'B.Sc Nursing': 2900,
+  'Post Basic B.Sc': 3050,
+  'M.Sc Nursing': 3100,
 };
 const experienceBonus = {
   Fresher: 0,
+  '0–1 years': 0,
   '1–3 years': 150,
   '3+ years': 350,
 };
