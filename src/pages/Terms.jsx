@@ -2,10 +2,10 @@ import Reveal from '../components/Reveal';
 import CTABanner from '../components/CTABanner';
 import GermanyBackdrop from '../components/GermanyBackdrop';
 
-const EFFECTIVE_DATE = '1 July 2025';
+const EFFECTIVE_DATE = '27 July 2026';
 const COMPANY = 'Global Careers by Testbook (operated by Testbook Edu Solutions Pvt. Ltd.)';
-const EMAIL = 'germany@testbook.com';
-const PHONE = '+91 85277 12345';
+const EMAIL = 'support.gc@testbook.com';
+const PHONE = '+91 88826 04341';
 
 const sections = [
   {

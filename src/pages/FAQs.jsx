@@ -9,9 +9,9 @@ const groups = [
     id: 'salary',
     title: 'Salary, Benefits & Taxes',
     items: [
-      { q: 'Will accommodation be arranged for me in Germany?', a: 'Yes — furnished accommodation is arranged before you arrive. Rent and related costs are simply deducted from your gross salary each month, so there\u2019s no upfront scramble to find a place.' },
-      { q: 'Am I covered by health insurance?', a: 'Yes, you\u2019re covered through Germany\u2019s statutory health insurance system from the day your employment begins.' },
-      { q: 'What can I expect to earn as a registered nurse?', a: 'It depends on experience, location and the hiring facility. As a rough guide: before your qualification is formally recognised, expect €2,600–2,900/month; after recognition, €3,000–3,400/month.' },
+      { q: 'Will accommodation be arranged for me in Germany?', a: 'Yes — furnished accommodation is arranged before you arrive. Rent and related costs are simply deducted from your gross salary each month, so there’s no upfront scramble to find a place.' },
+      { q: 'Am I covered by health insurance?', a: 'Yes, you’re covered through Germany’s statutory health insurance system from the day your employment begins.' },
+      { q: 'What can I expect to earn as a registered nurse?', a: 'It depends on experience, location and the hiring facility. As a rough guide: before your qualification is formally recognised, expect from €2,800/month; after recognition, €3,000–3,400/month.' },
     ],
   },
   {
@@ -51,8 +51,8 @@ const groups = [
     title: 'About the Program',
     items: [
       { q: 'How do I actually apply?', a: 'Fill out the form on this site, or reach out directly — our team will screen your eligibility within 48 hours.' },
-      { q: 'What\u2019s the time commitment on my end?', a: 'Roughly 8–10 months of German language training, followed by your B2-level certification exam.' },
-      { q: 'I have a career gap — am I still in the running?', a: 'Yes. A career gap won\u2019t rule you out, as long as you can provide a valid reason and supporting documentation during screening.' },
+      { q: 'What’s the time commitment on my end?', a: 'Roughly 8–10 months of German language training, followed by your B2-level certification exam.' },
+      { q: 'I have a career gap — am I still in the running?', a: 'Yes. A career gap won’t rule you out, as long as you can provide a valid reason and supporting documentation during screening.' },
     ],
   },
 ];
