@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLeadForm } from './LeadFormContext';
 import { submitLead } from '../lib/supabase';
+import Icon from './Icon';
 
 const initialForm = { name: '', phone: '', email: '', qualification: '', experience: '' };
 
@@ -91,7 +92,7 @@ export default function LeadFormModal() {
 
             {rejected ? (
               <div className="thank-you">
-                <div className="thank-you-icon" style={{ background: '#eef1f5', color: '#5b6472' }}>ℹ</div>
+                <div className="thank-you-icon" style={{ background: '#eef1f5', color: '#5b6472' }}><Icon name="info" size={28} /></div>
                 <h3 className="modal-title">Thanks for your interest</h3>
                 <p className="modal-sub">
                   Right now our Germany Nursing Program is open only to candidates with a
@@ -192,7 +193,7 @@ export default function LeadFormModal() {
               </>
             ) : (
               <div className="thank-you">
-                <div className="thank-you-icon">✓</div>
+                <div className="thank-you-icon"><Icon name="check" size={28} /></div>
                 <h3 className="modal-title">You're in!</h3>
                 <p className="modal-sub">
                   Thanks, {form.name.split(' ')[0] || 'there'}. Your free eligibility check is on its

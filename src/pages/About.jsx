@@ -4,22 +4,23 @@ import CTABanner from '../components/CTABanner';
 import GrowthGraph from '../components/GrowthGraph';
 import GermanyBackdrop from '../components/GermanyBackdrop';
 import Counter from '../components/Counter';
+import Icon from '../components/Icon';
 
 const pillars = [
   {
     title: 'Structured Learning',
     desc: 'A defined curriculum and roadmap — not random videos and hope. Every learner knows what to study, when, and why.',
-    icon: '📚',
+    icon: 'book',
   },
   {
     title: 'Transparency',
     desc: 'Clear terms, visible progress, and honest guidance at every step. No hidden costs, no vague promises.',
-    icon: '🔍',
+    icon: 'search',
   },
   {
     title: 'Long-Term Career Growth',
     desc: "We measure success by the careers we help build, not just the courses we sell.",
-    icon: '📈',
+    icon: 'trend',
   },
 ];
 
@@ -27,22 +28,22 @@ const whatWeDo = [
   {
     title: 'Live Online Training',
     desc: 'Structured German language and professional training classes with regular practice, assessments and expert feedback.',
-    icon: '🖥️',
+    icon: 'monitor',
   },
   {
     title: 'Career Roadmap & Ethical Recruitment',
     desc: "A clear path forward, with guidance on recruitment that's ethical and above board — no shortcuts, no exploitation.",
-    icon: '🗺️',
+    icon: 'map',
   },
   {
     title: 'Documentation & Relocation Guidance',
     desc: 'Support navigating visa paperwork and relocation steps, so the process is understood, not just outsourced.',
-    icon: '📄',
+    icon: 'doc',
   },
   {
     title: 'Progress Tracking & Support',
     desc: "A built-in support system with FAQs, help resources, and visibility into exactly how far you've come.",
-    icon: '📊',
+    icon: 'chart',
   },
 ];
 
@@ -53,13 +54,12 @@ const testbookMilestones = [
   { year: '2026', text: 'One of India\'s leading exam-prep platforms — now extending that same rigour to global nursing careers.' },
 ];
 
-// Updated trust numbers
+// Canonical trust numbers — the ONLY approved set (kept in sync with src/lib/siteData.js)
 const trustNumbers = [
-  { value: 500,  suffix: '+', label: 'Nurses Enrolled',        icon: '👩‍⚕️', color: '#14B8DD' },
-  { value: 300,  suffix: '+', label: 'Visa Approvals',         icon: '🛂', color: '#22c55e' },
-  { value: 300,  suffix: '+', label: 'Successful Placements',  icon: '🏥', color: '#f59e0b' },
-  { value: 95,   suffix: '%', label: 'Visa Success Rate',      icon: '✅', color: '#8b5cf6' },
-  { value: 40,   suffix: '+', label: 'Partner Hospitals',      icon: '🤝', color: '#ec4899' },
+  { value: 300,  suffix: '+', label: 'Successful Placements',    icon: 'hospital', color: '#14B8DD' },
+  { value: 40,   suffix: '+', label: 'Partner Hospitals',        icon: 'partners', color: '#0A7DA0' },
+  { value: 95,   suffix: '%', label: 'Visa Success Rate',        icon: 'check',    color: '#3FAE6A' },
+  { value: 2800, prefix: '€', suffix: '+', label: 'Starting Salary / month', icon: 'salary', color: '#FF7A33' },
 ];
 
 const certifications = ['NSDC Aligned Training', 'Goethe-recognised Partners', 'Visa & Immigration Compliant', 'Testbook Group Company'];
@@ -84,9 +84,9 @@ export default function About() {
           {/* Inline stat chips in hero */}
           <Reveal delay={0.18}>
             <div className="about-hero-chips">
-              <span className="about-hero-chip">500+ Nurses Enrolled</span>
-              <span className="about-hero-chip">300+ Visa Approvals</span>
               <span className="about-hero-chip">300+ Successful Placements</span>
+              <span className="about-hero-chip">40+ Partner Hospitals</span>
+              <span className="about-hero-chip">95% Visa Success Rate</span>
             </div>
           </Reveal>
         </div>
@@ -112,7 +112,7 @@ export default function About() {
           <div className="about-pillars-grid">
             {pillars.map((p, i) => (
               <Reveal delay={0.08 * i} key={p.title} className="about-pillar-card">
-                <span className="about-pillar-icon">{p.icon}</span>
+                <span className="about-pillar-icon"><Icon name={p.icon} size={26} /></span>
                 <h3>{p.title}</h3>
                 <p>{p.desc}</p>
               </Reveal>
@@ -145,7 +145,7 @@ export default function About() {
           <div className="about-dowhat-grid">
             {whatWeDo.map((it, i) => (
               <Reveal delay={0.06 * i} key={it.title} className="about-dowhat-card">
-                <span className="about-dowhat-icon">{it.icon}</span>
+                <span className="about-dowhat-icon"><Icon name={it.icon} size={26} /></span>
                 <h3>{it.title}</h3>
                 <p>{it.desc}</p>
               </Reveal>
@@ -178,12 +178,12 @@ export default function About() {
             </div>
           </div>
           <Reveal delay={0.12} className="about-growth-graph about-testbook-graph">
-            <GrowthGraph value={15} label="Growth in nurse placements, year on year" />
+            <GrowthGraph value={3} label="Year-on-year growth in nurse placements" />
           </Reveal>
         </div>
       </section>
 
-      {/* Trust & credibility — updated numbers, attractive layout */}
+      {/* Trust & credibility */}
       <section className="section about-trust">
         <div className="container">
           <Reveal><span className="eyebrow">Trust &amp; credibility</span></Reveal>
@@ -202,9 +202,9 @@ export default function About() {
                   transition={{ delay: 0.08 * i, duration: 0.5 }}
                   whileHover={{ y: -4, scale: 1.02 }}
                 >
-                  <span className="about-trust-icon">{b.icon}</span>
+                  <span className="about-trust-icon"><Icon name={b.icon} size={24} /></span>
                   <strong className="about-trust-value mono">
-                    <Counter to={b.value} suffix={b.suffix} />
+                    <Counter to={b.value} prefix={b.prefix || ''} suffix={b.suffix} />
                   </strong>
                   <span className="about-trust-label">{b.label}</span>
                 </motion.div>
