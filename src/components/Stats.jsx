@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import Reveal from './Reveal';
+import Icon from './Icon';
 
 const stats = [
-  { value: '100%',            sub: 'End-to-End Guidance',          icon: '🎯' },
+  { value: '100%',            sub: 'End-to-End Guidance',          icon: 'target' },
   { value: 'A1 → B2',        sub: 'German Language Support',       icon: null, flag: true },
-  { value: 'India → Germany', sub: 'Complete Migration Assistance', icon: '✈️' },
+  { value: 'India → Germany', sub: 'Complete Migration Assistance', icon: 'plane' },
 ];
 
 function GermanFlag() {
@@ -28,23 +29,9 @@ export default function Stats() {
               whileHover={{ y: -6, scale: 1.03 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
-              {s.flag ? (
-                <motion.span
-                  className="stat-icon"
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 2.9, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  <GermanFlag />
-                </motion.span>
-              ) : (
-                <motion.span
-                  className="stat-icon"
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 2.5 + i * 0.4, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  {s.icon}
-                </motion.span>
-              )}
+              <span className="stat-icon">
+                {s.flag ? <GermanFlag /> : <Icon name={s.icon} size={30} />}
+              </span>
               <h3 className="stat-value mono">{s.value}</h3>
               <p className="stat-label">{s.sub}</p>
             </motion.div>
