@@ -16,6 +16,8 @@ import About from './pages/About';
 import FAQs from './pages/FAQs';
 import GCBuddyPage from './pages/GCBuddyPage';
 import Terms from './pages/Terms';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -38,6 +40,8 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/faqs" element={<FAQs />} />
             <Route path="/gc-buddy" element={<GCBuddyPage />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/terms" element={<Terms />} />
           </Routes>
         </main>

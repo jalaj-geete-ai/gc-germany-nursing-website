@@ -8,6 +8,7 @@ const links = [
   { to: '/life-in-germany', label: 'Life in Germany' },
   { to: '/gc-buddy',        label: 'GC Buddy' },
   { to: '/about',           label: 'About' },
+  { to: '/blog',            label: 'Blog' },
   { to: '/faqs',            label: 'FAQs' },
 ];
 
