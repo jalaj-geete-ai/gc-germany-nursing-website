@@ -10,6 +10,7 @@ export default function LeadFormModal() {
   const [form, setForm]           = useState(initialForm);
   const [errors, setErrors]       = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [rejected, setRejected]   = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState('');
 
@@ -41,10 +42,12 @@ export default function LeadFormModal() {
         experience:    form.experience,
       });
 
-      // Whether new or duplicate — show the same success screen.
-      // The duplicate is silently skipped in the DB; the user still gets
-      // a confirmation so they know we received their inquiry.
-      if (result.skipped || !result.error) {
+      // Qualification gate: non-nursing profiles are politely turned away
+      // (not stored, no BD call) — show the "not our audience" screen.
+      // Everyone else (new lead or CRM duplicate) sees the success screen.
+      if (result.qualified === false) {
+        setRejected(true);
+      } else {
         setSubmitted(true);
       }
     } catch (err) {
@@ -59,6 +62,7 @@ export default function LeadFormModal() {
     close();
     setTimeout(() => {
       setSubmitted(false);
+      setRejected(false);
       setForm(initialForm);
       setErrors({});
       setServerError('');
@@ -85,7 +89,20 @@ export default function LeadFormModal() {
           >
             <button className="modal-close" onClick={handleClose} aria-label="Close form">×</button>
 
-            {!submitted ? (
+            {rejected ? (
+              <div className="thank-you">
+                <div className="thank-you-icon" style={{ background: '#eef1f5', color: '#5b6472' }}>ℹ</div>
+                <h3 className="modal-title">Thanks for your interest</h3>
+                <p className="modal-sub">
+                  Right now our Germany Nursing Program is open only to candidates with a
+                  GNM, B.Sc Nursing, Post Basic B.Sc or M.Sc Nursing qualification. We won't
+                  be assigning your details to a counsellor, so please don't expect a call from
+                  us — but if we launch something that fits your profile in the future, we'll
+                  reach out.
+                </p>
+                <button className="btn btn-primary" onClick={handleClose}>Close</button>
+              </div>
+            ) : !submitted ? (
               <>
                 <span className="eyebrow">
                   {source === 'exit' ? 'Wait! Before you go' : 'Worth ₹999 — Free for you'}
