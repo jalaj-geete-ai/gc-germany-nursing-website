@@ -25,7 +25,6 @@ export default function Footer() {
 
         <div className="footer-col">
           <h4 className="footer-heading">Get in touch</h4>
-          <a href="tel:+918882604341">+91 88826 04341</a>
           <a href="mailto:support.gc@testbook.com">support.gc@testbook.com</a>
         </div>
 
