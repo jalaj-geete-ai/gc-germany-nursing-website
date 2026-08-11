@@ -2,7 +2,7 @@ import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import WhatsAppButton from './components/WhatsAppButton';
+import IndependenceDayBanner from './components/IndependenceDayBanner';
 import StickyApplyBar from './components/StickyApplyBar';
 import EngagementTriggers from './components/EngagementTriggers';
 import LeadFormModal from './components/LeadFormModal';
@@ -32,6 +32,7 @@ export default function App() {
     <HashRouter>
       <LeadFormProvider>
         <ScrollToTop />
+        <IndependenceDayBanner />
         <Navbar />
         <main>
           <Routes>
@@ -46,7 +47,7 @@ export default function App() {
           </Routes>
         </main>
         <Footer />
-        <WhatsAppButton />
+
         <StickyApplyBar />
         <EngagementTriggers />
         <LeadFormModal />
