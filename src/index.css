@@ -1005,7 +1005,7 @@ ul{margin:0;padding:0;}
   line-height: 1.5;
 }
 
-/* ── Terms & Conditions ──────────────────────── */
+/* ── Terms & Conditions ───────────────────────────── */
 .terms-section { padding-top: 3rem; padding-bottom: 5rem; }
 .terms-container {
   display: grid;
@@ -1088,7 +1088,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    TESTBOOK INTRO V2
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .testbook-intro-v2 { background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 60%, #f5f3ff 100%); padding: 70px 0; }
 .tbi-header { display: grid; grid-template-columns: auto 1fr; gap: 48px; align-items: center; margin-bottom: 48px; }
 .tbi-logo-wrap { display: flex; align-items: center; justify-content: center; }
@@ -1121,7 +1121,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    PATHWAY INFOGRAPHIC
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .one-stop-v2 { background: linear-gradient(160deg, #f0f9ff 0%, #fff 50%, #fdf4ff 100%); padding: 60px 0; }
 .pathway-infographic-wrap { position: relative; display: flex; justify-content: center; }
 .pathway-infographic-frame {
@@ -1155,7 +1155,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    GC BUDDY PAGE — HERO
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .gcb-hero { position: relative; background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0e4a6e 100%); padding: 120px 0 80px; overflow: hidden; }
 .gcb-hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(20,184,221,0.18) 0%, transparent 60%); pointer-events: none; }
 .gcb-hero-inner { position: relative; z-index: 2; }
@@ -1171,7 +1171,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    GC BUDDY — DASHBOARD MOCKUP
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .gcb-preview-section { background: #f8fafc; }
 .gcb-preview-sub { color: var(--ink-soft); font-size: 16px; line-height: 1.7; margin-bottom: 32px; max-width: 580px; }
 .gcb-preview-frame { border-radius: 16px; overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.16), 0 4px 16px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; background: #fff; }
@@ -1260,7 +1260,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    GC BUDDY — FEATURES GRID
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .gcb-features-section { background: #fff; }
 .gcb-features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 36px; }
 .gcb-feature-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px 20px; transition: box-shadow 0.2s; }
@@ -1273,7 +1273,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    GC BUDDY — LENA + REFER
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .gcb-lena-section { background: linear-gradient(135deg, #f0f9ff 0%, #fdf4ff 100%); }
 .gcb-lena-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .gcb-lena-card, .gcb-refer-card { background: #fff; border-radius: 20px; padding: 32px; display: flex; gap: 20px; align-items: flex-start; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
@@ -1285,7 +1285,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    TESTBOOK INTRO — CONTACT STRIP
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .tbi-hof-contact {
   display: flex; align-items: center; gap: 16px;
   border-top: 1px solid var(--line, #eee);
@@ -1302,7 +1302,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    PATHWAY — NATIVE COMPONENT
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .pathway-section {
   background: linear-gradient(160deg, #eef6ff 0%, #f8faff 50%, #f0fff8 100%);
   padding: 80px 0;
@@ -1411,7 +1411,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    TESTBOOK OFFICIAL LOGO
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .tbi-logo-official {
   width: 160px;
   max-width: 100%;
@@ -1420,7 +1420,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    HOF AUTO-SCROLL
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .tbi-hof-scroll-wrap {
   overflow: hidden;
   width: 100%;
@@ -1463,7 +1463,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    PATHWAY IMAGE — SEAMLESS BLEND
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .pathway-section-v2 {
   position: relative;
   background: #eef5ff;
@@ -1496,7 +1496,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    COOKIE CONSENT BANNER
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .cookie-banner {
   position: fixed;
   bottom: 24px;
@@ -1577,7 +1577,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    FOOTER COMPLIANCE BADGES
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .footer-compliance {
   display: flex;
   align-items: center;
@@ -1601,7 +1601,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    STATS — DIVIDER LINE
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .stat-divider {
   width: 40px; height: 2px;
   background: rgba(255,255,255,0.4);
@@ -1612,7 +1612,7 @@ ul{margin:0;padding:0;}
 /* ════════════════════════════════════════════════
    COMPREHENSIVE MOBILE OPTIMISATION
    Target: 320px–768px
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 @media (max-width: 768px) {
 
   /* Base */
@@ -1790,7 +1790,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    HAMBURGER MENU
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -1856,7 +1856,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    STATS — ANIMATED CARDS (no divider lines)
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .stat-block-wrap { display: contents; }
 .stat-block {
   display: flex !important;
@@ -1884,7 +1884,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    NAVBAR — PROPER TABS WITH INDICATOR
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .navbar-logo-img {
   height: 72px !important;
   width: auto;
@@ -1943,7 +1943,7 @@ ul{margin:0;padding:0;}
 /* ════════════════════════════════════════════════
    COMPREHENSIVE MOBILE PASS — FINAL
    No visual changes on desktop. Only mobile fixes.
-════════════════════════════════════════════════ */
+══════════════════════════════════════════════ */
 
 /* ── Global mobile base ── */
 @media (max-width: 768px) {
@@ -2152,7 +2152,7 @@ ul{margin:0;padding:0;}
 
 /* ════════════════════════════════════════════════
    ABOUT PAGE — FULL REDESIGN
-════════════════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 
 /* Hero — no photo, full-width centered */
 .about-hero-solo {
