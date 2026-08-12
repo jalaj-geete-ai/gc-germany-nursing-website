@@ -155,7 +155,7 @@ ul{margin:0;padding:0;}
 
 /* ---------- Navbar ---------- */
 .navbar{
-  position:fixed;top:0;left:0;right:0;z-index:100;
+  position:fixed;top:var(--id-banner-h,0px);left:0;right:0;z-index:100;
   background:rgba(255,255,255,0);
   transition:background .3s ease, box-shadow .3s ease, padding .3s ease;
   padding:14px 0;
@@ -513,7 +513,7 @@ ul{margin:0;padding:0;}
 .navbar-logo-img{height:64px;width:auto;display:block;}
 .footer-logo-img{height:64px;width:auto;display:block;background:#fff;border-radius:10px;padding:10px 16px;}
 
-.navbar{top:0;}
+.navbar{top:var(--id-banner-h,0px);}
 .hero,.page-hero{padding-top:150px;}
 
 @media (max-width:760px){
@@ -1005,7 +1005,7 @@ ul{margin:0;padding:0;}
   line-height: 1.5;
 }
 
-/* ── Terms & Conditions ───────────────────────────── */
+/* ── Terms & Conditions ──────────────────────── */
 .terms-section { padding-top: 3rem; padding-bottom: 5rem; }
 .terms-container {
   display: grid;
@@ -1086,9 +1086,9 @@ ul{margin:0;padding:0;}
   .testbook-intro-grid { grid-template-columns: auto 1fr !important; }
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    TESTBOOK INTRO V2
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .testbook-intro-v2 { background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 60%, #f5f3ff 100%); padding: 70px 0; }
 .tbi-header { display: grid; grid-template-columns: auto 1fr; gap: 48px; align-items: center; margin-bottom: 48px; }
 .tbi-logo-wrap { display: flex; align-items: center; justify-content: center; }
@@ -1119,9 +1119,9 @@ ul{margin:0;padding:0;}
   .tbi-hof-cards { justify-content: center; }
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    PATHWAY INFOGRAPHIC
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .one-stop-v2 { background: linear-gradient(160deg, #f0f9ff 0%, #fff 50%, #fdf4ff 100%); padding: 60px 0; }
 .pathway-infographic-wrap { position: relative; display: flex; justify-content: center; }
 .pathway-infographic-frame {
@@ -1153,9 +1153,9 @@ ul{margin:0;padding:0;}
 .pathway-floating-badge span { font-size: 11.5px; color: var(--ink-soft); }
 @media (max-width: 600px) { .pathway-floating-badge { display: none; } }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    GC BUDDY PAGE — HERO
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .gcb-hero { position: relative; background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0e4a6e 100%); padding: 120px 0 80px; overflow: hidden; }
 .gcb-hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(20,184,221,0.18) 0%, transparent 60%); pointer-events: none; }
 .gcb-hero-inner { position: relative; z-index: 2; }
@@ -1169,9 +1169,9 @@ ul{margin:0;padding:0;}
 .gcb-hero-pill strong { font-size: 22px; font-weight: 800; color: #fff; font-family: 'IBM Plex Mono', monospace; }
 .gcb-hero-pill span { font-size: 11.5px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.05em; }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    GC BUDDY — DASHBOARD MOCKUP
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .gcb-preview-section { background: #f8fafc; }
 .gcb-preview-sub { color: var(--ink-soft); font-size: 16px; line-height: 1.7; margin-bottom: 32px; max-width: 580px; }
 .gcb-preview-frame { border-radius: 16px; overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.16), 0 4px 16px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; background: #fff; }
@@ -1258,9 +1258,9 @@ ul{margin:0;padding:0;}
   .gcb-topics-grid { grid-template-columns: 1fr; }
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    GC BUDDY — FEATURES GRID
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .gcb-features-section { background: #fff; }
 .gcb-features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 36px; }
 .gcb-feature-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px 20px; transition: box-shadow 0.2s; }
@@ -1271,9 +1271,9 @@ ul{margin:0;padding:0;}
 @media (max-width: 900px) { .gcb-features-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 500px) { .gcb-features-grid { grid-template-columns: 1fr; } }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    GC BUDDY — LENA + REFER
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .gcb-lena-section { background: linear-gradient(135deg, #f0f9ff 0%, #fdf4ff 100%); }
 .gcb-lena-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .gcb-lena-card, .gcb-refer-card { background: #fff; border-radius: 20px; padding: 32px; display: flex; gap: 20px; align-items: flex-start; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
@@ -1283,9 +1283,9 @@ ul{margin:0;padding:0;}
 @media (max-width: 700px) { .gcb-lena-grid { grid-template-columns: 1fr; } }
 
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    TESTBOOK INTRO — CONTACT STRIP
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .tbi-hof-contact {
   display: flex; align-items: center; gap: 16px;
   border-top: 1px solid var(--line, #eee);
@@ -1300,9 +1300,9 @@ ul{margin:0;padding:0;}
 }
 .tbi-hof-phone:hover { text-decoration: underline; }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    PATHWAY — NATIVE COMPONENT
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .pathway-section {
   background: linear-gradient(160deg, #eef6ff 0%, #f8faff 50%, #f0fff8 100%);
   padding: 80px 0;
@@ -1409,18 +1409,18 @@ ul{margin:0;padding:0;}
   .pathway-cards-grid { grid-template-columns: 1fr; }
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    TESTBOOK OFFICIAL LOGO
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .tbi-logo-official {
   width: 160px;
   max-width: 100%;
   object-fit: contain;
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    HOF AUTO-SCROLL
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .tbi-hof-scroll-wrap {
   overflow: hidden;
   width: 100%;
@@ -1461,9 +1461,9 @@ ul{margin:0;padding:0;}
 }
 .tbi-hof-card:hover { transform: translateY(-4px); }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    PATHWAY IMAGE — SEAMLESS BLEND
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .pathway-section-v2 {
   position: relative;
   background: #eef5ff;
@@ -1494,9 +1494,9 @@ ul{margin:0;padding:0;}
   /* No border-radius, no shadow — blends into the page background */
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    COOKIE CONSENT BANNER
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .cookie-banner {
   position: fixed;
   bottom: 24px;
@@ -1575,9 +1575,9 @@ ul{margin:0;padding:0;}
   .cookie-actions { flex-direction: row; }
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    FOOTER COMPLIANCE BADGES
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .footer-compliance {
   display: flex;
   align-items: center;
@@ -1599,9 +1599,9 @@ ul{margin:0;padding:0;}
   text-decoration: underline;
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    STATS — DIVIDER LINE
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .stat-divider {
   width: 40px; height: 2px;
   background: rgba(255,255,255,0.4);
@@ -1609,10 +1609,10 @@ ul{margin:0;padding:0;}
   margin: 8px 0;
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    COMPREHENSIVE MOBILE OPTIMISATION
    Target: 320px–768px
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 @media (max-width: 768px) {
 
   /* Base */
@@ -1788,9 +1788,9 @@ ul{margin:0;padding:0;}
   .footer-top { grid-template-columns: 1fr 1fr !important; gap: 24px; }
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    HAMBURGER MENU
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -1854,9 +1854,9 @@ ul{margin:0;padding:0;}
   .hamburger { display: none !important; }
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    STATS — ANIMATED CARDS (no divider lines)
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .stat-block-wrap { display: contents; }
 .stat-block {
   display: flex !important;
@@ -1882,9 +1882,9 @@ ul{margin:0;padding:0;}
 .navbar-logo-img { height: 64px !important; width: auto; display: block; }
 
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    NAVBAR — PROPER TABS WITH INDICATOR
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 .navbar-logo-img {
   height: 72px !important;
   width: auto;
@@ -1940,10 +1940,10 @@ ul{margin:0;padding:0;}
 }
 
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    COMPREHENSIVE MOBILE PASS — FINAL
    No visual changes on desktop. Only mobile fixes.
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 
 /* ── Global mobile base ── */
 @media (max-width: 768px) {
@@ -2150,9 +2150,9 @@ ul{margin:0;padding:0;}
   .pr-track { grid-template-columns: 1fr !important; }
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    ABOUT PAGE — FULL REDESIGN
-═══════════════════════════════════════════════ */
+════════════════════════════════════════════════ */
 
 /* Hero — no photo, full-width centered */
 .about-hero-solo {
@@ -2287,136 +2287,130 @@ ul{margin:0;padding:0;}
   .about-trust-grid { grid-template-columns: 1fr !important; }
 }
 
-/* ═══════════════════════════════════════════════════════
+/* ════════════════════════════════════════════════════════
    INDEPENDENCE DAY CAMPAIGN — banner + modal
-   ═══════════════════════════════════════════════════════ */
+   ════════════════════════════════════════════════════════ */
 
-/* Banner wrapper */
+/* Layout shift: the banner is fixed, so reserve space for it. Its live
+   height is published to --id-banner-h from the component (JS). */
+:root { --id-banner-h: 0px; }
+body.id-banner-active .hero,
+body.id-banner-active .page-hero { padding-top: calc(150px + var(--id-banner-h)); }
+@media (max-width: 980px) {
+  body.id-banner-active .hero { padding-top: calc(100px + var(--id-banner-h)); }
+}
+@media (max-width: 760px) {
+  body.id-banner-active .hero,
+  body.id-banner-active .page-hero { padding-top: calc(100px + var(--id-banner-h)); }
+}
+
+/* Banner — fixed strip pinned above the (also fixed) navbar.
+   z-index 90 sits BELOW the navbar (100) on purpose, so the mobile menu
+   drawer cleanly covers the banner when it's open. */
 .id-banner {
-  position: relative;
-  width: 100%;
-  cursor: pointer;
-  overflow: hidden;
-  background: #fff8f0;
-  border-bottom: 2px solid rgba(255,153,0,.25);
-  box-shadow: 0 3px 16px rgba(0,0,0,.12);
-  z-index: 9999;
-}
-.id-banner-stripe {
-  position: absolute;
+  position: fixed;
   top: 0; left: 0; right: 0;
-  height: 3px;
+  z-index: 90;
+  cursor: pointer;
+  background: linear-gradient(100deg,#fff6ec 0%,#ffffff 44%,#ffffff 56%,#eefaf0 100%);
+  border-bottom: 1px solid rgba(12,30,56,.09);
+  box-shadow: 0 2px 14px rgba(12,30,56,.10);
+}
+.id-banner::before {                     /* tricolour top hairline */
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: linear-gradient(90deg,#FF9933 33.3%,#fff 33.3% 66.6%,#138808 66.6%);
-  z-index: 2;
+  z-index: 3;
 }
-
-/* Creative image fills the banner */
-.id-banner-img-wrap {
-  position: relative;
-  width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
+.id-banner::after {                      /* faint Ashoka-chakra watermark */
+  content: '☸'; position: absolute; left: 50%; top: 52%; transform: translate(-50%,-50%);
+  font-size: 110px; line-height: 1; color: rgba(0,0,136,.045);
+  pointer-events: none; z-index: 0;
 }
-.id-banner-bg-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  max-height: 110px;
-  object-fit: cover;
-  object-position: center;
+.id-banner-inner {
+  position: relative; z-index: 2;
+  max-width: 1240px; margin: 0 auto;
+  padding: 9px 50px 9px 20px;
+  display: flex; align-items: center; gap: 18px;
 }
-
-/* Dynamic seat counter — overlays the static "33 SEATS LEFT" area in the image */
-.id-seat-overlay {
-  position: absolute;
-  right: 220px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255,255,255,.92);
-  border: 2px solid #FF9933;
-  border-radius: 10px;
-  padding: 6px 14px;
-  box-shadow: 0 4px 14px rgba(255,153,0,.25);
-  white-space: nowrap;
-  pointer-events: none;
+.id-banner-lead { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.id-banner-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10.5px; font-weight: 800; letter-spacing: 1.1px;
+  text-transform: uppercase; color: #c65a00;
 }
-.id-seat-fire { font-size: 16px; }
-.id-seat-number {
-  font-size: 14px;
-  font-weight: 800;
-  color: #c65a00;
-  letter-spacing: .3px;
-  transition: opacity .28s, transform .28s;
-  display: inline-block;
+.id-flagdot {
+  width: 13px; height: 9px; border-radius: 2px; flex-shrink: 0;
+  background: linear-gradient(#FF9933 33.3%,#fff 33.3% 66.6%,#138808 66.6%);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.06);
 }
-.id-seat-number.id-flip { opacity: 0; transform: translateY(-5px); }
-
-/* VIEW OFFER button overlay */
+.id-banner-tagline {
+  font-size: 15px; font-weight: 800; color: #0c1e38; line-height: 1.2;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.id-banner-tagline b { color: #138808; }
+.id-banner-meta { display: flex; align-items: center; gap: 9px; margin-left: auto; flex-shrink: 0; }
+.id-chip {
+  font-size: 12px; font-weight: 800; letter-spacing: .2px;
+  padding: 5px 11px; border-radius: 999px; white-space: nowrap;
+}
+.id-chip-offer { background: #FF9933; color: #fff; }
+.id-chip-valid { background: #eef6ff; color: #0e2d55; border: 1px solid #dce7f7; }
+.id-chip-final { background: #b91c1c; color: #fff; letter-spacing: .6px; }
+.id-seatchip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: #fff; border: 1.5px solid #FF9933; border-radius: 999px;
+  padding: 5px 12px; font-size: 12px; font-weight: 800; color: #c65a00;
+  white-space: nowrap; box-shadow: 0 3px 10px rgba(255,153,0,.18);
+}
+.id-seatchip .fire { font-size: 14px; }
+.id-seatlabel { letter-spacing: .2px; }
+.id-seatnum {
+  display: inline-block; min-width: 1.1em; text-align: center;
+  transition: opacity .3s, transform .3s;
+}
+.id-seatnum.id-flip { opacity: 0; transform: translateY(-6px); }
 .id-view-offer-btn {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #0a2540;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(10,37,64,.35);
-  transition: background .15s;
+  flex-shrink: 0; font-family: inherit;
+  background: #0c1e38; color: #fff; border: none; border-radius: 8px;
+  padding: 9px 18px; font-size: 13px; font-weight: 800; cursor: pointer; white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(12,30,56,.28); transition: background .15s, transform .15s;
 }
-.id-view-offer-btn:hover { background: #0e3360; }
-
-/* Close button */
+.id-view-offer-btn:hover { background: #12294a; transform: translateY(-1px); }
 .id-banner-close {
-  position: absolute;
-  top: 8px; right: 8px;
-  background: rgba(0,0,0,.18);
-  border: none;
-  border-radius: 50%;
-  width: 24px; height: 24px;
-  color: #fff;
-  font-size: 13px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  line-height: 1;
+  position: absolute; top: 50%; right: 12px; transform: translateY(-50%);
+  background: rgba(12,30,56,.10); border: none; border-radius: 50%;
+  width: 24px; height: 24px; color: #0c1e38; font-size: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; z-index: 4; line-height: 1;
   transition: background .15s;
 }
-.id-banner-close:hover { background: rgba(0,0,0,.38); }
+.id-banner-close:hover { background: rgba(12,30,56,.22); }
 
-/* Mobile — stack more compact */
+/* Tablet */
+@media (max-width: 900px) {
+  .id-banner-tagline { font-size: 13.5px; }
+  .id-chip-valid { display: none; }
+}
+
+/* Mobile — compact stacked layout; the seat counter stays visible.
+   The middle chip (Valid / Final Day) is dropped here to keep the action row
+   to a single line — "Final Day" moves into the eyebrow instead. */
 @media (max-width: 640px) {
-  .id-banner-bg-img { max-height: 72px; }
-  .id-seat-overlay {
-    right: 110px;
-    padding: 4px 8px;
-    border-radius: 7px;
-  }
-  .id-seat-number { font-size: 11px; }
-  .id-seat-fire { font-size: 12px; }
-  .id-view-offer-btn {
-    right: 8px;
-    padding: 7px 10px;
-    font-size: 11px;
-  }
+  .id-banner-inner { flex-wrap: wrap; gap: 5px 7px; padding: 7px 32px 8px 14px; }
+  .id-banner-eyebrow { font-size: 10px; letter-spacing: .8px; }
+  .id-banner-lead { flex: 1 1 100%; }
+  .id-banner-tagline { white-space: normal; font-size: 12px; line-height: 1.2; }
+  .id-banner-meta { flex: 0 1 auto; margin-left: 0; gap: 6px; }
+  .id-chip, .id-seatchip { font-size: 11px; padding: 4px 9px; }
+  .id-seatchip { gap: 4px; }
+  .id-chip-final { display: none; }
+  .id-view-offer-btn { margin-left: auto; padding: 6px 11px; font-size: 11px; }
+  .id-banner::after { font-size: 70px; }
 }
-@media (max-width: 400px) {
-  .id-seat-overlay { display: none; }
+@media (max-width: 340px) {
+  .id-view-offer-btn { flex-basis: 100%; margin-left: 0; text-align: center; }
 }
 
-/* ── Modal backdrop ──────────────────────────────────── */
+/* ── Modal backdrop ───────────────────────────── */
 .id-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -2430,7 +2424,7 @@ ul{margin:0;padding:0;}
   padding: 16px;
 }
 
-/* ── Modal box ───────────────────────────────────────── */
+/* ── Modal box ──────────────────────────── */
 .id-modal {
   background: #fff;
   border-radius: 18px;
