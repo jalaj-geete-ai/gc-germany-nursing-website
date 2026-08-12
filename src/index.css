@@ -1086,7 +1086,7 @@ ul{margin:0;padding:0;}
   .testbook-intro-grid { grid-template-columns: auto 1fr !important; }
 }
 
-/* ═══════════════════════════════════════════════
+/* ════════════════════════════════════════════════
    TESTBOOK INTRO V2
 ═══════════════════════════════════════════════ */
 .testbook-intro-v2 { background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 60%, #f5f3ff 100%); padding: 70px 0; }
@@ -2410,7 +2410,7 @@ body.id-banner-active .page-hero { padding-top: calc(150px + var(--id-banner-h))
   .id-view-offer-btn { flex-basis: 100%; margin-left: 0; text-align: center; }
 }
 
-/* ── Modal backdrop ───────────────────────────────────── */
+/* ── Modal backdrop ───────────────────────────── */
 .id-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -2424,7 +2424,7 @@ body.id-banner-active .page-hero { padding-top: calc(150px + var(--id-banner-h))
   padding: 16px;
 }
 
-/* ── Modal box ──────────────────────────────────────── */
+/* ── Modal box ──────────────────────────── */
 .id-modal {
   background: #fff;
   border-radius: 18px;
