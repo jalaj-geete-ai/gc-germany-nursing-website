@@ -5,7 +5,7 @@ import GermanyBackdrop from '../components/GermanyBackdrop';
 const EFFECTIVE_DATE = '27 July 2026';
 const COMPANY = 'Global Careers by Testbook (operated by Testbook Edu Solutions Pvt. Ltd.)';
 const EMAIL = 'support.gc@testbook.com';
-const PHONE = '+91 88826 04341';
+const PHONE = '+91 92173 85145';
 
 const sections = [
   {

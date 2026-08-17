@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Icon from './Icon';
@@ -9,11 +9,35 @@ const STORAGE_KEY = 'gc_cookie_consent';
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const bannerRef = useRef(null);
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) setTimeout(() => setVisible(true), 1200);
   }, []);
+
+  // Publish the banner height so the floating WhatsApp FAB can lift clear of it
+  // (see --cookie-h usage in index.css). Reset to 0 when hidden.
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    if (!visible || !bannerRef.current) {
+      body.classList.remove('cookie-open');
+      root.style.setProperty('--cookie-h', '0px');
+      return;
+    }
+    const el = bannerRef.current;
+    const measure = () => root.style.setProperty('--cookie-h', `${el.offsetHeight + 14}px`);
+    measure();
+    body.classList.add('cookie-open');
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      body.classList.remove('cookie-open');
+      root.style.setProperty('--cookie-h', '0px');
+    };
+  }, [visible, showDetails]);
 
   function accept(type) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ type, ts: Date.now() }));
@@ -26,6 +50,7 @@ export default function CookieConsent() {
     <AnimatePresence>
       {visible && (
         <motion.div
+          ref={bannerRef}
           className="cookie-banner"
           initial={{ y: 120, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

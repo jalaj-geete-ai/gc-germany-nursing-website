@@ -42,13 +42,15 @@ export function isQualified(qualification) {
  *    marks the row status='duplicate' / duplicate_of. No client-side dedup or
  *    round-robin is needed.
  */
-export async function submitLead({ name, phone, email, qualification, experience }) {
+export async function submitLead({ name, phone, email, qualification, experience, meta = {} }) {
   // ── 1. Qualification gate ──────────────────────────────────────────────
   if (!isQualified(qualification)) {
     return { qualified: false };
   }
 
   // ── 2. Ingest into V2 staging for manual TL assignment ─────────────────
+  // `meta` carries UTM / landing page / device attribution (see lib/leadMeta.js)
+  // and is preserved inside source_detail alongside the existing fields.
   const payload = {
     name:   name.trim(),
     phone:  normalisePhone(phone),
@@ -59,6 +61,7 @@ export async function submitLead({ name, phone, email, qualification, experience
       qualification,
       experience,
       form:          'germany_nursing_eligibility',
+      ...meta,
     },
   };
 

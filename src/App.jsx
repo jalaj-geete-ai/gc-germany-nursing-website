@@ -5,10 +5,13 @@ import Footer from './components/Footer';
 import IndependenceDayBanner from './components/IndependenceDayBanner';
 import StickyApplyBar from './components/StickyApplyBar';
 import EngagementTriggers from './components/EngagementTriggers';
+import TimedLeadPopup from './components/TimedLeadPopup';
+import WhatsAppButton from './components/WhatsAppButton';
 import LeadFormModal from './components/LeadFormModal';
 import { LeadFormProvider } from './components/LeadFormContext';
 import CookieConsent from './components/CookieConsent';
 import { initAnalyticsFromConsent, trackPageView } from './lib/analytics';
+import { captureAttributionOnce } from './lib/leadMeta';
 
 import Home from './pages/Home';
 import LifeInGermany from './pages/LifeInGermany';
@@ -22,7 +25,8 @@ import BlogPost from './pages/BlogPost';
 function ScrollToTop() {
   const { pathname } = useLocation();
   // If the visitor already accepted marketing cookies, boot analytics once.
-  useEffect(() => { initAnalyticsFromConsent(); }, []);
+  // Also snapshot UTM / landing-page attribution before any client-side nav.
+  useEffect(() => { initAnalyticsFromConsent(); captureAttributionOnce(); }, []);
   useEffect(() => { window.scrollTo(0, 0); trackPageView(pathname); }, [pathname]);
   return null;
 }
@@ -49,7 +53,9 @@ export default function App() {
         <Footer />
 
         <StickyApplyBar />
+        <WhatsAppButton />
         <EngagementTriggers />
+        <TimedLeadPopup />
         <LeadFormModal />
         <CookieConsent />
       </LeadFormProvider>

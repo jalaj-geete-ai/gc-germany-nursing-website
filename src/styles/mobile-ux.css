@@ -1,0 +1,48 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   MOBILE UX + FLOATING-UI POLISH
+   Loaded after index.css so these rules layer on top of the base styles.
+   Covers: WhatsApp FAB (desktop + mobile), the compact DPDP cookie banner,
+   and their non-overlap coordination via the --cookie-h variable.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Floating WhatsApp button — visible on desktop AND mobile ───────────── */
+.fab-whatsapp {
+  bottom: calc(24px + var(--cookie-h, 0px)); /* lifts clear of the cookie card */
+  z-index: 140;                              /* above page, below lead modal (200) */
+  width: 56px; height: 56px;
+  transition: bottom .28s ease, opacity .2s ease;
+}
+/* Hide the FAB while the lead form modal is open (it sits behind the backdrop). */
+body.lead-modal-open .fab-whatsapp { opacity: 0; pointer-events: none; }
+
+/* Keep the FAB visible on mobile (base index.css hides it under 760px). */
+@media (max-width: 760px) {
+  .fab-whatsapp { display: flex; }
+}
+
+/* ── DPDP cookie banner — compact, non-intrusive ───────────────────────── */
+/* Desktop: centre without transform (Framer Motion animates transform). */
+.cookie-banner {
+  left: 0; right: 0; margin: 0 auto;
+  z-index: 150;                    /* below the lead modal (200); above the FAB */
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+}
+
+/* Mobile: a compact card ABOVE the sticky bar — never full-screen, and the
+   FAB lifts above it (via --cookie-h) so nothing overlaps. */
+@media (max-width: 768px) {
+  .cookie-banner {
+    left: 12px; right: 12px; bottom: 74px;
+    width: auto; border-radius: 14px;
+    max-height: 56vh; overflow-y: auto;
+  }
+  .cookie-inner { flex-direction: column; gap: 12px; padding: 14px 16px; align-items: stretch; }
+  .cookie-actions { flex-direction: row; width: 100%; gap: 10px; }
+  .cookie-btn { flex: 1; padding: 11px; font-size: 13px; }
+
+  .fab-whatsapp {
+    width: 54px; height: 54px; right: 16px;
+    bottom: calc(76px + var(--cookie-h, 0px)); /* above the sticky bar; lifts over the cookie card */
+  }
+}

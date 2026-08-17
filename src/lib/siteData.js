@@ -15,12 +15,14 @@ export const STATS = {
 // EUR→INR indicative conversion used in salary displays
 export const EUR_TO_INR = 95;
 
-// Contact — use THESE everywhere (phone, email, WhatsApp)
+// Contact — use THESE everywhere (phone, email, WhatsApp). Single source of truth.
+const WA_TEXT = 'Hi%2C%20I%27m%20interested%20in%20the%20Germany%20Nursing%20Program';
 export const CONTACT = {
-  phone:    '+91 88826 04341',
-  phoneRaw: '918882604341',
+  phone:    '+91 92173 85145',
+  phoneRaw: '919217385145',
+  tel:      'tel:+919217385145',            // click-to-call href
   email:    'support.gc@testbook.com',
-  whatsapp: 'https://wa.me/918882604341?text=Hi%2C%20I%27m%20interested%20in%20the%20Germany%20Nursing%20Program',
+  whatsapp: `https://wa.me/919217385145?text=${WA_TEXT}`,
   hours:    'Mon–Sat, 9 AM – 8 PM IST',
 };
 

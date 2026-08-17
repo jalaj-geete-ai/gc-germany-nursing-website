@@ -1,20 +1,49 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLeadForm } from './LeadFormContext';
 import { submitLead } from '../lib/supabase';
 import Icon from './Icon';
 import { trackLeadSubmit, trackQualifiedLead } from '../lib/analytics';
+import { getLeadMeta } from '../lib/leadMeta';
 
 const initialForm = { name: '', phone: '', email: '', qualification: '', experience: '' };
 
+// Headline/CTA copy varies by what opened the form, so the same modal (and the
+// same submit pipeline) can serve multiple campaigns without duplicate components.
+function copyFor(source) {
+  if (source === 'timed-popup') {
+    return {
+      eyebrow: 'Free career plan',
+      title: 'Build Your Nursing Career in Germany 🇩🇪',
+      sub: 'Get a personalised career plan from our Germany experts.',
+      cta: 'Get My Free Career Plan',
+    };
+  }
+  return {
+    eyebrow: source === 'exit' ? 'Wait! Before you go' : 'Worth ₹999 — Free for you',
+    title: 'Get your free Germany eligibility check',
+    sub: 'Find out your salary estimate & visa eligibility in 24 hours — no obligation, no cost.',
+    cta: 'Get My Free Salary Estimate →',
+  };
+}
+
 export default function LeadFormModal() {
-  const { isOpen, close, source } = useLeadForm();
+  const { isOpen, close, source, markSubmitted } = useLeadForm();
   const [form, setForm]           = useState(initialForm);
   const [errors, setErrors]       = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [rejected, setRejected]   = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState('');
+
+  const copy = copyFor(source);
+
+  // Hide the floating WhatsApp FAB while the lead modal is open so it never
+  // shows through / overlaps the popup.
+  useEffect(() => {
+    document.body.classList.toggle('lead-modal-open', isOpen);
+    return () => document.body.classList.remove('lead-modal-open');
+  }, [isOpen]);
 
   function update(field, value) { setForm((f) => ({ ...f, [field]: value })); }
 
@@ -42,12 +71,14 @@ export default function LeadFormModal() {
         email:         form.email,
         qualification: form.qualification,
         experience:    form.experience,
+        meta:          { ...getLeadMeta(), lead_source: source },
       });
 
       // Qualification gate: non-nursing profiles are politely turned away
       // (not stored, no BD call) — show the "not our audience" screen.
       // Everyone else (new lead or CRM duplicate) sees the success screen.
       trackLeadSubmit(source);
+      markSubmitted(); // stop auto-popups from reappearing after a submission
       if (result.qualified === false) {
         setRejected(true);
       } else {
@@ -109,13 +140,9 @@ export default function LeadFormModal() {
               </div>
             ) : !submitted ? (
               <>
-                <span className="eyebrow">
-                  {source === 'exit' ? 'Wait! Before you go' : 'Worth ₹999 — Free for you'}
-                </span>
-                <h3 className="modal-title">Get your free Germany eligibility check</h3>
-                <p className="modal-sub">
-                  Find out your salary estimate &amp; visa eligibility in 24 hours — no obligation, no cost.
-                </p>
+                <span className="eyebrow">{copy.eyebrow}</span>
+                <h3 className="modal-title">{copy.title}</h3>
+                <p className="modal-sub">{copy.sub}</p>
 
                 <form onSubmit={handleSubmit} className="lead-form" noValidate>
                   <div className="field">
@@ -183,7 +210,7 @@ export default function LeadFormModal() {
                   )}
 
                   <button type="submit" className="btn btn-primary form-submit" disabled={submitting}>
-                    {submitting ? 'Submitting…' : 'Get My Free Salary Estimate →'}
+                    {submitting ? 'Submitting…' : copy.cta}
                   </button>
 
                   <p className="form-disclaimer">

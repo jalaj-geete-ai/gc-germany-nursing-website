@@ -2,13 +2,13 @@ import { useEffect, useRef } from 'react';
 import { useLeadForm } from './LeadFormContext';
 
 export default function EngagementTriggers() {
-  const { open, isOpen } = useLeadForm();
+  const { open, isOpen, submittedOnce } = useLeadForm();
   const scrollFired = useRef(false);
   const exitFired = useRef(false);
 
   useEffect(() => {
     function onScroll() {
-      if (scrollFired.current || isOpen) return;
+      if (scrollFired.current || isOpen || submittedOnce) return;
       const scrolled = window.scrollY;
       const max = document.documentElement.scrollHeight - window.innerHeight;
       if (max > 0 && scrolled / max > 0.3) {
@@ -18,11 +18,11 @@ export default function EngagementTriggers() {
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [open, isOpen]);
+  }, [open, isOpen, submittedOnce]);
 
   useEffect(() => {
     function onMouseLeave(e) {
-      if (exitFired.current || isOpen) return;
+      if (exitFired.current || isOpen || submittedOnce) return;
       if (e.clientY <= 0 && scrollFired.current) {
         exitFired.current = true;
         open('exit');
@@ -30,7 +30,7 @@ export default function EngagementTriggers() {
     }
     document.addEventListener('mouseleave', onMouseLeave);
     return () => document.removeEventListener('mouseleave', onMouseLeave);
-  }, [open, isOpen]);
+  }, [open, isOpen, submittedOnce]);
 
   return null;
 }
