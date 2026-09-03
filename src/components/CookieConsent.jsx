@@ -1,6 +1,5 @@
 import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import Icon from './Icon';
 import { grantMarketingConsent } from '../lib/analytics';
 
@@ -88,7 +87,6 @@ export default function CookieConsent() {
                   <p className="cookie-rights">
                     Under the DPDP Act 2023 &amp; GDPR, you have the right to access, correct or erase your data.
                     Contact us at <a href="mailto:support.gc@testbook.com">support.gc@testbook.com</a>.
-                    See our <Link to="/terms" onClick={() => setVisible(false)}>Terms &amp; Conditions</Link>.
                   </p>
                 </div>
               )}

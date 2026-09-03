@@ -20,7 +20,6 @@ export default function Footer() {
           <Link to="/life-in-germany">Life in Germany</Link>
           <Link to="/about">About Us</Link>
           <Link to="/faqs">FAQs</Link>
-          <Link to="/terms">Terms &amp; Conditions</Link>
         </div>
 
         <div className="footer-col">
@@ -41,7 +40,6 @@ export default function Footer() {
         <div className="footer-compliance">
           <span className="compliance-badge"><Icon name="lock" size={15} /> DPDP Act 2023 Compliant</span>
           <span className="compliance-badge"><Icon name="globe" size={15} /> GDPR Compliant</span>
-          <Link to="/terms" className="footer-link-plain">Terms &amp; Conditions</Link>
         </div>
       </div>
     </footer>

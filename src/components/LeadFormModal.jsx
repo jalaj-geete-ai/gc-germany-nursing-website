@@ -214,11 +214,7 @@ export default function LeadFormModal() {
                   </button>
 
                   <p className="form-disclaimer">
-                    By submitting, you agree to be contacted by our team and to our{' '}
-                    <a href="#/terms" onClick={handleClose}
-                      style={{ color: 'inherit', textDecoration: 'underline' }}>
-                      Terms &amp; Conditions
-                    </a>.
+                    By submitting, you agree to be contacted by our team.
                   </p>
                 </form>
               </>
