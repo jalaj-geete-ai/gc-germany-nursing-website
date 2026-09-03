@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import logo from '../assets/brand/logo.jpg';
-import Icon from './Icon';
 
 export default function Footer() {
   return (
@@ -37,10 +36,6 @@ export default function Footer() {
 
       <div className="container footer-bottom">
         <span>© {new Date().getFullYear()} Global Careers by Testbook. All rights reserved.</span>
-        <div className="footer-compliance">
-          <span className="compliance-badge"><Icon name="lock" size={15} /> DPDP Act 2023 Compliant</span>
-          <span className="compliance-badge"><Icon name="globe" size={15} /> GDPR Compliant</span>
-        </div>
       </div>
     </footer>
   );
