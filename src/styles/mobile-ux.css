@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════════
    MOBILE UX + FLOATING-UI POLISH
    Loaded after index.css so these rules layer on top of the base styles.
-   Covers: WhatsApp FAB (desktop + mobile), the compact DPDP cookie banner,
+   Covers: WhatsApp FAB (desktop + mobile), the compact cookie-consent banner,
    and their non-overlap coordination via the --cookie-h variable.
    ═══════════════════════════════════════════════════════════════════════ */
 
@@ -20,7 +20,7 @@ body.lead-modal-open .fab-whatsapp { opacity: 0; pointer-events: none; }
   .fab-whatsapp { display: flex; }
 }
 
-/* ── DPDP cookie banner — compact, non-intrusive ───────────────────────── */
+/* ── Cookie-consent banner — compact, non-intrusive ────────────────────── */
 /* Desktop: centre without transform (Framer Motion animates transform). */
 .cookie-banner {
   left: 0; right: 0; margin: 0 auto;

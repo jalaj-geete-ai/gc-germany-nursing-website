@@ -63,7 +63,6 @@ export default function CookieConsent() {
               <p className="cookie-title"><Icon name="lock" size={16} /> We value your privacy</p>
               <p className="cookie-body">
                 This website uses cookies to improve your experience and for analytics.
-                We comply with <strong>India's DPDP Act 2023</strong> and <strong>GDPR</strong>.
                 Your data is never sold. You can choose what you accept.
                 {' '}<button className="cookie-details-toggle" onClick={() => setShowDetails(v => !v)}>
                   {showDetails ? 'Hide details ▲' : 'Learn more ▼'}
@@ -85,7 +84,7 @@ export default function CookieConsent() {
                     <span>Used to show relevant ads and track campaign performance</span>
                   </div>
                   <p className="cookie-rights">
-                    Under the DPDP Act 2023 &amp; GDPR, you have the right to access, correct or erase your data.
+                    You have the right to access, correct or erase your data.
                     Contact us at <a href="mailto:support.gc@testbook.com">support.gc@testbook.com</a>.
                   </p>
                 </div>
