@@ -1,4 +1,5 @@
 import Hero from '../components/Hero';
+import PartnersCarousel from '../components/PartnersCarousel';
 import TestbookIntro from '../components/TestbookIntro';
 import ValueProp360 from '../components/ValueProp360';
 import OneStopApproach from '../components/OneStopApproach';
@@ -16,6 +17,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <PartnersCarousel />
       <TestbookIntro />
       <ValueProp360 />
       <OneStopApproach />
