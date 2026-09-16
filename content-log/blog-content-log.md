@@ -72,6 +72,15 @@ students/freshers, practical guides and trends — not concentrated on Germany/n
 | 2026-09-14 | Practical Guide | Your Pre-Departure Checklist Before Moving Abroad | `pre-departure-checklist-abroad` | 5 | Pre-Departure Checklist Before Moving Abroad |
 | 2026-09-15 | Trends | In-Demand Skills for 2026 and How to Build Them | `in-demand-skills-2026` | 5 | In-Demand Skills for 2026 and How to Build Them |
 
+## Daily posts (after backfill)
+
+One fresh post per day, continuing after the backfill. Each checks that the day's
+post does not already exist and picks a topic that varies from the recent slugs.
+
+| Date | Category | Title | Slug | Read (min) | SEO title |
+|---|---|---|---|---|---|
+| 2026-09-16 | Career Guide | How to Write a Cover Letter That Gets Read | `cover-letter-that-gets-read` | 4 | How to Write a Cover Letter That Gets Read |
+
 ## Previously published (before this backfill)
 
 | Date | Category | Title | Slug |
