@@ -146,7 +146,7 @@ export default function Hero() {
             variant="scholar"
             icon={<GiftIcon />}
             value={<><span className="rupee">₹50,000</span> Scholarship*</>}
-            sub="+ Free AI Learning App"
+            sub="+ AI Learning App"
           />
         </div>
       </div>

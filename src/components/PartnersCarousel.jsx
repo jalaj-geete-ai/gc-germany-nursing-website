@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import testbookLogo from '../assets/brand/testbook-logo-official.png';
 
 /*
@@ -6,25 +7,43 @@ import testbookLogo from '../assets/brand/testbook-logo-official.png';
  * Auto-rotating infinite marquee (pauses on hover, resumes automatically,
  * loops continuously, works on desktop + mobile). See hero-2026.css.
  *
- * NOTE ON LOGOS: official NSDC / Skill India logo files are not bundled in
- * this repo, and official marks must not be recreated or distorted. Each
- * partner below can carry a real `img` (drop the official PNG/SVG into
- * src/assets/brand/partners/ and set `img`); until then a neutral wordmark
- * tile is shown as a placeholder. Testbook uses its genuine logo asset.
+ * LOGOS: NSDC and Skill India use their official marks from Wikimedia Commons
+ * (loaded at runtime by the live site). If a logo URL ever fails to load, the
+ * tile automatically falls back to a neutral wordmark so it never shows a
+ * broken image. To self-host instead, drop the official files into
+ * src/assets/brand/partners/, import them, and set `img` to the import.
  */
 const PARTNERS = [
-  { name: 'NSDC', sub: 'National Skill Dev. Corp.', mark: 'N', grad: 'linear-gradient(135deg,#0A7DA0,#14B8DD)' },
-  { name: 'Skill India', sub: 'कौशल भारत', mark: 'SI', grad: 'linear-gradient(135deg,#FF7A33,#E8590C)' },
+  {
+    name: 'NSDC', sub: 'National Skill Dev. Corp.', mark: 'N',
+    grad: 'linear-gradient(135deg,#0A7DA0,#14B8DD)',
+    img: 'https://commons.wikimedia.org/wiki/Special:FilePath/NSDC_Logo.svg',
+  },
+  {
+    name: 'Skill India', sub: 'कौशल भारत', mark: 'SI',
+    grad: 'linear-gradient(135deg,#FF7A33,#E8590C)',
+    img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Skill_India_Logo.jpg',
+  },
   { name: 'Testbook', sub: 'Trusted by 1.8Cr+ learners', img: testbookLogo },
-  { name: 'Skill India', sub: 'Certified Training Partner', mark: 'SI', grad: 'linear-gradient(135deg,#FF7A33,#E8590C)' },
-  { name: 'NSDC', sub: 'Re-imagine Future', mark: 'N', grad: 'linear-gradient(135deg,#0A7DA0,#14B8DD)' },
+  {
+    name: 'Skill India', sub: 'Certified Training Partner', mark: 'SI',
+    grad: 'linear-gradient(135deg,#FF7A33,#E8590C)',
+    img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Skill_India_Logo.jpg',
+  },
+  {
+    name: 'NSDC', sub: 'Re-imagine Future', mark: 'N',
+    grad: 'linear-gradient(135deg,#0A7DA0,#14B8DD)',
+    img: 'https://commons.wikimedia.org/wiki/Special:FilePath/NSDC_Logo.svg',
+  },
 ];
 
 function PartnerTile({ p }) {
+  const [broken, setBroken] = useState(false);
+  const showImg = p.img && !broken;
   return (
     <div className="gc-partner">
-      {p.img ? (
-        <img src={p.img} alt={p.name} />
+      {showImg ? (
+        <img src={p.img} alt={p.name} onError={() => setBroken(true)} loading="lazy" />
       ) : (
         <>
           <span className="gc-partner-mark" style={{ background: p.grad }}>{p.mark}</span>
