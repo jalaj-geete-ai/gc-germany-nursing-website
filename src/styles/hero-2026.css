@@ -1,0 +1,288 @@
+/* ============================================================
+   Hero 2026 — premium Germany-nursing hero + NSDC/Skill India
+   partner carousel. Self-contained, namespaced (gc-*) so it never
+   collides with legacy .hero rules in index.css.
+   Imported after mobile-ux.css in main.jsx.
+   ============================================================ */
+
+.gc-hero {
+  position: relative;
+  overflow: hidden;
+  padding: calc(150px + var(--id-banner-h, 0px)) 0 44px;
+  background:
+    radial-gradient(120% 90% at 85% 0%, #EAF7FB 0%, rgba(234,247,251,0) 55%),
+    linear-gradient(180deg, #ffffff 0%, #F7FCFE 55%, #EDF8FB 100%);
+}
+
+/* soft atmospheric glows */
+.gc-hero-atmos { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.gc-hero-atmos::before,
+.gc-hero-atmos::after {
+  content: ""; position: absolute; border-radius: 50%; filter: blur(60px); opacity: .5;
+}
+.gc-hero-atmos::before { width: 460px; height: 460px; top: -120px; right: 8%;
+  background: radial-gradient(closest-side, rgba(20,184,221,.28), transparent); }
+.gc-hero-atmos::after { width: 420px; height: 420px; bottom: -160px; left: -60px;
+  background: radial-gradient(closest-side, rgba(10,125,160,.16), transparent); }
+
+/* ---------- layout grid ---------- */
+.gc-hero-grid {
+  position: relative; z-index: 2;
+  display: grid;
+  grid-template-columns: 1.02fr 0.98fr;
+  grid-template-areas: "copytop visual" "copybot visual";
+  grid-template-rows: auto auto;
+  column-gap: 44px;
+  align-content: center;
+}
+.gc-hero-copy-top { grid-area: copytop; align-self: end; }
+.gc-hero-copy-bottom { grid-area: copybot; align-self: start; margin-top: 26px; }
+.gc-hero-visual { grid-area: visual; align-self: center; position: relative; }
+
+/* ---------- copy ---------- */
+.gc-hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px; letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--blue-deep); font-weight: 600;
+}
+.gc-hero-eyebrow .gc-flag { font-size: 15px; line-height: 1; }
+
+.gc-hero-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800; letter-spacing: -0.02em;
+  font-size: clamp(34px, 4.7vw, 60px); line-height: 1.03;
+  color: var(--ink); margin: 16px 0 0;
+}
+.gc-hero-accent { position: relative; color: var(--blue-deep); white-space: nowrap; }
+.gc-hero-underline {
+  position: absolute; left: 0; right: 4%; bottom: -0.18em; width: 96%; height: 0.24em;
+  color: #FBBF24; overflow: visible;
+}
+.gc-hero-underline path {
+  fill: none; stroke: currentColor; stroke-width: 8; stroke-linecap: round;
+  stroke-dasharray: 460; stroke-dashoffset: 460;
+  animation: gcDraw 1s ease .4s forwards;
+}
+@keyframes gcDraw { to { stroke-dashoffset: 0; } }
+
+.gc-hero-sub {
+  font-size: clamp(15px, 1.15vw, 18px); line-height: 1.6;
+  color: var(--ink-soft); margin: 22px 0 0; max-width: 448px;
+}
+.gc-hero-sub strong { color: var(--ink); font-weight: 700; }
+
+/* ---------- CTA + trust ---------- */
+.gc-hero-cta {
+  font-size: 16px; padding: 16px 30px;
+  background: linear-gradient(135deg, #14B8DD 0%, #0A7DA0 100%);
+  box-shadow: 0 14px 30px -10px rgba(10,125,160,.6);
+}
+.gc-hero-cta:hover { transform: translateY(-2px); box-shadow: 0 18px 38px -10px rgba(10,125,160,.72); }
+.gc-hero-cta .gc-arrow { transition: transform .25s ease; }
+.gc-hero-cta:hover .gc-arrow { transform: translateX(4px); }
+
+.gc-hero-trust {
+  display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
+  margin-top: 18px; font-size: 13.5px; color: var(--ink-soft); font-weight: 500;
+}
+.gc-hero-trust .gc-trust-ic { color: var(--blue-deep); display: inline-flex; }
+.gc-hero-trust .gc-dot { width: 4px; height: 4px; border-radius: 50%; background: #C4D2DA; }
+
+/* ---------- visual scene (nurse + skyline, edge-feathered) ---------- */
+.gc-hero-scene {
+  position: relative; width: 100%; max-width: 560px; margin-left: auto;
+  aspect-ratio: 1 / 1.02;
+}
+.gc-hero-sky {
+  position: absolute; inset: 0;
+  background-image: var(--sky); background-size: cover; background-position: 60% 32%;
+  border-radius: 34px;
+  -webkit-mask-image: radial-gradient(122% 120% at 60% 36%, #000 44%, transparent 82%);
+          mask-image: radial-gradient(122% 120% at 60% 36%, #000 44%, transparent 82%);
+  filter: saturate(1.05);
+}
+/* blue → white atmospheric tint over the sky */
+.gc-hero-sky::after {
+  content: ""; position: absolute; inset: 0; border-radius: 34px;
+  background: linear-gradient(115deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.12) 34%,
+              rgba(10,47,107,.14) 78%, rgba(20,184,221,.10) 100%);
+}
+/* nurse foreground, feathered so her backdrop melts into the sky */
+.gc-hero-nurse {
+  position: absolute; right: -1%; bottom: 0; width: 90%; max-width: 520px;
+  object-fit: cover; z-index: 2;
+  /* intersect a radial (sides) with a top-fade (kills the horizontal seam
+     where the nurse's backdrop meets the skyline) so she melts into the scene */
+  -webkit-mask-image:
+    radial-gradient(90% 104% at 55% 54%, #000 62%, transparent 90%),
+    linear-gradient(to top, #000 74%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(90% 104% at 55% 54%, #000 62%, transparent 90%),
+    linear-gradient(to top, #000 74%, transparent 100%);
+  mask-composite: intersect;
+  filter: drop-shadow(0 26px 40px rgba(10,47,107,.22));
+}
+/* soft light bloom behind the nurse */
+.gc-hero-scene::after {
+  content: ""; position: absolute; right: 4%; bottom: -2%; width: 72%; height: 72%;
+  background: radial-gradient(closest-side, rgba(255,255,255,.55), transparent 72%);
+  filter: blur(8px); z-index: 1;
+}
+
+/* flight path India → Germany */
+.gc-hero-flight { position: absolute; top: 5%; left: -7%; width: 64%; height: auto; z-index: 3; pointer-events: none; }
+.gc-hero-flight .gc-flight-line {
+  fill: none; stroke: var(--blue-deep); stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 3 9; opacity: .65;
+  animation: gcDash 22s linear infinite;
+}
+@keyframes gcDash { to { stroke-dashoffset: -240; } }
+.gc-hero-flight .gc-plane { fill: var(--blue-deep); }
+
+/* ---------- floating cards ---------- */
+.gc-hero-card {
+  position: absolute; z-index: 4; width: max-content; max-width: 244px;
+  display: flex; align-items: center; gap: 11px;
+  background: rgba(255,255,255,.96); backdrop-filter: blur(6px);
+  border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: 0 14px 34px -14px rgba(10,80,100,.34);
+  padding: 12px 15px;
+  animation: gcCardIn .6s cubic-bezier(.22,1,.36,1) both;
+}
+.gc-hero-card-earn    { top: 22%;  left: -7%;  animation-delay: .35s; }
+.gc-hero-card-family  { top: 48%;  left: -11%; animation-delay: .5s; }
+.gc-hero-card-scholar { bottom: 7%; left: -5%; animation-delay: .65s; }
+@keyframes gcCardIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+.gc-card-ic { width: 40px; height: 40px; border-radius: 12px; flex: none; display: grid; place-items: center; }
+.gc-card-ic svg { width: 21px; height: 21px; }
+.gc-card-ic.earn    { background: #E4F8FC; color: var(--blue-deep); }
+.gc-card-ic.family  { background: #E7F1FF; color: #2C63C9; }
+.gc-card-ic.scholar { background: #FFF0E6; color: #E8590C; }
+.gc-card-body { min-width: 0; }
+.gc-card-kicker { font-size: 12px; font-weight: 600; color: var(--ink-soft); line-height: 1.2; }
+.gc-card-value { font-size: 15.5px; font-weight: 800; color: var(--ink); line-height: 1.25; margin-top: 1px; }
+.gc-card-value .rupee { color: var(--blue-deep); }
+.gc-card-sub { font-size: 11.5px; color: var(--ink-soft); line-height: 1.25; margin-top: 2px; }
+
+/* trust badge (upper-right) */
+.gc-hero-badge {
+  position: absolute; top: 1%; right: -2%; z-index: 4;
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,.96); backdrop-filter: blur(6px);
+  border: 1px solid var(--line); border-radius: 100px;
+  box-shadow: 0 14px 34px -14px rgba(10,80,100,.34);
+  padding: 7px 15px 7px 9px;
+  animation: gcCardIn .6s cubic-bezier(.22,1,.36,1) .2s both;
+}
+.gc-badge-avatars { display: flex; }
+.gc-badge-avatars img {
+  width: 30px; height: 30px; border-radius: 50%; object-fit: cover;
+  border: 2px solid #fff; margin-left: -9px; background: #dbe7ee;
+}
+.gc-badge-avatars img:first-child { margin-left: 0; }
+.gc-badge-text b { display: block; font-size: 13px; font-weight: 800; color: var(--ink); line-height: 1.15; }
+.gc-badge-text span { display: block; font-size: 10.5px; color: var(--ink-soft); line-height: 1.15; }
+
+/* ---------- benefit strip ---------- */
+.gc-hero-strip {
+  position: relative; z-index: 2; margin-top: 40px;
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  background: #fff; border: 1px solid var(--line); border-radius: 20px;
+  box-shadow: var(--shadow-card); padding: 18px 6px; overflow: hidden;
+}
+.gc-strip-item { display: flex; align-items: center; gap: 12px; justify-content: center; padding: 6px 16px; }
+.gc-strip-item + .gc-strip-item { border-left: 1px solid var(--line); }
+.gc-strip-ic { color: var(--blue-deep); flex: none; display: inline-flex; }
+.gc-strip-txt b { display: block; font-size: 15px; font-weight: 800; color: var(--ink); line-height: 1.2; }
+.gc-strip-txt span { display: block; font-size: 12.5px; color: var(--ink-soft); line-height: 1.25; margin-top: 1px; }
+
+/* ============================================================
+   Partners carousel (NSDC / Skill India)
+   ============================================================ */
+.gc-partners { background: #EDF8FB; padding: 34px 0 40px; }
+.gc-partners-head {
+  text-align: center; font-size: 13px; letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 700; margin: 0 0 20px;
+}
+.gc-marquee {
+  position: relative; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+.gc-marquee-track { display: flex; gap: 22px; width: max-content; animation: gcMarquee 34s linear infinite; }
+.gc-marquee:hover .gc-marquee-track { animation-play-state: paused; }
+@keyframes gcMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.gc-partner {
+  flex: none; height: 66px; padding: 0 26px;
+  display: flex; align-items: center; gap: 12px;
+  background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-card);
+}
+.gc-partner img { height: 38px; width: auto; display: block; }
+/* placeholder wordmark tile (until official logo assets are added) */
+.gc-partner-mark { width: 34px; height: 34px; border-radius: 9px; flex: none; display: grid; place-items: center;
+  font-family: 'Inter', sans-serif; font-weight: 800; font-size: 13px; color: #fff; letter-spacing: -0.02em; }
+.gc-partner-wm { display: flex; flex-direction: column; line-height: 1.1; }
+.gc-partner-wm b { font-size: 15px; font-weight: 800; color: var(--ink); letter-spacing: -0.01em; }
+.gc-partner-wm span { font-size: 10.5px; color: var(--ink-soft); font-weight: 500; letter-spacing: 0.02em; }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 960px) {
+  .gc-hero { padding-top: calc(120px + var(--id-banner-h, 0px)); }
+  .gc-hero-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas: "copytop" "visual" "copybot";
+    row-gap: 6px; text-align: left;
+  }
+  .gc-hero-copy-top, .gc-hero-copy-bottom { align-self: start; }
+  .gc-hero-copy-bottom { margin-top: 20px; }
+  .gc-hero-scene { margin: 8px auto 0; max-width: 440px; }
+  .gc-hero-card-family { display: none; }
+  .gc-hero-card-earn { top: 20%; left: -2%; }
+  .gc-hero-card-scholar { bottom: 6%; left: -2%; }
+  .gc-hero-strip { grid-template-columns: repeat(3, 1fr); row-gap: 14px; }
+  .gc-strip-item:nth-child(3n+1) { border-left: none; }
+  .gc-strip-item:nth-child(4), .gc-strip-item:nth-child(5) { border-top: 1px solid var(--line); padding-top: 16px; }
+}
+
+@media (max-width: 680px) {
+  .gc-hero { padding-top: calc(96px + var(--id-banner-h, 0px)); padding-bottom: 32px; }
+  .gc-hero-title { font-size: clamp(30px, 8.4vw, 40px); }
+  .gc-hero-sub { max-width: 100%; }
+  .gc-hero-scene { max-width: 340px; aspect-ratio: 1 / 1.06; }
+  .gc-hero-flight { display: none; }
+  .gc-hero-badge { top: -2%; right: -1%; transform: scale(.9); transform-origin: top right; }
+  /* the two extra cards hide; strongest (Earn) becomes a static card under the visual */
+  .gc-hero-card-scholar { display: none; }
+  .gc-hero-card-earn {
+    position: static; margin: 18px auto 0; width: 100%; max-width: 340px;
+    animation-delay: .1s;
+  }
+  .gc-hero-cta { width: 100%; }
+  .gc-hero-actions { display: flex; }
+  .gc-hero-strip { grid-template-columns: repeat(2, 1fr); border-radius: 16px; }
+  .gc-strip-item { justify-content: flex-start; padding: 10px 12px; }
+  .gc-strip-item + .gc-strip-item { border-left: none; }
+  .gc-strip-item { border-top: 1px solid var(--line); }
+  .gc-strip-item:nth-child(1), .gc-strip-item:nth-child(2) { border-top: none; }
+  .gc-strip-item:nth-child(even) { border-left: 1px solid var(--line); }
+  .gc-strip-item:nth-child(5) { grid-column: 1 / -1; }
+  .gc-partner { height: 60px; padding: 0 20px; }
+}
+
+@media (max-width: 400px) {
+  .gc-hero-badge { display: none; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .gc-hero-card, .gc-hero-badge { animation: none; }
+  .gc-hero-underline path { animation: none; stroke-dashoffset: 0; }
+  .gc-hero-flight .gc-flight-line { animation: none; }
+  .gc-marquee-track { animation-duration: 90s; }
+  .gc-hero-cta:hover, .gc-hero-cta:hover .gc-arrow { transform: none; }
+}

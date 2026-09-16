@@ -4,6 +4,7 @@ import './index.css'
 import './styles/brand-polish.css'
 import './styles/blog.css'
 import './styles/mobile-ux.css'
+import './styles/hero-2026.css'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
