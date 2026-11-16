@@ -1,0 +1,16 @@
+# Render Blueprint — deploys ONLY the lead-portal Node service.
+# (Used by Render if you connect this repo there; harmless to the Cloudflare site.)
+# Go live: Render dashboard -> New -> Blueprint -> pick this repo -> set GROQ_API_KEY -> Deploy.
+services:
+  - type: web
+    name: gc-lead-portal
+    runtime: node
+    rootDir: lead-portal
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false        # set this as a secret in the Render dashboard
+      - key: STT_LANG
+        value: hi

@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lead Intelligence Portal</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<style>
+  :root{--bg:#0f1420;--card:#171e2e;--line:#273349;--fg:#e7ecf3;--mut:#93a1b5;--acc:#4f8cff;
+        --plat:#8b5cf6;--gold:#eab308;--silver:#64748b;--bronze:#b45309;--low:#475569;--no:#ef4444;--rev:#0ea5e9;}
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.45 system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--fg)}
+  header{position:sticky;top:0;background:#0f1420ee;backdrop-filter:blur(6px);border-bottom:1px solid var(--line);
+         padding:10px 16px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;z-index:5}
+  h1{font-size:16px;margin:0;font-weight:650}
+  .pill{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--mut)}
+  .meter b{color:var(--fg)}
+  button{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:7px 12px;font-weight:600;cursor:pointer}
+  button.sec{background:var(--card);color:var(--fg);border:1px solid var(--line)}
+  button:disabled{opacity:.45;cursor:default}
+  main{padding:16px;max-width:1300px;margin:0 auto}
+  .drop{border:1.5px dashed var(--line);border-radius:12px;padding:28px;text-align:center;color:var(--mut);background:var(--card)}
+  .row-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+  input[type=search],select{background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:7px 10px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{color:var(--mut);font-weight:600;position:sticky;top:52px;background:var(--bg);cursor:pointer}
+  tr:hover td{background:#1a2234}
+  td.name{font-weight:600}
+  .badge{padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;color:#fff;display:inline-block}
+  .b-Platinum{background:var(--plat)}.b-Gold{background:var(--gold);color:#1a1a1a}.b-Silver{background:var(--silver)}
+  .b-Bronze{background:var(--bronze)}.b-Low{background:var(--low)}
+  .b-Not.Eligible,.b-NotEligible{background:var(--no)}.b-Needs.Review,.b-NeedsReview{background:var(--rev)}
+  .st{font-size:11px;color:var(--mut)}
+  .st.err{color:#f87171}
+  .score{font-weight:700}
+  .muted{color:var(--mut)}
+  /* drawer */
+  #drawer{position:fixed;top:0;right:0;height:100%;width:min(560px,92vw);background:var(--card);
+          border-left:1px solid var(--line);transform:translateX(100%);transition:.2s;overflow:auto;z-index:10;padding:18px}
+  #drawer.open{transform:none}
+  #drawer h2{font-size:17px;margin:.2em 0}
+  .kv{display:grid;grid-template-columns:130px 1fr;gap:4px 10px;margin:10px 0;font-size:13px}
+  .kv div:nth-child(odd){color:var(--mut)}
+  .transcript{background:#0f1420;border:1px solid var(--line);border-radius:8px;padding:12px;white-space:pre-wrap;
+              max-height:38vh;overflow:auto;font-size:13px;line-height:1.5}
+  audio{width:100%;margin:8px 0}
+  .close{float:right}
+  .reasons li{margin:2px 0}
+  .hidden{display:none}
+  .progwrap{height:4px;background:var(--line);border-radius:3px;overflow:hidden;flex:1;min-width:120px}
+  .prog{height:100%;background:var(--acc);width:0}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎧 Lead Intelligence Portal</h1>
+  <span class="pill" id="counts">No file</span>
+  <div class="progwrap"><div class="prog" id="prog"></div></div>
+  <span class="pill meter" id="budget">Groq: –</span>
+  <button id="startBtn" disabled>Start processing</button>
+  <button id="pauseBtn" class="sec hidden">Pause</button>
+  <button id="dlBtn" class="sec" disabled>Download enriched CSV</button>
+</header>
+<main>
+  <div class="drop" id="drop">
+    <p><b>Drop your call CSV here</b> or click to choose.</p>
+    <p class="muted">Needs a recording-URL column (e.g. “Recording URL”) and a name column. Nothing is uploaded to a database — results stay in this page until you download them.</p>
+    <input type="file" id="file" accept=".csv" class="hidden" />
+  </div>
+
+  <div class="row-controls hidden" id="controls">
+    <input type="search" id="q" placeholder="Search name / number / transcript…" />
+    <select id="fElig"><option value="">All eligibility</option><option>Eligible</option><option>Not Eligible</option><option>Needs Review</option></select>
+    <select id="fBand"><option value="">All bands</option><option>Platinum</option><option>Gold</option><option>Silver</option><option>Bronze</option><option>Low</option></select>
+    <span class="pill" id="shown"></span>
+  </div>
+
+  <table id="tbl" class="hidden">
+    <thead><tr>
+      <th data-k="name">Name</th><th data-k="mobile">Mobile</th>
+      <th data-k="eligibility">Eligibility</th><th data-k="band">Band</th>
+      <th data-k="score">Score</th><th data-k="qualification">Qualification</th>
+      <th data-k="snc">SNC</th><th data-k="age">Age</th><th data-k="interest">Interest</th>
+      <th data-k="dur">Dur(s)</th><th data-k="status">Status</th>
+    </tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</main>
+
+<div id="drawer"><button class="sec close" onclick="closeDrawer()">✕ Close</button><div id="drawerBody"></div></div>
+
+<script>
+// ---------- config ----------
+const DAILY_LIMIT = 1000;          // Groq free-tier requests/day (2 per lead) - this key reports 1000
+const RPM_LIMIT   = 18;            // keep under ~20 req/min
+const CONCURRENCY = 2;
+const CALLS_PER_ROW = 2;
+
+// ---------- state ----------
+let rows = [], cols = {}, running = false, paused = false;
+let reqTimes = [];                 // timestamps of recent Groq calls (for RPM)
+
+const todayKey = () => "groq_" + new Date().toISOString().slice(0,10);
+const usedToday = () => +(localStorage.getItem(todayKey())||0);
+const addUsed = (n)=>{ try{localStorage.setItem(todayKey(), usedToday()+n);}catch(e){} drawBudget(); };
+
+function drawBudget(){
+  const used = usedToday(), rem = Math.max(0, DAILY_LIMIT-used);
+  document.getElementById('budget').innerHTML =
+    `Groq today: <b>${used}</b>/${DAILY_LIMIT} &nbsp;·&nbsp; left <b>${rem}</b>`;
+}
+
+// ---------- CSV load ----------
+const drop=document.getElementById('drop'), fileIn=document.getElementById('file');
+drop.onclick=()=>fileIn.click();
+['dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.style.borderColor='var(--acc)';}));
+drop.addEventListener('dragleave',()=>drop.style.borderColor='');
+drop.addEventListener('drop',ev=>{ev.preventDefault();drop.style.borderColor='';if(ev.dataTransfer.files[0])loadFile(ev.dataTransfer.files[0]);});
+fileIn.onchange=()=>fileIn.files[0]&&loadFile(fileIn.files[0]);
+
+function findCol(headers, cands){
+  for(const c of cands){ const h=headers.find(h=>h.trim().toLowerCase()===c); if(h) return h; }
+  for(const h of headers){ const l=h.toLowerCase(); if(cands.some(c=>l.includes(c))) return h; }
+  return null;
+}
+function loadFile(f){
+  Papa.parse(f,{header:true,skipEmptyLines:true,complete:(res)=>{
+    const headers=res.meta.fields;
+    cols.url=findCol(headers,['recording url','recording','recording_url']);
+    cols.name=findCol(headers,['callee name','name','lead name']);
+    cols.mobile=findCol(headers,['mobile number','mobile','phone']);
+    cols.dur=findCol(headers,['call duration (seconds)','duration']);
+    if(!cols.url){alert('Could not find a Recording URL column.');return;}
+    rows=res.data.map((r,i)=>({_i:i, raw:r,
+      name:r[cols.name]||'(no name)', mobile:cols.mobile?r[cols.mobile]||'':'',
+      url:(r[cols.url]||'').trim(), dur:cols.dur?r[cols.dur]||'':'',
+      transcript:(r['Transcript']||'').trim(),  // re-upload cache
+      status:(r['Transcript']?'done':'') , verdict:null,
+      eligibility:r['Eligibility']||'', band:r['Band']||'', score:r['Quality Score']||'',
+      qualification:r['Nursing Qualification']||'', snc:r['SNC Registration']||'',
+      age:r['Age']||'', interest:r['Interest']||'' }));
+    document.getElementById('counts').textContent=`${rows.length} rows · ${rows.filter(r=>r.url).length} with recording`;
+    document.getElementById('controls').classList.remove('hidden');
+    document.getElementById('tbl').classList.remove('hidden');
+    document.getElementById('startBtn').disabled=false;
+    document.getElementById('dlBtn').disabled=false;
+    drop.classList.add('hidden'); drawBudget(); render();
+  }});
+}
+
+// ---------- render ----------
+const q=document.getElementById('q'), fElig=document.getElementById('fElig'), fBand=document.getElementById('fBand');
+[q,fElig,fBand].forEach(el=>el.oninput=render);
+let sortK='score', sortDir=-1;
+document.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;sortDir=(sortK===k)?-sortDir:-1;sortK=k;render();});
+
+function badge(txt){ if(!txt) return '<span class="muted">—</span>';
+  return `<span class="badge b-${txt.replace(/\s/g,'')}">${txt}</span>`; }
+
+function render(){
+  const term=q.value.toLowerCase(), fe=fElig.value, fb=fBand.value;
+  let list=rows.filter(r=>{
+    if(fe && r.eligibility!==fe) return false;
+    if(fb && r.band!==fb) return false;
+    if(term){ const hay=(r.name+' '+r.mobile+' '+r.transcript).toLowerCase(); if(!hay.includes(term)) return false; }
+    return true;
+  });
+  list.sort((a,b)=>{let x=a[sortK],y=b[sortK];
+    if(sortK==='score'){x=+x||-1;y=+y||-1;} else {x=(''+x).toLowerCase();y=(''+y).toLowerCase();}
+    return x<y?sortDir: x>y?-sortDir:0;});
+  const tb=document.getElementById('tbody'); tb.innerHTML='';
+  for(const r of list){
+    const tr=document.createElement('tr'); tr.onclick=()=>openDrawer(r);
+    const stCls = r.status==='error'?'st err':'st';
+    tr.innerHTML=`<td class="name">${esc(r.name)}</td><td class="muted">${esc(r.mobile)}</td>
+      <td>${badge(r.eligibility)}</td><td>${badge(r.band)}</td>
+      <td class="score">${r.score!==''&&r.score!=null?r.score:'<span class="muted">—</span>'}</td>
+      <td>${esc(r.qualification)||'<span class="muted">—</span>'}</td>
+      <td>${esc(r.snc)||'<span class="muted">—</span>'}</td>
+      <td>${esc(r.age)||'<span class="muted">—</span>'}</td>
+      <td>${esc(r.interest)||'<span class="muted">—</span>'}</td>
+      <td class="muted">${esc(r.dur)}</td>
+      <td class="${stCls}">${r.status||(r.url?'queued':'no recording')}</td>`;
+    tb.appendChild(tr);
+  }
+  document.getElementById('shown').textContent=`${list.length} shown`;
+  const done=rows.filter(r=>r.status==='done').length, tot=rows.filter(r=>r.url).length;
+  document.getElementById('prog').style.width=tot?(100*done/tot)+'%':'0';
+}
+const esc=s=>(''+(s??'')).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+// ---------- drawer ----------
+function openDrawer(r){
+  const v=r.verdict||{};
+  document.getElementById('drawerBody').innerHTML=`
+    <h2>${esc(r.name)} ${badge(r.band)}</h2>
+    <div class="muted">${esc(r.mobile)} · ${r.score!==''?('score '+r.score+'/10'):'not scored'}</div>
+    ${r.url?`<audio controls preload="none" src="${esc(r.url)}"></audio>`:'<p class="muted">No recording.</p>'}
+    <div class="kv">
+      <div>Eligibility</div><div>${badge(r.eligibility)||'—'}</div>
+      <div>Qualification</div><div>${esc(r.qualification)||'—'}</div>
+      <div>SNC registration</div><div>${esc(r.snc)||'—'}</div>
+      <div>Age</div><div>${esc(r.age)||'—'}</div>
+      <div>Experience</div><div>${esc(v.experience)||'—'}</div>
+      <div>Interest</div><div>${esc(r.interest)||'—'}</div>
+      <div>Next action</div><div>${esc(v.next_action)||'—'}</div>
+    </div>
+    ${v.summary?`<p><b>Summary.</b> ${esc(v.summary)}</p>`:''}
+    ${v.reasons?`<p><b>Rating reasons</b></p><ul class="reasons">${v.reasons.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
+    <p><b>Transcript</b></p>
+    <div class="transcript">${esc(r.transcript)||'<span class="muted">Not transcribed yet.</span>'}</div>`;
+  document.getElementById('drawer').classList.add('open');
+}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');}
+
+// ---------- processing queue ----------
+const startBtn=document.getElementById('startBtn'), pauseBtn=document.getElementById('pauseBtn');
+startBtn.onclick=()=>{running=true;paused=false;startBtn.classList.add('hidden');pauseBtn.classList.remove('hidden');runQueue();};
+pauseBtn.onclick=()=>{paused=true;running=false;pauseBtn.classList.add('hidden');startBtn.classList.remove('hidden');startBtn.textContent='Resume';};
+
+async function rpmGate(){
+  for(;;){
+    const now=Date.now(); reqTimes=reqTimes.filter(t=>now-t<60000);
+    if(reqTimes.length<RPM_LIMIT) return;
+    await sleep(1000);
+  }
+}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function groq(path,body){
+  await rpmGate(); reqTimes.push(Date.now()); addUsed(1);
+  const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(r.status===429){ return {rateLimited:true}; }
+  if(!r.ok){ throw new Error((await r.json()).error||('HTTP '+r.status)); }
+  return r.json();
+}
+
+async function processRow(r){
+  r.status='transcribing'; render();
+  const t=await groq('/api/transcribe',{url:r.url});
+  if(t.rateLimited) throw {pause:true};
+  r.transcript=t.text||''; r.status='scoring'; render();
+  const s=await groq('/api/score',{transcript:r.transcript});
+  if(s.rateLimited) throw {pause:true};
+  const v=s.verdict; r.verdict=v;
+  r.eligibility=v.eligibility; r.band=v.band; r.score=v.score;
+  r.qualification=v.qualification||''; r.snc=v.snc_registration||''; r.age=v.age||''; r.interest=v.interest||'';
+  r.status='done'; render();
+}
+
+async function runQueue(){
+  const queue=rows.filter(r=>r.url && r.status!=='done');
+  let idx=0;
+  async function worker(){
+    while(running && idx<queue.length){
+      if(usedToday()+CALLS_PER_ROW>DAILY_LIMIT){ pauseForBudget(); return; }
+      const r=queue[idx++];
+      try{ await processRow(r); }
+      catch(e){
+        if(e && e.pause){ pauseForBudget(true); return; }
+        r.status='error'; r.verdict={summary:'Error: '+(e.message||e)}; render();
+      }
+    }
+  }
+  await Promise.all(Array.from({length:CONCURRENCY},worker));
+  if(running && idx>=queue.length){ running=false; pauseBtn.classList.add('hidden'); startBtn.classList.add('hidden'); }
+}
+function pauseForBudget(is429){
+  running=false; paused=true; pauseBtn.classList.add('hidden');
+  startBtn.classList.remove('hidden'); startBtn.textContent='Resume';
+  document.getElementById('budget').innerHTML += is429
+    ? ' · <b style="color:#f87171">paused (Groq 429)</b>'
+    : ' · <b style="color:#f87171">paused — daily free tier reached</b>';
+}
+
+// ---------- export ----------
+document.getElementById('dlBtn').onclick=()=>{
+  const out=rows.map(r=>Object.assign({}, r.raw, {
+    'Transcript':r.transcript||'', 'Eligibility':r.eligibility||'', 'Is Nurse':r.verdict?r.verdict.is_nurse:'',
+    'Quality Score':r.score!==''?r.score:'', 'Band':r.band||'',
+    'Nursing Qualification':r.qualification||'', 'SNC Registration':r.snc||'', 'Age':r.age||'',
+    'Experience':r.verdict?r.verdict.experience||'':'', 'Interest':r.interest||'',
+    'Rating Reasons':r.verdict&&r.verdict.reasons?r.verdict.reasons.join('; '):'',
+    'Summary':r.verdict?r.verdict.summary||'':'', 'Next Action':r.verdict?r.verdict.next_action||'':'',
+    'Processed At':r.status==='done'?new Date().toISOString():''
+  }));
+  const csv=Papa.unparse(out);
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='leads_enriched.csv'; a.click();
+};
+drawBudget();
+</script>
+</body>
+</html>

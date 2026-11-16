@@ -1,0 +1,13 @@
+{
+  "name": "lead-intelligence-portal",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Upload call CSV -> transcribe (Groq large-v3) -> nurse eligibility + 0-10 quality rating -> dashboard. DB-free.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "undici": "^6.21.1"
+  }
+}
