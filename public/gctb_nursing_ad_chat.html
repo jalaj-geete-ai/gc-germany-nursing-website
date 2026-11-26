@@ -1,0 +1,1196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Jhanvi · Global Careers by Testbook — Germany Nursing</title>
+<meta name="description" content="Gave NORCET? Jhanvi from Global Careers shows you what nurses earn in Germany and checks if you qualify. Free 1-on-1 counselling." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+
+  :root{
+    --wa-header:#075E54; --wa-header2:#128C7E; --wa-accent:#00A884;
+    --wa-tick:#53BDEB; --wa-out:#DCF8C6; --wa-in:#FFFFFF;
+    --wa-bg:#FBE4E6; --wa-panel:#F0F2F5; --wa-text:#111B21; --wa-sub:#667781; --warn:#E5484D;
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; padding:0; height:100%; }
+  body{
+    font-family:-apple-system,"Segoe UI","Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; color:var(--wa-text);
+    min-height:100dvh; background:#0b141a; display:block;
+  }
+  @media (min-width:600px){ body{ display:flex; align-items:center; justify-content:center; min-height:100dvh; } }
+
+  .phone{ width:100%; max-width:480px; margin:0 auto; display:flex; flex-direction:column;
+    height:100dvh; background:var(--wa-bg); overflow:hidden; position:relative; }
+  @media (min-width:600px){ .phone{ height:min(100dvh,900px); margin:0; box-shadow:0 0 50px rgba(0,0,0,.5); } }
+
+  /* header */
+  .hdr{ background:var(--wa-header); color:#fff; flex:0 0 auto; padding-top:env(safe-area-inset-top); }
+  .hdr-top{ display:flex; align-items:center; gap:9px; padding:9px 10px 9px 5px; }
+  .hdr-back{ color:#fff; font-size:25px; line-height:1; padding:0 2px 2px 4px; flex:0 0 auto; opacity:.95; }
+  .avatar{ width:38px; height:38px; border-radius:50%; flex:0 0 auto; overflow:hidden; background:#0b3d37; }
+  .avatar svg,.avatar .face,.mini .face{ width:100%; height:100%; object-fit:cover; object-position:center 35%; display:block; }
+  .hdr h1{ font-size:16px; font-weight:600; margin:0; line-height:1.15; color:#fff; }
+  .hdr .sub{ font-size:12.5px; color:rgba(255,255,255,.78); margin-top:1px; display:flex; align-items:center; gap:5px; height:15px; }
+  .dot{ width:6px; height:6px; border-radius:50%; background:#7ee0a1; flex:0 0 auto; }
+  .hdr-icons{ display:flex; align-items:center; gap:19px; padding:0 10px 0 4px; font-size:18px; flex:0 0 auto; }
+  .hdr-icons span{ opacity:.95; }
+  .hmenu-bd{ position:absolute; inset:0; z-index:49; }
+  .hmenu{ position:absolute; top:54px; right:10px; z-index:50; background:#fff; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.3); overflow:hidden; min-width:200px; padding:4px 0; animation:pop .14s ease both; }
+  .hmenu-item{ display:block; width:100%; text-align:left; background:none; border:none; padding:12px 16px; font-size:14.5px; color:var(--wa-text); font-family:inherit; cursor:pointer; }
+  .hmenu-item:hover{ background:#f1f5f4; }
+
+  /* chat wallpaper (original subtle texture) */
+  .canvas{ flex:1 1 auto; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px 7% 10px; scroll-behavior:smooth;
+    display:flex; flex-direction:column; background-color:var(--wa-bg);
+    }
+
+  .grp{ display:flex; align-items:flex-end; margin:1.5px 0; }
+  .grp.bot{ justify-content:flex-start; } .grp.user{ justify-content:flex-end; }
+  .mini{ display:none; }
+  .bubble{ position:relative; max-width:82%; padding:6px 9px 7px; font-size:14.3px; line-height:1.34;
+    border-radius:8px; box-shadow:0 1px .4px rgba(11,20,26,.14); word-wrap:break-word; white-space:pre-wrap;
+    animation:pop .16s ease both; }
+  .bubble.bot{ background:var(--wa-in); color:var(--wa-text); border-top-left-radius:0; margin-left:9px; }
+  .bubble.user{ background:var(--wa-out); color:var(--wa-text); border-top-right-radius:0; margin-right:9px; }
+  .bubble.bot::before{ content:""; position:absolute; top:0; left:-8px; width:0; height:0; border-top:9px solid var(--wa-in); border-left:9px solid transparent; }
+  .bubble.user::before{ content:""; position:absolute; top:0; right:-8px; width:0; height:0; border-top:9px solid var(--wa-out); border-right:9px solid transparent; }
+  .time{ float:right; font-size:10.5px; color:var(--wa-sub); margin:5px -2px -2px 10px; line-height:1; display:inline-flex; align-items:center; gap:2px; }
+  .time .tk{ color:var(--wa-tick); font-size:12px; letter-spacing:-4px; margin-left:2px; }
+  @keyframes pop{ from{ opacity:0; transform:translateY(4px) scale(.99);} to{ opacity:1; transform:none;} }
+
+  .typing{ display:inline-flex !important; gap:4px; align-items:center; padding:11px 13px !important; }
+  .typing span{ width:7px; height:7px; border-radius:50%; background:#9aa6ac; animation:blink 1.3s infinite both; }
+  .typing span:nth-child(2){ animation-delay:.2s; } .typing span:nth-child(3){ animation-delay:.4s; }
+  @keyframes blink{ 0%,60%,100%{ opacity:.25; transform:translateY(0);} 30%{ opacity:1; transform:translateY(-2px);} }
+
+  /* salary card */
+  .card{ max-width:88%; width:100%; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 1px .4px rgba(11,20,26,.14); margin-left:9px; animation:pop .2s both; }
+  .card-h{ background:var(--wa-header); color:#fff; font-size:13px; font-weight:600; padding:9px 14px; }
+  .card-grid{ display:grid; grid-template-columns:1fr 1fr; }
+  .card-col{ padding:14px; text-align:center; } .card-col.br{ border-right:1px solid #EDF1F7; }
+  .card-col .lbl{ font-size:11px; color:#64748b; margin-bottom:4px; }
+  .card-col .amt{ font-size:21px; font-weight:800; color:var(--wa-text); }
+  .card-col .amt.g{ color:var(--wa-header2); } .card-col .per{ font-size:11px; color:#94a3b8; }
+  .card-foot{ background:#F7F9FC; color:#94a3b8; font-size:10px; padding:6px 14px; }
+
+  /* dock */
+  .dock{ background:var(--wa-panel); flex:0 0 auto; padding-bottom:env(safe-area-inset-bottom); }
+  .chips{ display:flex; flex-direction:column; gap:7px; padding:6px 0 2px; }
+  .chip{ width:100%; padding:11px 14px; font-size:14px; font-weight:500; border-radius:10px; cursor:pointer; background:#fff; color:var(--wa-header); border:1px solid rgba(7,94,84,.18); text-align:center; box-shadow:0 1px 1px rgba(11,20,26,.06); transition:transform .08s; }
+  .chip:active{ transform:scale(.98); } .chip.cta{ background:var(--wa-accent); color:#fff; border-color:var(--wa-accent); font-weight:600; }
+  .opts{ display:flex; flex-direction:column; gap:7px; padding:6px 0 2px; }
+  .opt{ width:100%; padding:12px 14px; font-size:14.5px; font-weight:500; border-radius:10px; cursor:pointer; background:#fff; color:var(--wa-header); border:1px solid rgba(7,94,84,.18); text-align:center; box-shadow:0 1px 1px rgba(11,20,26,.06); transition:transform .08s, background .15s; }
+  .opt:hover{ background:#f2fbf7; } .opt:active{ transform:scale(.98); }
+  .inbar{ display:flex; align-items:center; gap:7px; padding:7px 9px calc(7px + env(safe-area-inset-bottom)); }
+  .pfx{ padding:9px 11px; border-radius:999px; background:#fff; color:#54656f; font-size:15px; font-weight:600; box-shadow:0 1px .4px rgba(11,20,26,.1); flex:0 0 auto; }
+  .inbar input{ flex:1; padding:11px 15px; border-radius:22px; background:#fff; border:none; font-size:15px; outline:none; color:var(--wa-text); font-family:inherit; min-width:0; box-shadow:0 1px .4px rgba(11,20,26,.1); }
+  .inbar input::placeholder{ color:#8696a0; }
+  .send{ width:45px; height:45px; border-radius:50%; border:none; cursor:pointer; flex:0 0 auto; background:var(--wa-accent); color:#fff; font-size:19px; display:flex; align-items:center; justify-content:center; transition:transform .08s; box-shadow:0 1px 2px rgba(0,0,0,.18); }
+  .send:active{ transform:scale(.92); } .send:disabled{ opacity:.55; cursor:not-allowed; }
+  .privacy{ text-align:center; font-size:11px; color:var(--wa-sub); padding:10px 14px; line-height:1.6; }
+
+  /* ad landing */
+  .welcome{ position:absolute; inset:0; z-index:40; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:26px 22px calc(26px + env(safe-area-inset-bottom)); overflow-y:auto;
+    background:linear-gradient(165deg,#0a6b5f 0%,#064039 100%); color:#fff; }
+  .welcome h2{ font-size:23px; font-weight:800; margin:0 0 5px; line-height:1.28; max-width:360px; }
+  .welcome h2 .hl{ color:#8ff0c6; }
+  .welcome .wava{ position:relative; width:112px; height:112px; margin:0 auto 14px; }
+  .welcome .wava img{ width:100%; height:100%; border-radius:50%; object-fit:cover; object-position:center 32%; box-shadow:0 0 0 4px rgba(255,255,255,.22), 0 14px 32px rgba(0,0,0,.32); }
+  .welcome .wonline{ position:absolute; right:8px; bottom:8px; width:19px; height:19px; border-radius:50%; background:#25D366; box-shadow:0 0 0 3px #0a6b5f; }
+  .welcome .wrole{ font-size:12.5px; color:rgba(255,255,255,.82); margin:0 0 13px; display:flex; align-items:center; gap:6px; justify-content:center; }
+  .welcome .wrole .dot{ background:#7ee0a1; }
+  .welcome .sub{ font-size:13.5px; color:rgba(255,255,255,.86); margin:0 0 20px; line-height:1.5; max-width:330px; }
+  .welcome .card2{ width:100%; max-width:350px; background:#fff; border-radius:18px; padding:18px 16px 16px; box-shadow:0 20px 45px rgba(0,0,0,.3); }
+  .welcome .logo{ width:168px; max-width:58%; margin:0 auto 15px; display:block; }
+  .welcome .field{ width:100%; margin-bottom:10px; text-align:left; }
+  .welcome input{ width:100%; padding:13px 15px; border-radius:11px; border:1.5px solid #D6DEEC; font-size:15px; font-family:inherit; outline:none; color:var(--wa-text); background:#fff; }
+  .welcome input:focus{ border-color:var(--wa-accent); box-shadow:0 0 0 3px rgba(0,168,132,.14); }
+  .welcome .phonewrap{ display:flex; align-items:center; gap:8px; }
+  .welcome .phonewrap .cc{ padding:13px 12px; border-radius:11px; background:#F0F2F5; color:#54656f; font-weight:700; font-size:15px; flex:0 0 auto; }
+  .welcome .werr{ color:var(--warn); font-size:12px; margin:-2px 0 7px; min-height:15px; text-align:left; }
+  .welcome .go{ width:100%; padding:14px; border:none; border-radius:11px; background:var(--wa-accent); color:#fff; font-weight:800; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:filter .15s, transform .08s; }
+  .welcome .go:hover{ filter:brightness(1.05); } .welcome .go:active{ transform:scale(.98); } .welcome .go:disabled{ opacity:.5; cursor:not-allowed; }
+  .welcome .wtiny{ font-size:11.5px; color:rgba(255,255,255,.8); margin-top:15px; }
+
+  .success{ flex:1; background:linear-gradient(160deg,#12a973,#0a7d55); color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:30px; animation:pop .3s both; }
+  .success .stick{ width:96px; height:96px; border-radius:50%; background:rgba(255,255,255,.18); display:flex; align-items:center; justify-content:center; font-size:54px; margin-bottom:22px; }
+  .success h2{ font-size:27px; font-weight:800; margin:0 0 8px; } .success p{ font-size:16px; margin:0; opacity:.95; }
+
+  .demo-toggle{ width:100%; text-align:center; font-size:11px; color:#64748b; padding:7px; cursor:pointer; background:#F1F5F9; border:none; border-top:1px solid #E4E9F2; font-family:inherit; }
+  pre.demo{ margin:0; font-size:10.5px; line-height:1.55; padding:12px; overflow:auto; max-height:180px; background:#0B1F3A; color:#7FE3B0; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  .flag{ color:#FFB4A9; }
+
+  /* video popup */
+  .vmodal{ position:absolute; inset:0; z-index:60; background:rgba(4,10,20,.88); display:flex; align-items:center; justify-content:center; padding:16px; animation:pop .2s both; }
+  .vbox{ position:relative; width:100%; background:#000; border-radius:14px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.5); }
+  .vframe{ position:relative; width:100%; aspect-ratio:16/9; background:#000; overflow:hidden; }
+  .vframe #yt-player, .vframe iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; display:block; }
+  .vmask{ position:absolute; top:0; left:0; right:0; height:56px; z-index:1; pointer-events:none; background:linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,0)); }
+  .vclick{ position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .vplay{ width:64px; height:64px; border-radius:50%; background:rgba(7,94,84,.85); color:#fff; display:flex; align-items:center; justify-content:center; font-size:24px; padding-left:4px; }
+  .vctrl{ position:absolute; left:0; right:0; bottom:0; z-index:3; display:flex; align-items:center; gap:10px; padding:9px 12px; background:linear-gradient(0deg, rgba(0,0,0,.6), rgba(0,0,0,0)); }
+  .vbtn{ background:none; border:none; color:#fff; font-size:14px; line-height:1; cursor:pointer; flex:0 0 auto; padding:2px 4px; }
+  .vprog{ flex:1; height:6px; border-radius:3px; background:rgba(255,255,255,.28); cursor:pointer; position:relative; }
+  .vprog-fill{ position:absolute; left:0; top:0; bottom:0; border-radius:3px; background:var(--wa-accent); }
+  .vend{ position:absolute; inset:0; z-index:4; display:flex; gap:10px; align-items:center; justify-content:center; background:rgba(4,10,20,.94); }
+  .vcap{ color:#cbd5e1; font-size:11px; text-align:center; padding:8px 10px; background:#0B1F3A; }
+  .vclose{ position:absolute; top:8px; right:8px; z-index:5; width:34px; height:34px; border:none; border-radius:50%; background:rgba(0,0,0,.6); color:#fff; font-size:16px; cursor:pointer; }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useRef, useEffect } = React;
+
+/* ─────────────────────────────────────────────────────────────
+   Jhanvi · GCTB NORCET exit lead-capture chat (v4)
+   Rule-based, no LLM. Free-text KB below answers nurse questions.
+   ALL leads captured. Bad / non-India numbers are captured + flagged.
+   Wire CONFIG.LEAD_ENDPOINT for production (Supabase edge fn).
+   ───────────────────────────────────────────────────────────── */
+
+const CONFIG = {
+  DEMO_MODE: false,
+  SOURCE: "chatbot",   // dedicated CRM source: "Chat bot"                                  // CRM v2 preview panel. OFF in the live product. Set true only to debug.
+  EXAM_CENTER: "AIIMS-Delhi Stage-I Gate 3",         // fallback if no centre chosen
+  // Centres shown on the welcome screen — REPLACE with your real centre list
+  CENTERS: ["Faridabad ION","Sector 62 ION","Mohan Estate Delhi","Gurugram ION","Ghaziabad ION","Other"],
+  // v2_staging capture via the GC Supabase (same project + anon key the Germany site already uses; RLS allow-all)
+  SUPABASE: {
+    url:  "https://lrcimdchhbsgbnvdmpwd.supabase.co",
+    anon: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyY2ltZGNoaGJzZ2JudmRtcHdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MzAwMzcsImV4cCI6MjA5MDAwNjAzN30.1MfNvTNGTUNuUIL-lN3vZH7Kpcn6t1naiq07KTUEDEk",
+  },
+  // Process explainer videos (unlisted YouTube). User picks the language, that video plays.
+  PROCESS_VIDEOS: {
+    English: "https://www.youtube.com/watch?v=TdfUm2rTdSE",
+    Hindi:   "https://www.youtube.com/watch?v=bm0zYCqjijM",
+  },
+  // OCRM (Testbook marketing lead sink). Public marketing key, meant for client-side use (CORS *).
+  OCRM: {
+    endpoint: "https://apiocrm.testbook.com/v1/leads/marketing",
+    publicKey: "TUFSS0VUSU5HX0FQSV9LRVk",   // verified working public key
+    product:  "Global Careers",
+    category: "Nurse to Germany",
+    funnel:   "Chatbot",
+  },
+};
+
+const SLOTS = ["10-11 AM","11-12 PM","12-1 PM","2-3 PM","3-4 PM","4-5 PM","5-6 PM","6-7 PM","7-8 PM"];
+// chat language options — the chat continues in the chosen language (English + Hindi)
+const CHAT_LANGS = [{ label:"English", code:"en" }, { label:"हिंदी", code:"hi" }];
+
+// high-level, honest facts for the abroad-nursing destinations (bilingual)
+const COUNTRIES = [
+  { k:"germany", flag:"🇩🇪", name:{en:"Germany", hi:"जर्मनी"},
+    salary:{en:"₹2–2.5 lakh/month", hi:"₹2–2.5 लाख/महीना"},
+    exam:{en:"German B1–B2 — no IELTS needed", hi:"जर्मन B1–B2 — IELTS की ज़रूरत नहीं"},
+    cost:{en:"only the language training + prep (easy EMI); counsellor shares the exact fee", hi:"सिर्फ़ language training + prep (easy EMI); exact fee counsellor बताएँगे"},
+    visa:{en:"Work visa / EU Blue Card (after B2 + recognition)", hi:"वर्क वीज़ा / EU ब्लू कार्ड (B2 + मान्यता के बाद)"},
+    time:{en:"about 1 to 1.5 years", hi:"लगभग 1 से 1.5 साल"} },
+  { k:"uk", flag:"🇬🇧", name:{en:"UK", hi:"यूके"},
+    salary:{en:"₹2.5–3 lakh/month", hi:"₹2.5–3 लाख/महीना"},
+    exam:{en:"IELTS/OET + NMC (CBT + OSCE)", hi:"IELTS/OET + NMC (CBT + OSCE)"},
+    cost:{en:"higher — English exam + NMC registration fees", hi:"ज़्यादा — इंग्लिश एग्ज़ाम + NMC रजिस्ट्रेशन फीस"},
+    visa:{en:"Health & Care Worker visa", hi:"हेल्थ & केयर वर्कर वीज़ा"},
+    time:{en:"about 1 to 1.5 years", hi:"लगभग 1 से 1.5 साल"} },
+  { k:"ireland", flag:"🇮🇪", name:{en:"Ireland", hi:"आयरलैंड"},
+    salary:{en:"₹2.5–3 lakh/month", hi:"₹2.5–3 लाख/महीना"},
+    exam:{en:"IELTS/OET + NMBI registration", hi:"IELTS/OET + NMBI रजिस्ट्रेशन"},
+    cost:{en:"higher — exam + registration + adaptation", hi:"ज़्यादा — एग्ज़ाम + रजिस्ट्रेशन + अडैप्टेशन"},
+    visa:{en:"Employment permit", hi:"एम्प्लॉयमेंट परमिट"},
+    time:{en:"about 1 to 1.5 years", hi:"लगभग 1 से 1.5 साल"} },
+  { k:"canada", flag:"🇨🇦", name:{en:"Canada", hi:"कनाडा"},
+    salary:{en:"₹2.5–3.5 lakh/month", hi:"₹2.5–3.5 लाख/महीना"},
+    exam:{en:"IELTS + NNAS assessment + licensing exam", hi:"IELTS + NNAS असेसमेंट + लाइसेंसिंग एग्ज़ाम"},
+    cost:{en:"high and lengthy — assessment + exams", hi:"ज़्यादा और लंबा — असेसमेंट + एग्ज़ाम"},
+    visa:{en:"Work permit / PR pathways", hi:"वर्क परमिट / PR रास्ते"},
+    time:{en:"often 2+ years", hi:"अक्सर 2+ साल"} },
+  { k:"australia", flag:"🇦🇺", name:{en:"Australia", hi:"ऑस्ट्रेलिया"},
+    salary:{en:"₹3–3.5 lakh/month", hi:"₹3–3.5 लाख/महीना"},
+    exam:{en:"IELTS/OET + AHPRA registration", hi:"IELTS/OET + AHPRA रजिस्ट्रेशन"},
+    cost:{en:"high — registration + skills assessment", hi:"ज़्यादा — रजिस्ट्रेशन + स्किल असेसमेंट"},
+    visa:{en:"Skilled / sponsored visa", hi:"स्किल्ड / स्पॉन्सर्ड वीज़ा"},
+    time:{en:"often 1.5 to 2+ years", hi:"अक्सर 1.5 से 2+ साल"} },
+  { k:"gulf", flag:"🌍", name:{en:"Gulf (UAE / Saudi)", hi:"गल्फ (UAE / सऊदी)"},
+    salary:{en:"₹1–1.5 lakh/month (tax-free)", hi:"₹1–1.5 लाख/महीना (टैक्स-फ्री)"},
+    exam:{en:"Prometric (DHA / HAAD / MOH)", hi:"प्रोमेट्रिक (DHA / HAAD / MOH)"},
+    cost:{en:"lower and faster", hi:"कम और तेज़"},
+    visa:{en:"Employment work permit", hi:"एम्प्लॉयमेंट वर्क परमिट"},
+    time:{en:"a few months", hi:"कुछ महीने"} },
+];
+const CO = (k)=> COUNTRIES.find(c=>c.k===k);
+
+/* Jhanvi's face (self-contained inline SVG, friendly nurse avatar) */
+const AVATAR = "data:image/jpeg;base64,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";
+const LOGO = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD/4QBARXhpZgAATU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAABuKADAAQAAAABAAABuAAAAAD/7QA4UGhvdG9zaG9wIDMuMAA4QklNBAQAAAAAAAA4QklNBCUAAAAAABDUHYzZjwCyBOmACZjs+EJ+/+IB2ElDQ19QUk9GSUxFAAEBAAAByAAAAAAEMAAAbW50clJHQiBYWVogB+AAAQABAAAAAAAAYWNzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPbWAAEAAAAA0y0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJZGVzYwAAAPAAAAAkclhZWgAAARQAAAAUZ1hZWgAAASgAAAAUYlhZWgAAATwAAAAUd3RwdAAAAVAAAAAUclRSQwAAAWQAAAAoZ1RSQwAAAWQAAAAoYlRSQwAAAWQAAAAoY3BydAAAAYwAAAA8bWx1YwAAAAAAAAABAAAADGVuVVMAAAAIAAAAHABzAFIARwBCWFlaIAAAAAAAAG+iAAA49QAAA5BYWVogAAAAAAAAYpkAALeFAAAY2lhZWiAAAAAAAAAkoAAAD4QAALbPWFlaIAAAAAAAAPbWAAEAAAAA0y1wYXJhAAAAAAAEAAAAAmZmAADypwAADVkAABPQAAAKWwAAAAAAAAAAbWx1YwAAAAAAAAABAAAADGVuVVMAAAAgAAAAHABHAG8AbwBnAGwAZQAgAEkAbgBjAC4AIAAyADAAMQA2/8AAEQgBuAG4AwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/bAEMAAgICAgICAwICAwQDAwMEBQQEBAQFBgUFBQUFBggGBgYGBgYICAgICAgICAkJCQkJCQsLCwsLDAwMDAwMDAwMDP/bAEMBAgICAwMDBQMDBQwIBwgMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDP/dAAQAHP/aAAwDAQACEQMRAD8A/fyiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9D9/KKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/0f38ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//S/fyiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9P9/KKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/1P38ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//V/fyiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9b9/KKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoorw/wCJ3x68GfDUtp87NqWr7cixtSCyZ6GZz8sY9jyewNdeBwGIxlVUMLTc5Pojys5zzAZThZY3Mq0adOO7k7fJd35LU9wqGW4t4BunlSMersFH61+YOtfHj42fErUW03wq81kj522ekREy7f8AbmIL59SCoqtD+zv8e/FUYvtUeRTKMkalfyNJ1zyo349a+6j4fPDxUs0xlOi30bu/0Pxl+OlPHTlDhzKq2KS+0o8sX87N/fr5H6ixXdrP/qJo5P8AcYN/I1YzX5SXf7LHx60gfadJlikYHOLTUHik/AsEH61zy/FP9o/4MXaW+uXOpRwocCDWYzdW8mP4VmbP/jklWuAKeJusszCnVl2vZ/qdC8Z62CUZZ9k9bDxf2rcyX4RP18or5F+D/wC1t4S8fzwaD4pg/wCEf1qTCpubfZ3D+kcvVCf7rgexNfWcNzb3Kb7eVJV9UYMPzFfEZllOLwFZ0MXTcZLv+j2Z+s5HxDl2cYdYrLq6qRfbdeTW6fqT0Vh3HiTQrTUodHuL2JL2c4jhzlifTjp+NblcMqco2cla56tOvTqOSpyTs7OzvZ9n2YUUUVBqFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB//9f9/KKKKACiiigAooooAKKKKACiiuL8feN9J+H3hq58R6sSyxYSKFT880zfcjX3J79hk1tQoVK9SNGlG8pOyXds5MfjsPgsPUxeKmoU4Jyk3skt2XvFXjDw54K0xtX8S30dlbrwu85eRv7saD5nb2UV8heK/wBre8kkaDwRo6JEMgXO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0z9lLwvb3Cy6pq97eRKc+UqpCGHoWXLfkRX0j4f8O6L4X0yPSNBtI7O1i+7HGOpPUserE9yTmt8XxHk+W5fWwORqUpVdJSl2/Dptou5wZT4dcY8S8QYTO+OJQp08M7wpQad2nfo2km0m2227WPz/AP2lf+Snzf8AXlb/APs1d5ofwI0zX/g3BrGnEvr95GL+OVuBxkC3HohA6/3ua918cfAvwp4915vEGr3F5FcNEkRWFwqbUzjgg8816b4a8P2fhbQbLw9p7O9vYxCGNpDucqP7x7moxXGypZVgsNgJyVSlbm0snZbeaub5Z4JTxfFOdZjn9CEsPiVNU3e8ouTXvW6NLZ9D82fhV8QL74ZeLRcXayLYzP8AZtStiCCFU437T/HEcn3GR3r9OrO8tb+1hvbORZoJ0WSORDlWRxlSPqK8R8V/s9+B/FuuXGv3JurS4uiGmW2cKjP3faR9498da9I8FeELTwNoUXh7T7q4ubWBmMX2lg7RqxzsUgD5QckDtXmcYZvlmaezxuGTjWtaato/O/dbeaPqPB7hHifhf6xk2ZuNTBpt0pKXvLXbltopLW3R37nX0UUV8MfuQUUUUAFFFFABRRRQAUUUUAFFFFAH/9X9/KKKKACiiigAooooAKKKKACiiigAooooA5I+HLywlkl8OX/2GOVi7WssQntw55LIuVZMnkhWxnnFJ9i8bf8AQU0//wAA5P8A49XXUU+YDkfsXjb/AKCmn/8AgHJ/8eo+xeNv+gpp/wD4Byf/AB6uuop83kByP2Lxt/0FNP8A/AOT/wCPUjaT4qu18m91mOGJuGNnbeXKR6B5Hk2/ULmuvopcwFHTtOs9Ks47GxjEcMecDkkknLMxPJYnkk8k1eoopAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf/1v38ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//X/fyiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9D9/KKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/0f38ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//S/fyiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9k=";
+const Jhanvi = () => (<img className="face" src={AVATAR} alt="Jhanvi" draggable="false" />);
+
+/* ── Knowledge base (Jhanvi's voice: simple, warm, no long dashes) ─────────
+   Compliance-safe: GC does German training + prep only; jobs via licensed
+   German partners. Specific entries first so the scorer prefers them. */
+const KB = [
+  { id:"who",    label:"Who are you?", keywords:["who are you","your name","are you a bot","are you real","are you human","riya","who is this","real person"],
+    a:"I am Jhanvi, your careers-abroad assistant from Testbook. 😊 I help nurses like you explore high-paying nursing jobs abroad, and Germany is the top option right now. For the full details, our counsellor will call you personally. Ask me anything!" },
+  { id:"b2done", label:"I already have B2", keywords:["already b2","have b2","done b2","completed b2","cleared b2","b2 done","already done b2","already have german","goethe b2","telc b2","i have b2","got b2"],
+    a:"That is excellent! 🎉 If you already have B2 German, you are ready for the next steps. Let me connect you straight to our counsellor, who will fast-track your profile. Please keep your phone handy!" },
+  { id:"emi",    label:"Can I pay in EMI?", keywords:["emi","loan","instalment","installment","monthly","finance","afford","upfront","one time","one-time","pay later","kist","kisht"],
+    a:"Yes! You can take a student loan that pays the full fee first, and you repay it in small monthly EMIs. No big one time payment. On the call, the counsellor tells you the exact monthly amount." },
+  { id:"levels", label:"Which German level?", keywords:["b1","b2","a1","a2","level","how much german","which level","cefr"],
+    a:"German hospitals usually want B1 to B2 level. Our course takes you all the way from A1 to B2, so you reach exactly what they need." },
+  { id:"anm",    label:"Am I eligible?", keywords:["anm","eligible","eligibility","qualify","can i apply","am i","auxiliary","diploma","gnm or","gnm degree","degree enough","enough","my degree","qualification enough"],
+    a:"If you have GNM or B.Sc Nursing (or Post Basic B.Sc), you can start. Final year students can begin the classes now too. If you only have ANM, that is usually not enough on its own, but share your details and we will guide you." },
+  { id:"exp",    label:"Need experience?", keywords:["experience","fresher","fresh","years","working","freshers","without experience","no experience"],
+    a:"Freshers are very welcome. You do not need years of experience. New and experienced nurses both take this path. You mainly need your nursing degree and B2 German." },
+  { id:"age",    label:"Is there an age limit?", keywords:["age","old","too old","35","40","30","year old","born","umar"],
+    a:"There is no strict age limit. Nurses of many ages move to Germany. Younger people pick up the language a bit faster, but it is open for you. The counsellor can guide you for your age." },
+  { id:"ielts",  label:"Do I need IELTS?", keywords:["ielts","english","toefl","pte","language test","english exam","angrezi"],
+    a:"No IELTS or English test is needed for Germany. The only language that matters here is German, up to B2, and that is exactly what we teach you." },
+  { id:"recog",  label:"Is my degree valid?", keywords:["recognition","recognised","recognized","anerkennung","license","licence","registration","nursing council","valid","accept my degree","approved"],
+    a:"Yes. Your Indian nursing degree is accepted in Germany through a process called Anerkennung (recognition). It is done with licensed German partners once your German is ready. We prepare you for it fully." },
+  { id:"visa",   label:"What about visa?", keywords:["visa","work permit","permit","immigration","embassy","blue card"],
+    a:"Germany has a dedicated work visa for qualified nurses (and the EU Blue Card for skilled professionals). Once your B2 German and degree recognition (Anerkennung) are ready, we connect you with licensed German recruiters who take the job offer and visa forward. Your counsellor gives you the exact steps." },
+  { id:"family", label:"Can I take my family?", keywords:["family","spouse","husband","wife","kids","children","married","reunification","bring my","parents"],
+    a:"Yes, you can take your family. Once you are settled there on a work visa, you can bring your husband or wife and your kids. The counsellor will explain the timing and papers." },
+  { id:"pr",     label:"Can I settle there?", keywords:["pr","permanent","citizenship","settle","stay permanently","green card","residency","future"],
+    a:"A nursing job in Germany can lead to long term stay, and later PR and even citizenship, because nurses are always needed there. The counsellor will explain the full path." },
+  { id:"tax",    label:"Salary after tax?", keywords:["tax","net","in hand","in-hand","take home","after tax","deduction","gross","hand me"],
+    a:"The Germany salary is before tax. After tax you still keep a good amount, and your health cover and pension are included. The exact in hand depends on your tax class, and the counsellor can give you a real number." },
+  { id:"docs",   label:"What documents?", keywords:["document","documents","paperwork","certificate","transcript","passport","what do i need","marksheet"],
+    a:"For Germany you will typically need your passport, nursing degree and mark sheets, Indian nursing council registration, your B2 German certificate, and the recognition (Anerkennung) papers, plus a job offer. Nothing is needed right now to start — your counsellor shares the full checklist for your stage." },
+  { id:"cities", label:"Which city?", keywords:["city","cities","where in germany","location","hospital","which state","berlin","munich"],
+    a:"Indian nurses work across many German cities and hospitals. The city depends on the recruiter and the hospital that hires you, and they try to keep your choice in mind." },
+  { id:"stay",   label:"Where will I stay?", keywords:["accommodation","stay","house","room","live","housing","settle in","rehna"],
+    a:"When you move, the hospital and recruiters usually help you with your first accommodation and settling in. You will not be on your own." },
+  { id:"male",   label:"Male nurses too?", keywords:["male","man","men","boy","gender","ladka"],
+    a:"Yes, male nurses are needed just as much in Germany. The path is exactly the same for you." },
+  { id:"safe",   label:"Is Germany safe?", keywords:["safe","safety","secure country","women safe","alone","ladki"],
+    a:"Germany is a very safe and well organised country, with strong rules to protect workers. Many Indian nurses, including women and families, live there happily." },
+  { id:"process",label:"How does it work?", keywords:["process","step","steps","how does it work","procedure","pathway","roadmap","how it works","kaise"],
+    a:"It is simple. First, learn German with us from A1 to B2. Second, get your degree recognised (Anerkennung). Third, we refer you to licensed German recruiters who take you through the job, visa and joining. The counsellor walks you through each step." },
+  { id:"when",   label:"When can I go?", keywords:["when","how soon","start when","go to germany","timeline to move","by when","kab"],
+    a:"You can start the German classes right away. The actual move happens once you reach B2 and finish recognition and visa, usually in about a year, depending on your pace." },
+  { id:"other",  label:"What about USA/UK?", keywords:["usa","us","america","canada","uk","england","australia","ireland","dubai","gulf","saudi","other country","abroad"],
+    a:"Right now we focus fully on Germany, because it has the biggest nurse shortage, strong pay, and a clear legal path for Indian nurses. If you like, the counsellor can still talk you through it on the call." },
+  { id:"why",    label:"Why Germany?", keywords:["why germany","norcet","plan b","better than","instead of","government job","vacancy","worth it","sarkari"],
+    a:"NORCET has very few seats and a lot of competition. Germany needs thousands of nurses right now, pays almost 8 to 10 times an Indian nurse salary, and your GNM or B.Sc already makes you eligible. It is a strong backup, sometimes even a better first choice." },
+  { id:"time",   label:"How long does it take?", keywords:["how long","duration","time","months","how many months","take","kitna time"],
+    a:"It usually takes about 10 to 12 months to go from A1 to B2, depending on how fast you learn. Your counsellor will map a clear timeline for you on the call." },
+  { id:"salary", label:"Salary in Germany?", keywords:["salary","earn","pay","income","money","package","how much do nurses","lakh","per month","kitna"],
+    a:"In Germany, nurses earn around 2 to 2.5 lakh rupees a month (it can change a bit by hospital and city). In India a staff nurse gets about 25,000. Plus you get good benefits and paid leave." },
+  { id:"german", label:"Do I need German?", keywords:["german","language","speak german","learn german","without german","don't know german","dont know german","bhasha"],
+    a:"No, you do not need any German right now. We start you from zero (A1) and take you up to B2, which is what German hospitals want. Our teachers guide you at every step." },
+  { id:"cost",   label:"How much is the fee?", keywords:["cost","fee","fees","price","charges","how much does it cost","expensive","payment","paisa","kitne"],
+    a:"Great question! I will let your counsellor walk you through the exact fee on the call — the full breakdown and easy-EMI options, with no hidden charges. We only charge for the language training + interview prep (nothing for the referral), and nothing is needed to get started today. 🙂" },
+  { id:"legit",  label:"Is this genuine?", keywords:["genuine","real","scam","fraud","trust","legit","fake","reliable","cheat","sach","farzi"],
+    a:"Good question. Global Careers by Testbook (from Testbook) trains you in German, prepares you fully, and connects you with licensed German recruiters who do the hiring. It is a proper, legal and trusted path, not some agent making false promises. Your counsellor shows you everything on the call." },
+  { id:"place",  label:"Do you place us?", keywords:["placement","do you place","will you place","provide job","give job","give me a job","get a job","get me a job","help me get a job","help with job","find a job","job in germany","arrange job","job dilaoge","naukri dilaoge","do you give job"],
+    a:"We are the training and preparation experts. We take you to B2 German, get you fully ready, and connect you with licensed German recruiters who hire nurses. We guide and support you through the whole journey, and the recruiters and hospitals do the final hiring." },
+  { id:"guarantee", label:"Do you guarantee a job?", keywords:["job guarantee","guarantee","guaranteed","promise","sure job","100 job","confirm job","pakka job","pakki job","assured job"],
+    a:"We prepare you so well that you become a strong, ready candidate. The final hiring is done by German recruiters and hospitals, and with the huge nurse shortage there, the demand is very high. Your counsellor will explain the full path clearly on the call." },
+  { id:"refund", label:"What if I want a refund?", keywords:["refund","money back","cancel","not selected","if i fail","wapas"],
+    a:"The counsellor will explain the full fee, EMI and terms clearly before you decide, so there are no hidden charges. For the exact refund rules, please confirm on the call." },
+  { id:"call",   label:"Who will call me?", keywords:["call","counsellor","counselor","who will call","contact","phone call","when will you call"],
+    a:"A Global Careers counsellor will call you on the number you gave, in your chosen time slot. It is a free one on one call, so just keep your phone nearby." },
+  // ── deep knowledge: going abroad as a nurse (visa, flights, money) + the Germany process ──
+  { id:"visaprocess", label:"", keywords:["visa process","visa steps","how to get visa","apply visa","visa procedure","visa kaise","get a visa"],
+    a:"The visa comes near the end, once you are ready. In short: (1) finish the required language/exam, (2) get your nursing degree recognised, (3) get a job offer from a licensed recruiter/employer, (4) apply for the work visa with your documents. For Germany it is a skilled-worker work visa or EU Blue Card. Your counsellor guides each step." },
+  { id:"flights", label:"", keywords:["flight","flights","ticket","air ticket","airfare","who pays flight","travel cost","fly","flight cost","plane"],
+    a:"Flights are booked only after your visa and joining date are confirmed. A one-way India-to-Germany ticket is usually around ₹25,000 to ₹45,000 depending on season and city. Some employers or recruiters support relocation/travel costs — your counsellor tells you what applies to your offer." },
+  { id:"relocation", label:"", keywords:["relocation","shifting","move cost","settling cost","initial expense","one time cost","extra cost"],
+    a:"Apart from the language fee, plan for a few one-time costs — flight, visa fee, document translation/apostille, and some initial funds to show. They are modest, and the counsellor gives you a clear list so there are no surprises." },
+  { id:"insurance", label:"", keywords:["insurance","health insurance","medical cover","health cover","travel insurance","bima"],
+    a:"In Germany health insurance comes with the job — it is deducted from salary and covers you and often your family, from day one. Before you travel you may just need short-term travel insurance. The counsellor explains what to arrange and when." },
+  { id:"pcc", label:"", keywords:["police clearance","pcc","police verification","background check","character certificate"],
+    a:"Yes, most countries ask for a Police Clearance Certificate (PCC) for the visa. It is a simple document from your passport office / local police. Nothing to arrange now — the counsellor tells you exactly when and how." },
+  { id:"medical", label:"", keywords:["medical test","medical checkup","vaccination","health checkup","fitness certificate","medical fitness","vaccine"],
+    a:"A basic medical fitness check and standard vaccinations are usually needed before joining. It is routine, and the counsellor gives you the checklist at the right stage." },
+  { id:"funds", label:"", keywords:["funds","money to show","blocked account","sperrkonto","bank balance","proof of funds","savings needed","show money"],
+    a:"For Germany you may need to show some funds through a blocked account (Sperrkonto) for the visa — roughly a few lakh rupees that stays yours and you use after you arrive. With a confirmed job offer the requirement is lighter. The counsellor gives you your exact figure." },
+  { id:"exams_other", label:"", keywords:["nclex","oet","cbt","osce","prometric","dha","haad","moh","ahpra","nmc","nmbi","nnas","which exam"],
+    a:"Each country has its own exam: UK/Ireland need IELTS/OET + registration (NMC/NMBI), Canada needs IELTS + NNAS + a licensing exam, Australia needs IELTS/OET + AHPRA, the Gulf needs a Prometric exam. Germany needs none of these — just German up to B2. That is a big reason it is the easiest path. 🇩🇪" },
+  { id:"spousework", label:"", keywords:["spouse work","wife work","husband work","partner job","can my wife work","dependent work","family work"],
+    a:"Yes — in Germany your spouse can usually work too, once they join you on a family visa. That is a big plus versus many other countries. The counsellor explains the conditions." },
+  { id:"anerkennung", label:"", keywords:["anerkennung","recognition process","recognise degree","recognize degree","equivalence","gutachten","degree recognition"],
+    a:"Anerkennung is Germany's process that recognises your Indian nursing degree as equal to a German one. You submit your degree, transcripts and registration to a German authority. If they see small gaps, you close them with a short knowledge test or a brief adaptation period. We prepare you for all of it." },
+  { id:"kenntnis", label:"", keywords:["kenntnisprufung","kenntnis","knowledge test","adaptation","anpassung","defizit","deficit","bridge course"],
+    a:"If the authority sees small gaps (a Defizitbescheid), you clear them either with a Kenntnisprüfung (a practical/oral knowledge exam) or an Anpassungslehrgang (a short adaptation period at a hospital). It is very manageable, and we prepare you for it." },
+  { id:"germanvisatype", label:"", keywords:["which visa germany","visa type germany","blue card","recognition visa","work visa germany","germany work permit"],
+    a:"For Germany, nurses usually travel on a recognition/skilled-worker work visa and can later hold an EU Blue Card. Once your B2 German, recognition and job offer are ready, the recruiter and employer support the visa. Your counsellor maps the exact type for you." },
+  { id:"germanhealth", label:"", keywords:["german health insurance","krankenversicherung","health insurance germany","medical germany"],
+    a:"In Germany health insurance is mandatory and automatic with your job — it comes out of your salary and covers doctor visits, hospital and often your family. You are well protected from day one." },
+  { id:"pflege", label:"", keywords:["pflegefachkraft","registered nurse germany","nurse title","license germany","nursing license","registration germany"],
+    a:"After recognition you work as a Pflegefachkraft — a fully registered nurse in Germany, with the same rights and pay as a local nurse. That recognition is the key that unlocks the full salary and the PR path." },
+  { id:"germansteps", label:"", keywords:["germany process","germany steps","full process germany","roadmap germany","step by step germany","germany plan"],
+    a:"Germany, step by step: (1) learn German A1→B2 with us (about 10 to 12 months), (2) get your degree recognised (Anerkennung), clearing any small gap with a knowledge test if needed, (3) job offer + work visa via licensed recruiters, (4) fly out and join as a registered nurse (Pflegefachkraft), (5) family can join, and a long-term PR path opens up. We guide every single step." },
+  { id:"settling", label:"", keywords:["settle in germany","integration","adjust","culture shock","new country","first days","language barrier","lonely"],
+    a:"You will not be alone. With B2 German you can handle daily life comfortably, and hospitals and recruiters help with your first accommodation and paperwork. A large Indian nurse community is already there, so you land among friends." },
+
+  // human replies for casual / emotional / rude inputs (kept AFTER real topics so they never steal a genuine question)
+  { id:"rude",   label:"", keywords:["i hate you","hate you","you are stupid","stupid","useless","idiot","nonsense","shut up","you are bad","hate this","rubbish","waste"],
+    a:"Oh no, did I say something wrong? 😅 I am really just here to help you build a better career abroad. Let us start fresh — ask me about salary, language or visa. 🙂" },
+  { id:"love",   label:"", keywords:["i love you","love you","you are cute","marry me","you are sweet","i like you","you are beautiful"],
+    a:"Aww, that is sweet of you! 😄 Let me help you fall in love with your career abroad instead. What would you like to know?" },
+  { id:"thanks", label:"", keywords:["thank you","thanks","thank u","thx","dhanyavaad","shukriya","great help","very helpful","tysm"],
+    a:"You are most welcome! 😊 I am happy to help. Anything else you would like to know?" },
+  { id:"greet",  label:"", keywords:["hi","hii","hello","hey","namaste","hello jhanvi","hi jhanvi","good morning","good evening"],
+    a:"Hi there! 😊 What would you like to know about a nursing career abroad?" },
+  { id:"howru",  label:"", keywords:["how are you","how r u","how are u","how you doing","how do you do","howdy","kaise ho","kaisi ho","aap kaise","kaise hain","kaisi hain"],
+    a:"I'm doing great, thank you for asking! 😊 Excited to help you explore a nursing career in Germany that can pay ₹2–2.5 lakh/month. Shall we quickly check if you qualify?" },
+  { id:"bye",    label:"", keywords:["bye","goodbye","see you","ok bye","gtg","talk later","good night"],
+    a:"Take care! 😊 Our counsellor will call you soon with everything you need. All the best!" },
+];
+
+// Hindi answers, keyed by KB id (English `a` is the fallback when a Hindi line is missing)
+const HI = {
+  who:"मैं झांवी हूँ, Testbook से 😊 मैं nurses को विदेश में अच्छी salary वाली job ढूँढने में help करती हूँ, और अभी Germany सबसे बढ़िया option है। कुछ भी पूछिए!",
+  b2done:"वाह, बढ़िया! 🎉 अगर आपके पास पहले से B2 German है, तो आप तो अगले step के लिए ready हैं! मैं सीधे अपने counsellor से connect करवा देती हूँ, वो आपकी profile fast-track कर देंगे। बस phone पास रखिए!",
+  emi:"बिल्कुल! Student loan मिल जाता है जो पूरी fees पहले भर देता है, और आप छोटी-छोटी monthly EMI में चुकाते हैं। एकसाथ बड़ा payment नहीं करना पड़ता। Counsellor call पर exact amount बता देंगे।",
+  levels:"German hospitals को आमतौर पर B1–B2 level चाहिए होता है। हमारा course आपको A1 से B2 तक पहुँचाता है — बिल्कुल उतना, जितना उन्हें चाहिए।",
+  anm:"अगर आपके पास GNM या B.Sc Nursing (या Post-Basic B.Sc) है, तो आप शुरू कर सकते हैं। Final year students भी अभी classes शुरू कर सकते हैं। सिर्फ़ ANM आमतौर पर काफ़ी नहीं होता — पर आप अपनी detail बताइए, हम सही रास्ता बता देंगे।",
+  exp:"Freshers का पूरा welcome है! सालों का experience ज़रूरी नहीं। नए और experienced, दोनों तरह के nurses यह रास्ता चुनते हैं। बस nursing degree और B2 German चाहिए।",
+  age:"कोई सख़्त age limit नहीं है। हर उम्र के nurses Germany जाते हैं। हाँ, कम उम्र वाले language थोड़ा जल्दी पकड़ लेते हैं, पर आपके लिए भी रास्ता खुला है। Counsellor आपकी age के हिसाब से बता देंगे।",
+  ielts:"Germany के लिए IELTS या कोई English test नहीं चाहिए! यहाँ बस German चलती है (B2 तक), और वही तो हम सिखाते हैं। 🙂",
+  recog:"आपकी Indian nursing degree Germany में Anerkennung (recognition) से accept होती है — यह licensed German partners के साथ होता है, एक बार आपकी German ready हो जाए। हम आपको इसके लिए पूरा तैयार करते हैं।",
+  visa:"Germany में qualified nurses के लिए special work visa है (और skilled लोगों के लिए EU Blue Card भी)। एक बार आपकी B2 German और degree recognition हो जाए, हम आपको licensed German recruiters से connect कर देते हैं जो job offer और visa आगे बढ़ाते हैं। Counsellor पूरे steps बता देंगे।",
+  family:"हाँ बिल्कुल, family ले जा सकते हैं! Work visa पर settle होने के बाद आप अपने husband/wife और बच्चों को बुला सकते हैं। Counsellor timing और papers समझा देंगे।",
+  pr:"Germany की nursing job लंबे समय के stay और आगे चलकर PR, फिर citizenship तक ले जा सकती है — क्योंकि वहाँ nurses की हमेशा ज़रूरत रहती है। Counsellor पूरा रास्ता बता देंगे।",
+  tax:"Germany की salary tax से पहले की होती है। Tax के बाद भी अच्छी रकम बचती है, और health cover + pension साथ में मिलते हैं। असल in-hand आपके tax class पर depend करता है — counsellor सही अंदाज़ा दे देंगे।",
+  docs:"Germany के लिए आमतौर पर चाहिए: passport, nursing degree और marksheets, Indian nursing council registration, आपका B2 German certificate, और recognition (Anerkennung) के papers, साथ में job offer। अभी शुरू करने के लिए कुछ नहीं चाहिए — counsellor पूरी list दे देंगे।",
+  cities:"Indian nurses Germany के कई cities और hospitals में काम करते हैं। City उस hospital पर depend करती है जो आपको hire करता है, और आपकी पसंद का भी ध्यान रखा जाता है।",
+  stay:"जब आप जाते हैं, hospital और recruiters आमतौर पर शुरू की accommodation और settle होने में help करते हैं। आप अकेले नहीं होंगे। 🙂",
+  male:"हाँ बिल्कुल, Germany में male nurses की भी उतनी ही ज़रूरत है — रास्ता एकदम same है।",
+  safe:"Germany बहुत safe और व्यवस्थित देश है, workers की safety के लिए मज़बूत rules हैं। बहुत सारे Indian nurses — women और families — वहाँ ख़ुशी से रह रहे हैं।",
+  process:"बहुत simple है! पहले हमारे साथ A1 से B2 German सीखिए। दूसरा, अपनी degree की recognition (Anerkennung) कराइए। तीसरा, हम आपको licensed German recruiters से connect कर देते हैं जो job, visa और joining कराते हैं। Counsellor हर step guide करेंगे।",
+  when:"German classes आप अभी शुरू कर सकते हैं! Germany जाना तब होता है जब B2 पूरा हो जाए और recognition + visa हो जाए — आमतौर पर लगभग एक साल में, आपकी speed पर depend करता है।",
+  other:"अभी हम पूरा focus Germany पर रखते हैं — क्योंकि वहाँ nurses की सबसे ज़्यादा कमी है, salary अच्छी है, और Indian nurses के लिए साफ़ legal रास्ता है। चाहें तो counsellor call पर बाकी options भी बता देंगे।",
+  why:"देखिए, Germany को हज़ारों nurses चाहिए, salary India से लगभग 8–10 गुना है, और आपकी GNM/B.Sc पहले से eligible बनाती है। कोई IELTS नहीं, खर्च कम, और PR का रास्ता — इसलिए यही सबसे बढ़िया option है। 🇩🇪",
+  time:"A1 से B2 तक जाने में आमतौर पर 10 से 12 महीने लगते हैं — आपकी सीखने की speed पर depend करता है। Counsellor आपके लिए एक clear timeline बना देंगे।",
+  salary:"Germany में nurses लगभग ₹2 से 2.5 लाख महीना कमाते हैं (hospital और city से थोड़ा ऊपर-नीचे होता है), जबकि India में staff nurse को करीब ₹25,000। ऊपर से अच्छे benefits और paid leave भी।",
+  german:"नहीं, अभी German आना ज़रूरी नहीं! हम आपको zero (A1) से B2 तक ले जाते हैं, जो German hospitals चाहते हैं। हमारे teachers हर step साथ रहते हैं। 🙂",
+  cost:"अच्छा सवाल! Exact fee तो counsellor आपको call पर पूरी detail के साथ बता देंगे — easy EMI options और कोई hidden charge नहीं। हम सिर्फ़ language training + interview prep का charge लेते हैं (referral के लिए कुछ नहीं), और शुरू करने के लिए अभी कुछ देना नहीं है। 🙂",
+  place:"देखिए, हम training और preparation के experts हैं। हम आपको B2 German तक ले जाते हैं, पूरा ready करते हैं, और licensed German recruiters से connect कराते हैं जो nurses को hire करते हैं। पूरे सफ़र में हम साथ रहते हैं, और final hiring recruiters और hospitals करते हैं।",
+  guarantee:"हम आपकी तैयारी इतनी अच्छी कराते हैं कि आप एक strong, ready candidate बन जाते हैं। Final hiring German recruiters और hospitals करते हैं, और वहाँ nurses की भारी कमी की वजह से demand बहुत ज़्यादा है। Counsellor पूरा रास्ता साफ़-साफ़ बता देंगे।",
+  legit:"अच्छा सवाल! Global Careers by Testbook (Testbook से) आपको German में train करता है, पूरा ready कराता है, और licensed German recruiters से connect करता है जो hiring करते हैं। यह एक सही, legal और भरोसेमंद रास्ता है — कोई झूठे वादे करने वाला agent नहीं। Counsellor call पर सब कुछ दिखा देंगे।",
+  refund:"Counsellor decide करने से पहले पूरी fees, EMI और terms साफ़ बता देंगे, ताकि कोई hidden charge न हो। Refund के exact rules call पर confirm कर लीजिएगा।",
+  call:"Global Careers के counsellor आपके दिए number पर, आपके चुने time slot में call करेंगे। यह एक free one-on-one call है — बस phone पास रखिए। 🙂",
+  rude:"अरे, क्या मैंने कुछ ग़लत कह दिया? 😅 मैं तो बस आपकी विदेश में better career बनाने में help करने के लिए हूँ। चलिए फिर से — salary, language या visa के बारे में पूछिए। 🙂",
+  love:"अरे, कितनी प्यारी बात! 😄 चलिए मैं आपको विदेश में career से प्यार करवा देती हूँ। क्या जानना चाहेंगे?",
+  thanks:"आपका बहुत स्वागत! 😊 help करके अच्छा लगा। और कुछ पूछना है?",
+  greet:"नमस्ते! 😊 विदेश में nursing career के बारे में क्या जानना चाहेंगे?",
+  howru:"मैं बढ़िया हूँ, पूछने के लिए शुक्रिया! 😊 आपको Germany में ₹2–2.5 लाख/महीना वाली nursing career दिलाने में मदद करके खुशी होगी। चलिए quickly check करें आप qualify करती हैं?",
+  bye:"अपना ख़याल रखिए! 😊 हमारे counsellor जल्दी आपको सब जानकारी के साथ call करेंगे। All the best!",
+  visaprocess:"Visa तो आख़िर में आता है, जब आप ready हो जाते हैं। Short में: (1) ज़रूरी language/exam पूरा करें, (2) nursing degree की recognition कराएँ, (3) licensed recruiter से job offer लें, (4) documents के साथ work visa apply करें। Germany के लिए यह skilled-worker visa या EU Blue Card होता है। Counsellor हर step बता देंगे।",
+  flights:"Flight तभी book होती है जब visa और joining date fix हो जाए। India से Germany की one-way ticket आमतौर पर ₹25,000 से ₹45,000 के बीच होती है (season और city से बदलती है)। कई employers/recruiters relocation में help करते हैं — counsellor बता देंगे आपके offer में क्या मिलेगा।",
+  relocation:"Language fees के अलावा कुछ one-time खर्च रखिए — flight, visa fees, documents का translation, और दिखाने के लिए थोड़ी रकम। ये ज़्यादा नहीं होते, और counsellor पूरी list दे देते हैं ताकि कोई surprise न हो।",
+  insurance:"Germany में health insurance job के साथ ही आता है — salary से कटता है और पहले दिन से आपको (अक्सर family को भी) cover करता है। जाने से पहले बस short-term travel insurance चाहिए हो सकता है। Counsellor बता देंगे कब क्या करना है।",
+  pcc:"हाँ, ज़्यादातर देश visa के लिए Police Clearance Certificate (PCC) माँगते हैं। यह passport office/local police से मिलने वाला आसान document है। अभी कुछ नहीं करना — counsellor सही time पर बता देंगे।",
+  medical:"Joining से पहले आमतौर पर एक basic medical fitness check और normal vaccines चाहिए होते हैं। यह routine है, और counsellor सही time पर checklist दे देंगे।",
+  funds:"Germany के visa के लिए एक blocked account (Sperrkonto) में कुछ funds दिखाने पड़ सकते हैं — कुछ लाख रुपये जो आपके ही रहते हैं और पहुँचने पर आप use करते हैं। Job offer हो तो requirement कम हो जाती है। Counsellor exact amount बता देंगे।",
+  exams_other:"हर देश का अपना exam है: UK/Ireland के लिए IELTS/OET + registration (NMC/NMBI), Canada के लिए IELTS + NNAS + licensing exam, Australia के लिए IELTS/OET + AHPRA, Gulf के लिए Prometric। Germany के लिए इनमें से कुछ नहीं — बस B2 तक German। इसीलिए यह सबसे आसान रास्ता है। 🇩🇪",
+  spousework:"हाँ — Germany में आपके life partner भी आमतौर पर काम कर सकते हैं, जब वो family visa पर आपके साथ आते हैं। कई देशों के मुक़ाबले यह बड़ा फ़ायदा है। Counsellor conditions समझा देंगे।",
+  anerkennung:"Anerkennung Germany का वो process है जो आपकी Indian nursing degree को German degree के बराबर मानता है। आप अपनी degree, transcripts और registration एक German authority को देते हैं। अगर छोटे-मोटे gaps हों, तो एक छोटे knowledge test या adaptation से पूरे हो जाते हैं। हम आपको तैयार कर देते हैं।",
+  kenntnis:"अगर authority को छोटे gaps दिखें (Defizitbescheid), तो आप उन्हें Kenntnisprüfung (practical/oral knowledge exam) या Anpassungslehrgang (hospital में छोटी adaptation period) से पूरा करते हैं। बहुत manageable है, और हम आपको तैयार करते हैं।",
+  germanvisatype:"Germany के लिए nurses आमतौर पर recognition/skilled-worker work visa पर जाते हैं, और बाद में EU Blue Card रख सकते हैं। जब आपकी B2 German, recognition और job offer ready हों, recruiter और employer visa में help करते हैं। Counsellor सही type बता देंगे।",
+  germanhealth:"Germany में health insurance ज़रूरी है और job के साथ अपने-आप आता है — salary से कटता है और doctor, hospital व अक्सर family को cover करता है। पहले दिन से आप safe हैं।",
+  pflege:"Recognition के बाद आप Pflegefachkraft — यानी Germany में पूरी तरह registered nurse — बन जाते हैं, local nurse जैसे ही rights और salary के साथ। यही recognition पूरी salary और PR का रास्ता खोलती है।",
+  germansteps:"Germany, step by step: (1) हमारे साथ A1→B2 German सीखिए (करीब 10 से 12 महीने), (2) degree की recognition (Anerkennung), ज़रूरत हो तो छोटे knowledge test से gap पूरा करें, (3) licensed recruiters से job offer + work visa, (4) जाकर registered nurse (Pflegefachkraft) के तौर पर join करें, (5) family साथ आ सकती है, और आगे PR का रास्ता खुलता है। हम हर step साथ रहते हैं।",
+  settling:"आप अकेले नहीं होंगे। B2 German के साथ रोज़ की life आसान हो जाती है, और hospital व recruiters पहली accommodation और paperwork में help करते हैं। वहाँ पहले से बड़ी Indian nurse community है — तो आप अपनों के बीच पहुँचते हैं। 🙂",
+};
+
+// lead nurture score (0-100) + tier, from tracked activity
+function nurtureOf(d){
+  let s=0;
+  if(d.phone) s+=10;
+  if(d.lang) s+=8;
+  if(d.nurse==="nurse"||d.nurse==="student") s+=12;
+  if(d.qualification) s+=10;
+  if(d.abroad==="yes") s+=12; else if(d.abroad) s+=6;
+  if(d.country) s+=8;
+  s += Math.min(18, ((d.qCount||0)+(d.hubN||0)+(d.gN||0))*3);
+  if(d.gpushed) s+=8;
+  if(d.videoStarted) s+=6;
+  s += Math.round((d.videoPct||0)/10);
+  if(d.videoCompleted) s+=6;
+  if(d.slot) s+=12;
+  s = Math.min(100, s);
+  return { score:s, tier: s>=70 ? "hot" : s>=40 ? "warm" : "cold" };
+}
+
+// full activity record for the CRM (how nurtured is this lead)
+function activityOf(d, stage){
+  const n = nurtureOf(d);
+  return {
+    nurture_score:n.score, nurture_tier:n.tier,
+    current_stage: stage||null, last_stage: d.lastStage||null, stages_seen: d.stagesSeen||[],
+    started_at: d.startedAt||null, last_active_at: d.lastActiveAt||null,
+    nurse: d.nurse||null, abroad: d.abroad||null, country: d.country||null, language: d.language||null,
+    questions_asked: (d.qCount||0), question_list: d.qList||[],
+    chip_interactions: (d.hubN||0)+(d.gN||0),
+    germany_explored: !!d.gpushed,
+    video_started: !!d.videoStarted, video_language: d.videoLangChosen||null,
+    video_watched_pct: d.videoPct||0, video_watch_sec: d.videoWatchSec||0, video_completed: !!d.videoCompleted,
+  };
+}
+
+// pull the 11-char video id out of any YouTube URL form (watch?v= , youtu.be/ , /shorts/ , /embed/) or a bare id
+function ytId(u){
+  const s = String(u||"").trim();
+  const m = s.match(/(?:v=|youtu\.be\/|\/shorts\/|\/live\/|\/embed\/)([\w-]{11})/);
+  return m ? m[1] : s;
+}
+
+const norm = (s)=> (s||"").toLowerCase().replace(/[^a-z0-9ऀ-ॿ ]+/g," ").replace(/\s+/g," ").trim();
+const esc = (k)=> k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+// whole-word (space-bounded) match so "pr" can't match "prime", "man" can't match "German"
+function matchFor(text){
+  const q = " " + norm(text) + " ";
+  let best=null, bestScore=0;
+  KB.forEach((e)=>{
+    let score=0;
+    e.keywords.forEach((k)=>{ if(new RegExp(" "+esc(k)+" ").test(q)) score += k.includes(" ")?2:1; });
+    if(score>bestScore){ bestScore=score; best=e; }
+  });
+  return bestScore>0 ? best : null;   // returns the KB entry (or null)
+}
+
+/* Phone: never block. Return {ok, value, flag, display}. */
+function classifyPhone(raw){
+  const t = (raw||"").trim();
+  const digits = t.replace(/\D/g,"");
+  let local = digits, hadIN = t.startsWith("+91") || (digits.length===12 && digits.startsWith("91"));
+  if(digits.length===12 && digits.startsWith("91")) local = digits.slice(2);
+  else if(digits.length===11 && digits.startsWith("0")) local = digits.slice(1);
+  if(/^[6-9]\d{9}$/.test(local)) return { ok:true, value:local, flag:null, display:"+91 "+local };
+  // looks like a foreign number
+  if((t.startsWith("+") && !hadIN) || digits.length>10) return { ok:false, value:t, flag:"non_india", display:t };
+  return { ok:false, value:t, flag:"invalid", display:t };
+}
+
+/* ── UI atoms ─────────────────────────────────────────────── */
+function Group({ from, at, children }){
+  const bot = from==="bot";
+  return (
+    <div className={"grp "+from}>
+      <div className={"bubble "+from}>
+        {children}
+        <span className="time">{at}{!bot && <span className="tk">✓✓</span>}</span>
+      </div>
+    </div>
+  );
+}
+function Typing(){
+  return <div className="grp bot"><div className="mini"><Jhanvi/></div><div className="bubble bot typing"><span></span><span></span><span></span></div></div>;
+}
+function SalaryCard(){
+  return (
+    <div className="grp bot"><div className="mini hide"></div>
+      <div className="card">
+        <div className="card-h">What nurses earn, India vs Germany</div>
+        <div className="card-grid">
+          <div className="card-col br"><div className="lbl">Nurse in India</div><div className="amt">₹25,000</div><div className="per">/month</div></div>
+          <div className="card-col"><div className="lbl">Nurse in Germany</div><div className="amt g">₹2.5 Lakh</div><div className="per">/month*</div></div>
+        </div>
+        <div className="card-foot">*Rough figure. Real pay changes by hospital and city.</div>
+      </div>
+    </div>
+  );
+}
+
+/* ── App ──────────────────────────────────────────────────── */
+const AD_KEYS = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','ad_id','adset_id','placement','src_platform','fbclid','gclid'];
+(function(){ try{ var p=new URLSearchParams(location.search); var a=JSON.parse(sessionStorage.getItem('gc_attr')||'{}'); AD_KEYS.forEach(function(k){ var v=p.get(k); if(v) a[k]=v; }); if(!a.landing_url)a.landing_url=location.href; if(!a.referrer)a.referrer=document.referrer||''; if(!a.first_seen)a.first_seen=new Date().toISOString(); sessionStorage.setItem('gc_attr',JSON.stringify(a)); }catch(e){} })();
+function gcAttr(){ var a={}; try{ a=JSON.parse(sessionStorage.getItem('gc_attr')||'{}'); }catch(e){} return {
+  utm_source:a.utm_source||null, utm_medium:a.utm_medium||null, utm_campaign:a.utm_campaign||null, utm_content:a.utm_content||null, utm_term:a.utm_term||null, utm_id:a.utm_id||null,
+  campaign:a.utm_campaign||null, adset:(a.utm_term||a.adset_id||null), ad:(a.utm_content||a.ad_id||null),
+  campaign_id:a.utm_id||null, adset_id:a.adset_id||null, ad_id:a.ad_id||null, placement:a.placement||null, src_platform:a.src_platform||null,
+  fbclid:a.fbclid||null, gclid:a.gclid||null, landing_url:a.landing_url||null, referrer:a.referrer||null };
+}
+const NURSING_QUALS = ["GNM","B.Sc Nursing","Post Basic B.Sc","ANM"];
+const NURSE_SPEC_KEYS = ["general medicine","general nursing","medical surgical","med surg","medical","surgical","ward","staff nurse","bedside","critical care","intensive care","icu","iccu","ccu","sicu","micu","hdu","emergency","casualty","trauma","accident","paediatric","pediatric","peads","peds","paeds","neonatal","nicu","picu","obstetric","gynae","gynaec","gyn","gynec","gynaecology","gynecology","obg","maternity","labour","labor","midwife","midwifery","antenatal","postnatal","delivery","cardiac","cardiology","cardio","cath lab","cathlab","ctvs","cvts","cardiothoracic","telemetry","oncology","onco","cancer","chemo","haemato","hemato","haematology","hematology","bmt","palliative","hospice","orthopaedic","orthopedic","ortho","neuro","neurology","neurosurgery","stroke","psychiatric","psychiatry","mental health","deaddiction","rehab","rehabilitation","community health","public health","chn","phn","rural health","school health","occupational health","home care","home health","home nursing","domiciliary","operation theatre","operation theater","perioperative","scrub","anaesthesia","anesthesia","recovery","pacu","cssd","dialysis","nephrology","nephro","renal","haemodialysis","hemodialysis","transplant","geriatric","elderly","burns","plastic","gastro","gastroenterology","hepatology","urology","uro","pulmonology","respiratory","pulmonary","tuberculosis","dermatology","skin","ent","otorhino","ophthalmic","ophthalmology","optha","diabetic","diabetes","endocrine","endocrinology","infection control","wound care","stoma","ostomy","blood bank","transfusion","immunization","immunisation","vaccination","radiology","imaging","pathology","forensic","ambulance","prehospital","general duty","gda","nursing assistant","bsc nursing","b sc nursing","gnm","anm","post basic","msc nursing"];
+function validateSpecialization(text){
+  var t=(text||"").toLowerCase().replace(/[._\/]/g," ").replace(/[^a-z0-9& ]+/g,"").replace(/\s+/g," ").trim();
+  if(!t) return { valid:false, matched:null };
+  for(var i=0;i<NURSE_SPEC_KEYS.length;i++){ var k=NURSE_SPEC_KEYS[i];
+    if(k.length<=4){ if(new RegExp("(^| )"+k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"( |$)").test(t)) return { valid:true, matched:k }; }
+    else if(t.indexOf(k)>=0){ return { valid:true, matched:k }; } }
+  return { valid:false, matched:null };
+}
+function validateCollege(text){
+  var t=(text||"").toLowerCase().trim();
+  if(t.length<4) return false;
+  var kws=["college","collage","institute","institut","nursing","school","univ","university","vidyalaya","mahavidyalaya","academy","hospital","medical","sciences","gnm","bsc","b sc","inst","trust","foundation"];
+  for(var i=0;i<kws.length;i++){ if(t.indexOf(kws[i])>=0) return true; }
+  return (t.split(/\s+/).length>=2 && t.length>=9);
+}
+function scoreNurse(d){
+  let sc = 0;
+  if(d.nurse==="nurse") sc += 2; else if(d.nurse==="student") sc += 1; else sc -= 3;
+  if(NURSING_QUALS.includes(d.qualification)) sc += 2; else if(d.qualification) sc -= 1;
+  if(d.specializationValid===true) sc += 2; else if(d.specialization && d.specializationValid===false) sc -= 1;
+  if(d.collegeValid===true) sc += 1;
+  if(d.council==="registered") sc += 2;
+  else if(d.council==="studying") sc += (d.nurse==="student" ? 1 : -1);
+  else if(d.council==="none") sc -= 3;
+  const conf = sc>=4 ? "high" : (sc>=2 ? "medium" : "low");
+  const quality = conf==="high" ? "genuine" : (conf==="medium" ? "review" : "unlikely");
+  return { conf, quality, score:sc };
+}
+function App(){
+  const [msgs, setMsgs] = useState([]);
+  const [typing, setTyping] = useState(false);
+  const [stage, setStage] = useState("greet");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const bookRef = useRef(false);
+  const [input, setInput] = useState("");
+  const [lead, setLead] = useState({});
+  const [phoneTries, setPhoneTries] = useState(0);
+  const [showVideo, setShowVideo] = useState(false);
+  const [videoId, setVideoId] = useState("");
+  const [videoLang, setVideoLang] = useState("");
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const [videoEnded, setVideoEnded] = useState(false);
+  const [videoMuted, setVideoMuted] = useState(false);
+  const [videoProg, setVideoProg] = useState(0);
+  const [phase, setPhase] = useState("welcome");   // welcome -> success -> chat
+  const [wname, setWname] = useState("");
+  const [wphone, setWphone] = useState("");
+  const [wcenter, setWcenter] = useState("");
+  const [werr, setWerr] = useState("");
+  const [countdown, setCountdown] = useState(30);
+  const [showData, setShowData] = useState(CONFIG.DEMO_MODE);
+  const endRef = useRef(null);
+  const inRef = useRef(null);
+  const playerRef = useRef(null);
+  const pollRef = useRef(null);
+  useEffect(()=>{ window.__lead = lead; }, [lead]);   // harmless debug hook; remove if you like
+  const watchRef = useRef({ pct:0, sec:0 });
+  const rowIdRef = useRef(null);       // v2_staging row id (to enrich the same row later)
+  const insertedRef = useRef(false);   // guards against a duplicate insert
+
+  // auto-track how far the lead got (funnel depth + drop-off point + timestamps)
+  useEffect(()=>{
+    if(stage==="greet") return;
+    setLead((l)=>{ const seen=l.stagesSeen||[]; return { ...l,
+      startedAt: l.startedAt || new Date().toISOString(),
+      lastStage: stage,
+      stagesSeen: seen.includes(stage) ? seen : [...seen, stage],
+      lastActiveAt: new Date().toISOString(),
+    }; });
+  }, [stage]);
+
+  // keep the v2_staging row's activity/nurture fresh as the lead engages (debounced)
+  useEffect(()=>{
+    if(!rowIdRef.current) return;
+    const t=setTimeout(()=> patchStaging(lead), 700);
+    return ()=> clearTimeout(t);
+  }, [lead.qCount, lead.hubN, lead.gN, lead.gpushed, lead.videoStarted, lead.videoPct, lead.videoCompleted, lead.slot, lead.nurse, lead.qualification, lead.country, lead.abroad, lead.language, lead.lastStage]);
+
+  // Custom YouTube player: controls hidden (controls=0) + our own overlay so NO YouTube chrome (title, channel, logo) ever shows.
+  useEffect(()=>{
+    if(!showVideo || !videoId) return;
+    let cancelled=false;
+    const build=()=>{
+      if(cancelled || !window.YT || !window.YT.Player) return;
+      playerRef.current = new window.YT.Player("yt-player", {
+        videoId,
+        host:"https://www.youtube-nocookie.com",
+        playerVars:{ autoplay:1, controls:0, rel:0, modestbranding:1, playsinline:1, iv_load_policy:3, fs:0, disablekb:1, showinfo:0, cc_load_policy:0 },
+        events:{
+          onReady:(e)=>{ try{ e.target.playVideo(); }catch(_){} try{ setVideoMuted(e.target.isMuted()); }catch(_){} },
+          onStateChange:(e)=>{ const S=window.YT.PlayerState;
+            if(e.data===S.PLAYING){ setVideoPlaying(true); setVideoEnded(false); }
+            else if(e.data===S.PAUSED){ setVideoPlaying(false); }
+            else if(e.data===S.ENDED){ setVideoPlaying(false); setVideoEnded(true); setLead(l=>({ ...l, videoCompleted:true, videoPct:100 })); }
+          },
+        },
+      });
+    };
+    if(window.YT && window.YT.Player){ build(); }
+    else {
+      if(!document.getElementById("yt-api")){ const s=document.createElement("script"); s.id="yt-api"; s.src="https://www.youtube.com/iframe_api"; document.head.appendChild(s); }
+      const prev=window.onYouTubeIframeAPIReady; window.onYouTubeIframeAPIReady=()=>{ prev&&prev(); build(); };
+    }
+    pollRef.current=setInterval(()=>{ const p=playerRef.current;
+      if(p&&p.getDuration){ const d=p.getDuration()||0, c=p.getCurrentTime()||0; if(d>0){ const f=c/d; setVideoProg(f); if(f>watchRef.current.pct) watchRef.current={ pct:f, sec:c }; } }
+    },250);
+    return ()=>{ cancelled=true; clearInterval(pollRef.current); try{ playerRef.current&&playerRef.current.destroy&&playerRef.current.destroy(); }catch(_){} playerRef.current=null; };
+  }, [showVideo, videoId]);
+
+  const closeVideo = ()=>{ setLead(l=>({ ...l, videoPct: Math.max(l.videoPct||0, Math.round(watchRef.current.pct*100)), videoWatchSec: Math.round(watchRef.current.sec) })); setShowVideo(false); setVideoEnded(false); setVideoPlaying(false); setVideoProg(0); };
+  const togglePlay = ()=>{ const p=playerRef.current; if(!p) return;
+    try{ if(videoPlaying) p.pauseVideo(); else { if(videoEnded){ p.seekTo(0,true); setVideoEnded(false); } p.playVideo(); } }catch(_){} };
+  const seekTo = (e)=>{ const p=playerRef.current; if(!p||!p.getDuration) return;
+    const r=e.currentTarget.getBoundingClientRect(); const f=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));
+    try{ p.seekTo(f*(p.getDuration()||0), true); }catch(_){} setVideoProg(f); };
+  const toggleMute = ()=>{ const p=playerRef.current; if(!p) return;
+    try{ if(p.isMuted()){ p.unMute(); setVideoMuted(false); } else { p.mute(); setVideoMuted(true); } }catch(_){} };
+
+  const nowT = ()=> new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+  const push = (m)=> setMsgs((prev)=>[...prev, {...m, at:m.at||nowT()}]);
+  const me   = (text)=> push({ from:"user", node:text });
+  const say  = (node, delay=800)=>{ setTyping(true); setTimeout(()=>{ setTyping(false); push({ from:"bot", node }); }, delay); };
+
+  useEffect(()=>{ endRef.current?.scrollIntoView({ behavior:"smooth" }); }, [msgs, typing, stage]);
+  useEffect(()=>{ if(["name","phone","faq"].includes(stage)) inRef.current?.focus(); }, [stage]);
+
+  // Jhanvi's opening — fires when the chat phase starts (name/number already captured on the welcome screen)
+  useEffect(()=>{
+    if(phase!=="chat" || msgs.length) return;
+    const nm = (lead.name||"there").split(" ")[0];
+    say(`Hi ${nm}! I am Jhanvi from Testbook 👋`, 550);
+    setTimeout(()=> say("Let us find you a great career abroad that can pay 2 to 3 lakhs a month. 🌍 First, which language are you most comfortable in? 👇", 950), 1350);
+    setTimeout(()=> setStage("lang"), 2600);
+  }, [phase]);
+
+  const utmParams = ()=> gcAttr();
+
+  // PAYLOAD 1 — OCRM marketing lead. Fires for ALL leads on phone capture (canonical GC pattern).
+  const pushToOCRM = (data)=>{
+    const digits = String(data.phone||"").replace(/\D/g,"");
+    const local  = digits.length>=10 ? digits.slice(-10) : digits;
+    const mobile = data.phoneValid ? ("+91"+local) : (String(data.phone||"").trim() || ("+91"+local));
+    const email  = (digits ? ("91"+local) : ("gc"+Date.now())) + "@leads.gcc.testbook.com";
+    const n = nurtureOf(data);
+    const at = utmParams();
+    const body = {
+      Email: email, Mobile: mobile,
+      Product: CONFIG.OCRM.product, Category: CONFIG.OCRM.category, Funnel: CONFIG.OCRM.funnel,
+      Cohort: "Chat bot", Source: "chatbot",
+      Campaign: at.campaign, AdSet: at.adset, Ad: at.ad, CampaignId: at.campaign_id, AdsetId: at.adset_id, AdId: at.ad_id, Placement: at.placement,
+      // extras (OCRM ignores unknown fields, but they help downstream)
+      Name: data.name||"", City: data.city||"", PreferredLanguage: data.language||"",
+      Qualification: data.qualification||"", PreferredTime: data.slot||"",
+      IsNurse: data.nurse||"", Specialization: data.specialization||"", SpecializationValid: data.specializationValid, College: data.college||"", CollegeValid: data.collegeValid, NursingCouncil: data.council||"", LeadQuality: data.leadQuality||"", NurseConfidence: data.nurseConfidence||"",
+      PhoneValid: data.phoneValid, PhoneFlag: data.phoneFlag||"",
+      NurtureScore: n.score, NurtureTier: n.tier, LastStage: data.lastStage||"",
+      QuestionsAsked: (data.qCount||0)+(data.hubN||0)+(data.gN||0),
+      GermanyExplored: !!data.gpushed, VideoWatchedPct: data.videoPct||0, VideoCompleted: !!data.videoCompleted,
+      ...at,
+    };
+    try{
+      fetch(CONFIG.OCRM.endpoint, { method:"POST",
+        headers:{ "Content-Type":"application/json", "X-PUBLIC-KEY":CONFIG.OCRM.publicKey },
+        body:JSON.stringify(body), keepalive:true });
+    }catch(e){ /* fire and forget */ }
+  };
+
+  // build a v2_staging row (mirrors the Germany site's shape; extra fields live in source_detail)
+  const buildStagingRow = (data, lead_stage)=>{
+    const d = String(data.phone||"").replace(/\D/g,""); const local = d.length>=10 ? d.slice(-10) : d;
+    return {
+      name: (data.name||"").trim() || null,
+      phone: local || (data.phone||null),
+      source: CONFIG.SOURCE, status: "pending",
+      source_detail: {
+        cohort:"Chat bot", campaign:"Chat bot", lead_type:"chatbot",
+        channel:"paid_ad", funnel:"germany_nursing", form:"germany_chatbot", center: data.center||null, exam_center: null, lead_stage,
+        qualification:data.qualification||null, city:data.city||null, preferred_language:data.language||null,
+        is_nurse:data.nurse||null, specialization:data.specialization||null, specialization_valid:(data.specializationValid===undefined?null:data.specializationValid), college:data.college||null, college_valid:(data.collegeValid===undefined?null:data.collegeValid), nursing_council:data.council||null, nurse_confidence:data.nurseConfidence||null, lead_quality:data.leadQuality||null,
+        preferred_time:data.slot||null, chat_query:data.question||null, captured_at:data.capturedAt||null,
+        phone_valid: data.phoneValid===undefined ? null : data.phoneValid, phone_flag: data.phoneFlag||null,
+        activity: activityOf(data, lead_stage),
+        ...utmParams(),
+      },
+    };
+  };
+  const supaHeaders = ()=> ({ "Content-Type":"application/json", apikey:CONFIG.SUPABASE.anon, Authorization:"Bearer "+CONFIG.SUPABASE.anon });
+  // PAYLOAD 2 → v2_staging: INSERT once at phone-capture (guaranteed capture, even for drop-offs).
+  const submitLead = (data, lead_stage)=>{
+    if(!CONFIG.SUPABASE || !CONFIG.SUPABASE.url || insertedRef.current) return;
+    insertedRef.current = true;
+    try{
+      fetch(CONFIG.SUPABASE.url+"/rest/v1/v2_staging?select=id", { method:"POST", headers:{ ...supaHeaders(), Prefer:"return=representation" }, body:JSON.stringify(buildStagingRow(data, lead_stage)), keepalive:true })
+        .then(r=>r.json()).then(j=>{ if(Array.isArray(j)&&j[0]&&j[0].id){ rowIdRef.current=j[0].id; patchStaging(data); } }).catch(()=>{});
+    }catch(e){ /* non-blocking */ }
+  };
+  // enrich the SAME row as the lead engages (no duplicates); keeps nurture fresh for drop-offs too
+  const patchStaging = (data)=>{
+    if(!CONFIG.SUPABASE || !CONFIG.SUPABASE.url || !rowIdRef.current) return;
+    try{
+      fetch(CONFIG.SUPABASE.url+"/rest/v1/v2_staging?id=eq."+rowIdRef.current, { method:"PATCH", headers:{ ...supaHeaders(), Prefer:"return=minimal" }, body:JSON.stringify({ source_detail: buildStagingRow(data, data.lastStage||null).source_detail }), keepalive:true }).catch(()=>{});
+    }catch(e){}
+  };
+
+  // ── language + KB-answer helpers ──
+  const LANG = lead.lang || "en";
+  const M = (en, hi)=> LANG==="hi" ? hi : en;                        // scripted message
+  const A = (e)=> (LANG==="hi" && HI[e.id]) ? HI[e.id] : e.a;        // KB answer (Hindi if available)
+  const cName = (k)=> M(CO(k).name.en, CO(k).name.hi);
+
+  // welcome screen submit: validate name + 10-digit number, CAPTURE the lead, then show the green success screen
+  const submitWelcome = ()=>{
+    const nm = wname.trim();
+    const c = classifyPhone(wphone);
+    if(!nm){ setWerr("Please enter your name."); return; }
+    if(!c.ok){ setWerr("Please enter a valid 10-digit mobile number (starting 6, 7, 8 or 9)."); return; }
+    setWerr("");
+    const next = { ...lead, name:nm, phone:c.value, phoneValid:true, phoneFlag:null, center:null, capturedAt:new Date().toISOString(), startedAt: new Date().toISOString(), lastStage:"welcome" };
+    setLead(next);
+    pushToOCRM(next);                    // OCRM
+    submitLead(next, "welcome_captured"); // v2_staging insert (guaranteed capture)
+    setPhase("chat");                     // straight into the chat (green refreshments screen removed post-event)
+  };
+
+  const begin = ()=>{ me("Yes, please help me"); say("Great! Please share your name."); setStage("name"); };
+
+  const saveName = ()=>{
+    const v = input.trim(); if(!v) return;
+    me(v); setLead((l)=>({ ...l, name:v })); setInput("");
+    say(`Nice to meet you, ${v.split(" ")[0]}! 😊 Please share your mobile number. I will send you the details and a free eligibility check there.`);
+    setStage("phone");
+  };
+
+  const savePhone = ()=>{
+    const raw = input.trim(); if(!raw) return;
+    const c = classifyPhone(raw);
+    if(!c.ok){
+      me(c.display); setInput("");
+      const tries = phoneTries + 1; setPhoneTries(tries);
+      say(tries===1
+        ? "Hmm, that does not look like a valid Indian mobile number. 🤔 Please type your 10-digit number (starting 6, 7, 8 or 9)."
+        : "That still is not a valid 10-digit Indian mobile number. Please check and type just the 10 digits. 🙏");
+      return;
+    }
+    const next = { ...lead, phone:c.value, phoneValid:true, phoneFlag:null, capturedAt:new Date().toISOString() };
+    me(c.display); setLead(next); setInput(""); setPhoneTries(0);
+    pushToOCRM(next); submitLead(next, "phone_captured");
+    say("Perfect, thank you! 🙌", 550);
+    setTimeout(()=> say("Which language are you most comfortable in? 👇", 500), 1000);
+    setTimeout(()=> setStage("lang"), 1500);
+  };
+
+  const pickLang = (o)=>{
+    const code = o.code;
+    me(o.label); setLead((l)=>({ ...l, language:o.label, lang:code }));
+    const m = (en,hi)=> code==="hi" ? hi : en;
+    say(m("Perfect, let us continue. 🙂 First — are you a nurse, or studying nursing? 👇",
+          "बढ़िया, चलिए शुरू करते हैं! 🙂 सबसे पहले — क्या आप nurse हैं, या nursing की पढ़ाई कर रही हैं? 👇"), 600);
+    setTimeout(()=> setStage("nurse"), 1150);
+  };
+
+  const pickNurse = (o)=>{
+    me(o.label); setLead((l)=>({ ...l, nurse:o.key }));
+    if(o.key==="no"){
+      setLead((l)=>({ ...l, nurseConfidence:"low", leadQuality:"unlikely" }));
+      say(M("No problem — most of our help is for nurses, but I can still show you what's possible and have our counsellor share options. 🙂",
+            "कोई बात नहीं — ज़्यादातर मदद nurses के लिए है, फिर भी मैं दिखा सकती हूँ क्या possible है और counsellor options भेज देंगे। 🙂"), 600);
+      setTimeout(()=> setStage("abroad"), 1150); return;
+    }
+    say(M("Great! What is your nursing qualification? 👇", "बढ़िया! आपकी nursing qualification क्या है? 👇"), 500);
+    setTimeout(()=> setStage("qual"), 1000);
+  };
+
+  const pickQual = (o)=>{
+    me(o); setLead((l)=>({ ...l, qualification:o }));
+    say(M("Got it! And what is your nursing specialization? Just type it (e.g., ICU, OT, Paediatrics, Cardiac…) 👇",
+          "समझ गई! और आपकी nursing specialization क्या है? बस type कर दीजिए (जैसे ICU, OT, Paediatrics, Cardiac…) 👇"), 500);
+    setTimeout(()=> setStage("specialization"), 1000);
+  };
+
+  const saveSpecialization = ()=>{
+    const v = input.trim(); if(!v) return;
+    me(v); setInput("");
+    const sp = validateSpecialization(v);
+    setLead((l)=>({ ...l, specialization:v, specializationValid:sp.valid, specializationMatched:sp.matched }));
+    say(M("Nice! And which nursing college did you study at? Please type the full name. 🏫",
+          "बढ़िया! और आपने किस nursing college से पढ़ाई की? पूरा नाम type कर दीजिए। 🏫"), 600);
+    setTimeout(()=> setStage("college"), 1100);
+  };
+
+  const saveCollege = ()=>{
+    const v = input.trim(); if(!v) return;
+    me(v); setInput("");
+    const ok = validateCollege(v);
+    setLead((l)=>({ ...l, college:v, collegeValid:ok }));
+    say(M("Thanks! One last quick check for your Germany eligibility — are you registered with a State Nursing Council? 👇",
+          "थैंक्स! Germany eligibility के लिए एक आख़िरी quick check — क्या आप किसी State Nursing Council में registered हैं? 👇"), 600);
+    setTimeout(()=> setStage("council"), 1100);
+  };
+
+  const pickCouncil = (o)=>{
+    me(o.label);
+    setLead((l)=>{ const d={ ...l, council:o.key }; const q=scoreNurse(d); return { ...d, nurseConfidence:q.conf, leadQuality:q.quality }; });
+    if(bookRef.current){ bookRef.current=false; say(M("Perfect — you're all set! ✅","बढ़िया — सब तैयार है! ✅"), 500); setTimeout(()=> askSlot(), 1100); }
+    else { say(M("Got it 👍 Are you looking to work abroad? 👇", "समझ गई 👍 क्या आप विदेश में काम करना चाहती हैं? 👇"), 500); setTimeout(()=> setStage("abroad"), 1000); }
+  };
+
+  const pickAbroad = (o)=>{
+    me(o.label); setLead((l)=>({ ...l, abroad:o.key }));
+    say(M("Nice! Which country interests you the most? You can compare others too. 👇",
+          "बढ़िया! कौन-सा देश आपको सबसे ज़्यादा पसंद है? बाकी की compare भी कर सकती हैं। 👇"), 500);
+    setTimeout(()=> setStage("country"), 1000);
+  };
+
+  const pickCountry = (k)=>{
+    me(k==="none" ? M("Not sure yet","अभी तय नहीं") : (CO(k).flag+" "+cName(k)));
+    setLead((l)=>({ ...l, country:k==="none"?null:k }));
+    say(M("Perfect! Ask me anything 👇 — compare countries, which pays best, visa & documents, or the cost of going.",
+          "बढ़िया! कुछ भी पूछिए 👇 — देशों की compare करें, कौन ज़्यादा pay करता है, visa & documents, या जाने का खर्च।"), 600);
+    setTimeout(()=> setStage("hub"), 1150);
+  };
+
+  const bumpHub = ()=>{ const n=(lead.hubN||0)+1; setLead((l)=>({ ...l, hubN:n }));
+    if(n>=2 && !lead.gpushed){ setLead((l)=>({ ...l, gpushed:true })); setTimeout(()=> gpush(true), 2000); } };
+  const bumpG = ()=>{ const n=(lead.gN||0)+1; setLead((l)=>({ ...l, gN:n }));
+    if(n>=2 && !lead.vpushed){ setLead((l)=>({ ...l, vpushed:true })); setTimeout(()=> offerVideo(), 2100); } };
+
+  const compareCountries = ()=>{
+    me(M("Compare countries","देशों की तुलना"));
+    const lines = COUNTRIES.map(c=> c.flag+" "+M(c.name.en,c.name.hi)+": "+M(c.salary.en,c.salary.hi)).join("\n");
+    say(M("Here is a quick salary picture 👇\n\n","एक quick salary picture 👇\n\n")+lines, 750);
+    setTimeout(()=> say(M("But salary is only part of it. Germany needs NO IELTS, costs less to start, and has a clear PR + family + EU path — so for nurses it is the best overall option. 🇩🇪",
+                          "पर salary ही सब कुछ नहीं! Germany में IELTS नहीं चाहिए, शुरू करना सस्ता है, और PR + family + EU का साफ़ रास्ता है — इसलिए nurses के लिए यही सबसे बढ़िया है। 🇩🇪"), 850), 1150);
+    bumpHub();
+  };
+  const whichPays = ()=>{
+    me(M("Which pays best?","सबसे ज़्यादा कौन देता है?"));
+    say(M("Honestly, Australia, Canada and the UK can pay a little more on paper (₹2.5–3.5 lakh). But they need IELTS/OET plus costly exams and can take 2+ years. Germany pays ₹2–2.5 lakh with NO IELTS, lower cost and a faster, clearer path — so for most Indian nurses it is the best value. 🇩🇪",
+          "सच बताऊँ तो Australia, Canada और UK कागज़ पर थोड़ा ज़्यादा दे सकते हैं (₹2.5–3.5 लाख)। पर उनमें IELTS/OET और महँगे exams लगते हैं, और 2+ साल लग सकते हैं। Germany ₹2–2.5 लाख देता है — बिना IELTS, कम खर्च और तेज़ रास्ते के साथ। इसलिए ज़्यादातर Indian nurses के लिए यही सबसे बढ़िया है। 🇩🇪"), 850);
+    setTimeout(()=> say(M("Want me to break down the cost of going, or compare the countries side by side? 👇",
+                          "जाने का खर्च बता दूँ, या देशों को आमने-सामने compare कर दूँ? 👇"), 800), 1200);
+    bumpHub();
+  };
+  const visaDocs = ()=>{
+    me(M("Visa & documents","Visa & documents"));
+    const c = CO(lead.country || "germany");
+    say(c.flag+" "+M(c.name.en,c.name.hi)+" — "+M("visa: ","वीज़ा: ")+M(c.visa.en,c.visa.hi)+". "+
+        M("You will typically need your passport, nursing degree & mark sheets, nursing registration, the required language/exam, and a job offer.",
+          "आमतौर पर चाहिए: passport, nursing degree और marksheets, nursing registration, ज़रूरी language/exam, और job offer।"), 800);
+    bumpHub();
+  };
+  const costGoing = ()=>{
+    me(M("Cost of going","जाने का खर्च"));
+    const c = CO(lead.country || "germany");
+    say(c.flag+" "+M(c.name.en,c.name.hi)+" — "+M(c.cost.en,c.cost.hi)+"."+
+        (c.k==="germany" ? " "+M("For Germany we only charge for the training + interview prep (easy EMI) and nothing for the referral — your counsellor shares the exact fee on the call.",
+                                 "Germany के लिए हम सिर्फ़ training + interview prep का charge लेते हैं (easy EMI), referral के लिए कुछ नहीं — exact fee counsellor call पर बता देंगे।") : ""), 800);
+    bumpHub();
+  };
+
+  const gpush = (auto)=>{
+    if(!auto){ me(M("Explore Germany 🇩🇪","Germany explore करें 🇩🇪")); setLead((l)=>({ ...l, gpushed:true })); }
+    say(auto
+      ? M("By the way — for a nurse like you, Germany is usually the best choice. Would you like to explore it? 👇 🇩🇪","वैसे — आप जैसी nurse के लिए Germany आमतौर पर सबसे अच्छा option है। इसे explore करना चाहेंगी? 👇 🇩🇪")
+      : M("Great! Let me show you why Germany is the top pick. 🇩🇪","बढ़िया! चलिए बताती हूँ Germany सबसे अच्छा क्यों है। 🇩🇪"), 650);
+    setTimeout(()=> setStage("gpush"), auto?1250:1050);
+  };
+  const pickGpush = (yes)=>{
+    if(yes){ me(M("Yes, tell me","हाँ, बताइए")); gBenefits(); }
+    else { me(M("Maybe later","शायद बाद में")); say(M("No problem! Ask me anything else, or tap I am done. 🙂","कोई बात नहीं! और कुछ पूछिए, या 'I am done' दबा दीजिए। 🙂")); setStage("hub"); }
+  };
+  const gBenefits = ()=>{
+    say(M("Here is why nurses love Germany 🇩🇪","Nurses को Germany क्यों पसंद है 🇩🇪"), 600);
+    setTimeout(()=> push({ from:"bot", card:"salary" }), 1150);
+    setTimeout(()=> say(M("• ₹2–2.5 lakh/month   • No IELTS (German instead)   • Huge nurse shortage   • Family can join   • Long-term PR path   • Low starting cost, easy EMI",
+                          "• ₹2–2.5 लाख/month   • कोई IELTS नहीं (German)   • nurses की भारी कमी   • family साथ आ सकती है   • long-term PR   • कम शुरुआती खर्च, easy EMI"), 850), 1550);
+    setTimeout(()=> say(M("Do you have any questions about Germany? 😊","Germany के बारे में कोई सवाल है? 😊"), 600), 2700);
+    setTimeout(()=> setStage("ghub"), 3300);
+  };
+
+  const offerVideo = ()=>{ say(M("Would you like to watch a short video about the Germany path — English or Hindi? 👇 🎬","Germany के रास्ते पर एक छोटा video देखना चाहेंगी — English या Hindi? 👇 🎬")); setStage("video_lang"); };
+  const playVideoLang = (langLabel)=>{
+    me("Watch in "+langLabel+" ▶");
+    watchRef.current={ pct:0, sec:0 };
+    setVideoLang(langLabel); setVideoId(ytId(CONFIG.PROCESS_VIDEOS[langLabel])); setShowVideo(true);
+    setLead((l)=>({ ...l, videoStarted:true, videoLangChosen:langLabel }));
+    say(M("Here you go! Tap ✕ when you are done, and ask me anything else. 😊","लीजिए! हो जाए तो ✕ दबा दीजिए, और कुछ भी पूछिए। 😊"), 500);
+    setStage("ghub");
+  };
+  const skipVideo = ()=>{ me(M("Just tell me in short","बस छोटे में बता दीजिए")); const e=KB.find(x=>x.id==="process"); say(A(e)); setStage("ghub"); };
+
+  const answerChip = (id, label)=>{ const e=KB.find(x=>x.id===id); me(label); say(A(e)); bumpG(); };
+
+  const handleFreeText = ()=>{
+    const v = input.trim(); if(!v) return;
+    me(v); setInput("");
+    if(!lead.nudged && /(not interested|no thanks|no thank|stop|leave|goodbye|\bbye\b|quit|exit|not now|cancel|don'?t want|nahi chahiye|busy|talk later|later)/i.test(v)){ nudgeExit(); return; }
+    const e = matchFor(v);
+    setLead((l)=>({ ...l, qCount:(l.qCount||0)+1, qList:[...(l.qList||[]).slice(-14), { q:v, topic:e?e.id:"unmatched", at:new Date().toISOString() }] }));
+    const back = stage==="ghub" ? bumpG : bumpHub;
+    if(e && e.id==="process" && stage==="ghub"){ offerVideo(); return; }
+    if(e){ say(A(e)); back(); }
+    else {
+      setLead((l)=>({ ...l, question:v }));
+      say(M("Haha, I am not fully sure about that one 😅 I have saved it for your counsellor. I am best with nursing careers abroad, especially Germany — fees, language, salary, visa. Ask me anything there!",
+            "हाहा, इसका मुझे पूरा idea नहीं 😅 मैंने इसे counsellor के लिए note कर लिया है। मैं विदेश में nursing career में सबसे अच्छी हूँ, ख़ासकर Germany — fees, language, salary, visa। वहाँ कुछ भी पूछिए!"));
+      back();
+    }
+  };
+
+  const askSlot = ()=>{ say(M("Great! One last thing — when should our counsellor call you? 😊","बढ़िया! बस आख़िरी बात — counsellor आपको कब call करें? 😊")); setStage("slot"); };
+  const callCounsellor = ()=>{
+    me(M("Call counsellor","Counsellor से बात"));
+    if(lead.council){ askSlot(); return; }
+    bookRef.current = true;
+    say(M("Love it! 🙌 Quick check so our counsellor can help you best — are you a nurse, or studying nursing? 👇","बढ़िया! 🙌 बस एक quick check ताकि counsellor सही मदद कर सकें — क्या आप nurse हैं, या nursing पढ़ रही हैं? 👇"), 500);
+    setTimeout(()=> setStage("nurse"), 1000);
+  };
+  const nudgeExit = ()=>{
+    if(lead.nudged){ askSlot(); return; }
+    setLead((l)=>({ ...l, nudged:true }));
+    say(M("Wait — before you go 🙏 Most nurses don't realise Germany needs NO IELTS, pays ₹2–2.5 lakh/month, and your family can join you. Can I do a quick free eligibility check for you?",
+          "रुकिए — जाने से पहले 🙏 ज़्यादातर nurses को नहीं पता कि Germany में IELTS नहीं चाहिए, ₹2–2.5 लाख/महीना मिलता है, और family साथ आ सकती है। क्या मैं एक quick free eligibility check कर दूँ?"), 650);
+    setTimeout(()=> setStage("nudge"), 1150);
+  };
+  const finish = (slot)=>{
+    const s = slot || lead.slot || null;
+    const f = { ...lead, slot:s };
+    setLead(f); submitLead(f, "completed");
+    say(M(`You are all set, ${(lead.name||"there").split(" ")[0]}! 🎉 Our counsellor will call you${s ? " in your "+s+" slot" : " soon"}. Keep your phone handy, okay? 😊`,
+          `सब set है, ${(lead.name||"").split(" ")[0]}! 🎉 हमारे counsellor आपको${s ? " आपके "+s+" slot में" : " जल्दी"} call करेंगे। बस phone पास रखिए! 😊`));
+    setStage("done");
+  };
+
+  const onKey = (e)=>{ if(e.key!=="Enter") return; if(stage==="name") saveName(); else if(stage==="phone") savePhone(); else if(stage==="specialization") saveSpecialization(); else if(stage==="college") saveCollege(); else handleFreeText(); };
+  const sendClick = ()=> stage==="name" ? saveName() : stage==="phone" ? savePhone() : stage==="specialization" ? saveSpecialization() : stage==="college" ? saveCollege() : handleFreeText();
+
+  const showInput = ["name","phone","hub","ghub","specialization","college"].includes(stage);
+  const placeholder = stage==="name" ? "Type your name" : stage==="phone" ? "Your mobile number" : stage==="specialization" ? M("Type your specialization","अपनी specialization type करें") : stage==="college" ? M("Type your college name","अपने college का नाम type करें") : M("Ask Jhanvi anything","झांवी से कुछ भी पूछें");
+
+  // show Jhanvi's face only on the last bot message of a run
+  const lastBot = (i)=> msgs[i].from==="bot" && (!msgs[i+1] || msgs[i+1].from!=="bot") && !typing;
+
+  return (
+    <div className="phone">
+
+      {phase==="welcome" && (
+        <div className="welcome">
+          <div className="wava"><img src={AVATAR} alt="Jhanvi" /><span className="wonline"></span></div>
+          <h2>Chat with Jhanvi 👋</h2>
+          <p className="wrole"><span className="dot"></span> Global Careers by Testbook · Germany Nursing</p>
+          <p className="sub">Earn <span className="hl">₹2–2.5 lakh/month</span> as a nurse in Germany — no IELTS. Share your details for a free eligibility check. 👩‍⚕️🇩🇪</p>
+          <div className="card2">
+            <div className="field"><input value={wname} onChange={(e)=>setWname(e.target.value)} placeholder="Your full name" maxLength={60} autoFocus /></div>
+            <div className="field phonewrap">
+              <span className="cc">+91</span>
+              <input value={wphone} onChange={(e)=>setWphone(e.target.value.replace(/[^0-9]/g,""))} onKeyDown={(e)=>e.key==="Enter"&&submitWelcome()} inputMode="numeric" maxLength={10} placeholder="10-digit mobile number" style={{ flex:1 }} />
+            </div>
+            <div className="werr">{werr}</div>
+            <button className="go" onClick={submitWelcome} disabled={!wname.trim() || wphone.length<10}>Start chat <span>→</span></button>
+          </div>
+          <div className="wtiny">🔒 100% private · 💬 We reply on WhatsApp</div>
+        </div>
+      )}
+
+
+      {phase==="chat" && (<React.Fragment>
+      <div className="hdr">
+        <div className="hdr-top">
+          <span className="hdr-back">‹</span>
+          <div className="avatar"><Jhanvi/></div>
+          <div style={{ flex:1, minWidth:0 }}>
+            <h1>Jhanvi</h1>
+            <div className="sub">{typing ? "typing…" : (<React.Fragment><span className="dot"></span> online</React.Fragment>)}</div>
+          </div>
+          <div className="hdr-icons"><span onClick={()=>setMenuOpen(v=>!v)} style={{cursor:"pointer",userSelect:"none",padding:"0 4px"}}>⋮</span></div>
+        </div>
+      </div>
+
+      {menuOpen && (
+        <React.Fragment>
+          <div className="hmenu-bd" onClick={()=>setMenuOpen(false)}></div>
+          <div className="hmenu">
+            <button className="hmenu-item" onClick={()=>{ setMenuOpen(false); callCounsellor(); }}>📞 {M("Call counsellor","Counsellor से बात करें")}</button>
+            <button className="hmenu-item" onClick={()=>{ setMenuOpen(false); window.open("https://globalcareers.testbook.com","_blank"); }}>🌐 {M("Visit website","Website देखें")}</button>
+            <button className="hmenu-item" onClick={()=>{ setMenuOpen(false); window.open("https://www.instagram.com/globalcareersbytestbook/","_blank"); }}>📸 Instagram</button>
+          </div>
+        </React.Fragment>
+      )}
+      <div className="canvas">
+        {msgs.map((m,i)=> m.card==="salary"
+          ? <SalaryCard key={i} />
+          : <Group key={i} from={m.from} at={m.at}>{m.node}</Group>)}
+        {typing && <Typing/>}
+        {stage==="start" && !typing && (
+          <div className="grp bot"><div className="mini hide"></div>
+            <button className="chip cta" onClick={begin}>Yes, help me →</button>
+          </div>
+        )}
+        {stage==="lang" && (
+          <div className="opts">
+            {CHAT_LANGS.map((o)=>
+              <button key={o.code} className="opt" onClick={()=>pickLang(o)}>{o.label}</button>)}
+          </div>
+        )}
+
+        {stage==="nurse" && (
+          <div className="opts one">
+            {[{key:"nurse",label:M("Yes, I am a nurse","हाँ, मैं nurse हूँ")},{key:"student",label:M("Final-year student","Final year student")},{key:"no",label:M("No","नहीं")}].map((o)=>
+              <button key={o.key} className="opt" onClick={()=>pickNurse(o)}>{o.label}</button>)}
+          </div>
+        )}
+
+        {stage==="qual" && (
+          <div className="opts">
+            {["GNM","B.Sc Nursing","Post Basic B.Sc","ANM"].map((o)=>
+              <button key={o} className="opt" onClick={()=>pickQual(o)}>{o}</button>)}
+          </div>
+        )}
+
+        {stage==="council" && (
+          <div className="opts">
+            {[{key:"registered",label:M("Indian Nursing Council","Indian Nursing Council")},
+              {key:"registered",label:M("My State Nursing Council","मेरी State Nursing Council")},
+              {key:"studying",label:M("Final year — not registered yet","Final year — अभी registered नहीं")},
+              {key:"none",label:M("Not a nurse / just exploring","Nurse नहीं / बस देख रही हूँ"),full:true}].map((o,i)=>
+              <button key={i} className={"opt"+(o.full?" full":"")} onClick={()=>pickCouncil(o)}>{o.label}</button>)}
+          </div>
+        )}
+
+        {stage==="abroad" && (
+          <div className="opts one">
+            {[{key:"yes",label:M("Yes, actively","हाँ, ज़रूर")},{key:"explore",label:M("Just exploring","बस देख रही हूँ")},{key:"unsure",label:M("Not sure yet","अभी तय नहीं")}].map((o)=>
+              <button key={o.key} className="opt" onClick={()=>pickAbroad(o)}>{o.label}</button>)}
+          </div>
+        )}
+
+        {stage==="country" && (
+          <div className="opts">
+            {COUNTRIES.map((c)=>
+              <button key={c.k} className="opt" onClick={()=>pickCountry(c.k)}>{c.flag} {M(c.name.en,c.name.hi)}</button>)}
+            <button className="opt full" onClick={()=>pickCountry("none")}>{M("Not sure yet","अभी तय नहीं")}</button>
+          </div>
+        )}
+
+        {stage==="hub" && (
+          <div className="chips">
+            <button className="chip" onClick={compareCountries}>{M("Compare countries","देशों की तुलना")}</button>
+            <button className="chip" onClick={whichPays}>{M("Which pays best?","कौन ज़्यादा pay करता है?")}</button>
+            <button className="chip" onClick={visaDocs}>{M("Visa & documents","Visa & documents")}</button>
+            <button className="chip" onClick={costGoing}>{M("Cost of going","जाने का खर्च")}</button>
+            <button className="chip cta" onClick={()=>gpush(false)}>{M("Explore Germany 🇩🇪","Germany explore करें 🇩🇪")}</button>
+            <button className="chip" onClick={()=>{ me(M("I am done","हो गया")); nudgeExit(); }}>{M("I am done","हो गया")}</button>
+          </div>
+        )}
+
+        {stage==="nudge" && (
+          <div className="opts">
+            <button className="opt" onClick={()=>{ me(M("Yes, tell me more","हाँ, और बताइए")); setStage(lead.gpushed ? "ghub" : "hub"); }}>{M("Yes, tell me more 😊","हाँ, और बताइए 😊")}</button>
+            <button className="opt" onClick={()=>{ me(M("Book my free call","मेरी free call book करें")); askSlot(); }}>{M("Book my free call 📞","मेरी free call book करें 📞")}</button>
+          </div>
+        )}
+
+        {stage==="gpush" && (
+          <div className="opts">
+            <button className="opt" onClick={()=>pickGpush(true)}>{M("Yes, tell me","हाँ, बताइए")}</button>
+            <button className="opt" onClick={()=>pickGpush(false)}>{M("Maybe later","शायद बाद में")}</button>
+          </div>
+        )}
+
+        {stage==="ghub" && (
+          <div className="chips">
+            <button className="chip" onClick={()=>answerChip("salary",M("Salary","सैलरी"))}>{M("Salary","सैलरी")}</button>
+            <button className="chip" onClick={()=>answerChip("german",M("German language","German language"))}>{M("German language","German language")}</button>
+            <button className="chip" onClick={()=>answerChip("visa",M("Visa & docs","Visa & documents"))}>{M("Visa & docs","Visa & documents")}</button>
+            <button className="chip" onClick={()=>answerChip("pr",M("PR & family","PR & family"))}>{M("PR & family","PR & family")}</button>
+            <button className="chip" onClick={()=>answerChip("cost",M("Cost & EMI","Fees & EMI"))}>{M("Cost & EMI","Fees & EMI")}</button>
+            <button className="chip cta" onClick={offerVideo}>{M("Watch a short video 🎬","छोटा video देखें 🎬")}</button>
+            <button className="chip" onClick={()=>{ me(M("I am done","हो गया")); nudgeExit(); }}>{M("I am done","हो गया")}</button>
+          </div>
+        )}
+
+        {stage==="video_lang" && (
+          <div className="chips">
+            {(lead.lang==="hi" ? ["Hindi","English"] : ["English","Hindi"]).map((L)=>
+              <button key={L} className="chip cta" onClick={()=>playVideoLang(L)}>▶ {L==="Hindi" ? "हिंदी" : "English"}</button>)}
+            <button className="chip" onClick={skipVideo}>{M("Just tell me in short","बस छोटे में बता दीजिए")}</button>
+          </div>
+        )}
+
+        {stage==="slot" && (
+          <div className="chips">
+            {SLOTS.map((o)=>
+              <button key={o} className="chip" onClick={()=>{ me(o); finish(o); }}>{o}</button>)}
+          </div>
+        )}
+        <div ref={endRef} />
+      </div>
+
+      <div className="dock">
+
+        {showInput && (
+          <div className="inbar">
+            {stage==="phone" && <span className="pfx">+91</span>}
+            <input ref={inRef} value={input} onChange={(e)=>setInput(e.target.value)} onKeyDown={onKey}
+              inputMode={stage==="phone" ? "tel" : "text"} maxLength={stage==="phone" ? 18 : 90}
+              placeholder={placeholder} />
+            <button className="send" onClick={sendClick} aria-label="Send" disabled={!input.trim()}>➤</button>
+          </div>
+        )}
+
+
+        {stage==="done" && (
+          <div className="privacy">🔒 {M("No spam","कोई स्पैम नहीं")} · 🚫 {M("No unwanted calls","कोई अनचाही कॉल नहीं")} · ✅ {M("100% free","100% फ्री")} · {M("Your details stay private and are never sold.","आपकी जानकारी निजी रहती है, कभी नहीं बेची जाती।")}</div>
+        )}
+        {stage==="greet" && <div className="privacy">…</div>}
+      </div>
+
+      {showVideo && (
+        <div className="vmodal" onClick={closeVideo}>
+          <div className="vbox" onClick={(e)=>e.stopPropagation()}>
+            <button className="vclose" onClick={closeVideo} aria-label="Close">✕</button>
+            <div className="vframe">
+              <div id="yt-player"></div>
+              <div className="vmask"></div>
+              <div className="vclick" onClick={togglePlay}>
+                {!videoPlaying && !videoEnded && <div className="vplay">▶</div>}
+              </div>
+              <div className="vctrl" onClick={(e)=>e.stopPropagation()}>
+                <button className="vbtn" onClick={togglePlay} aria-label="Play/Pause">{videoPlaying ? "❚❚" : "▶"}</button>
+                <div className="vprog" onClick={seekTo}><div className="vprog-fill" style={{ width:(videoProg*100)+"%" }}></div></div>
+                <button className="vbtn" onClick={toggleMute} aria-label="Mute">{videoMuted ? "🔇" : "🔊"}</button>
+              </div>
+              {videoEnded && (
+                <div className="vend">
+                  <button className="chip cta" onClick={togglePlay}>↻ Watch again</button>
+                  <button className="chip" onClick={closeVideo}>Done ✓</button>
+                </div>
+              )}
+            </div>
+            <div className="vcap">How the Germany nursing pathway works · {videoLang}</div>
+          </div>
+        </div>
+      )}
+
+      {CONFIG.DEMO_MODE && (
+        <React.Fragment>
+          <button className="demo-toggle" onClick={()=>setShowData((s)=>!s)}>
+            {showData ? "▾ Hide" : "▸ Show"} what flows to CRM v2 (demo)
+          </button>
+          {showData && (
+            <pre className="demo">{JSON.stringify({
+              table:"v2_staging", status:"pending", source:"offline",
+              name:lead.name||null, phone:lead.phone||null,
+              phone_valid: lead.phoneValid===undefined ? null : lead.phoneValid,
+              phone_flag: lead.phoneFlag||null,
+              source_detail:{
+                channel:"norcet_exit", funnel:"germany_nursing", exam_center:CONFIG.EXAM_CENTER,
+                qualification:lead.qualification||null, city:lead.city||null, preferred_language:lead.language||null,
+                preferred_time:lead.slot||null, chat_query:lead.question||null, captured_at:lead.capturedAt||null,
+                activity: activityOf(lead, lead.lastStage),
+              },
+            }, null, 2)}</pre>
+          )}
+        </React.Fragment>
+      )}
+      </React.Fragment>)}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
