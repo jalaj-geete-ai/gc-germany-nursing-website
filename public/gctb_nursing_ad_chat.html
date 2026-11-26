@@ -548,13 +548,14 @@ function scoreNurse(d){
   return { conf, quality, score:sc };
 }
 function App(){
-  const [msgs, setMsgs] = useState([]);
+  const _sv = (()=>{ try{ const o=JSON.parse(localStorage.getItem("gc_chat_state")||"null"); if(o && o.phase && (Date.now()-(o.savedAt||0) < 12*3600*1000)) return o; }catch(e){} return null; })();
+  const [msgs, setMsgs] = useState(_sv ? _sv.msgs||[] : []);
   const [typing, setTyping] = useState(false);
-  const [stage, setStage] = useState("greet");
+  const [stage, setStage] = useState(_sv ? _sv.stage||"greet" : "greet");
   const [menuOpen, setMenuOpen] = useState(false);
   const bookRef = useRef(false);
   const [input, setInput] = useState("");
-  const [lead, setLead] = useState({});
+  const [lead, setLead] = useState(_sv ? _sv.lead||{} : {});
   const [phoneTries, setPhoneTries] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
   const [videoId, setVideoId] = useState("");
@@ -563,9 +564,9 @@ function App(){
   const [videoEnded, setVideoEnded] = useState(false);
   const [videoMuted, setVideoMuted] = useState(false);
   const [videoProg, setVideoProg] = useState(0);
-  const [phase, setPhase] = useState("welcome");   // welcome -> success -> chat
-  const [wname, setWname] = useState("");
-  const [wphone, setWphone] = useState("");
+  const [phase, setPhase] = useState(_sv ? _sv.phase||"welcome" : "welcome");   // welcome -> success -> chat
+  const [wname, setWname] = useState(_sv ? _sv.wname||"" : "");
+  const [wphone, setWphone] = useState(_sv ? _sv.wphone||"" : "");
   const [wcenter, setWcenter] = useState("");
   const [werr, setWerr] = useState("");
   const [countdown, setCountdown] = useState(30);
@@ -576,8 +577,10 @@ function App(){
   const pollRef = useRef(null);
   useEffect(()=>{ window.__lead = lead; }, [lead]);   // harmless debug hook; remove if you like
   const watchRef = useRef({ pct:0, sec:0 });
-  const rowIdRef = useRef(null);       // v2_staging row id (to enrich the same row later)
-  const insertedRef = useRef(false);   // guards against a duplicate insert
+  const rowIdRef = useRef(_sv ? _sv.rowId||null : null);       // v2_staging row id (to enrich the same row later)
+  const insertedRef = useRef(_sv ? !!_sv.inserted : false);   // guards against a duplicate insert
+  // persist chat so an accidental back/return resumes from the same point
+  useEffect(()=>{ try{ localStorage.setItem("gc_chat_state", JSON.stringify({ phase, stage, lead, msgs, wname, wphone, rowId:rowIdRef.current, inserted:insertedRef.current, savedAt:Date.now() })); }catch(e){} }, [phase, stage, lead, msgs, wname, wphone]);
 
   // auto-track how far the lead got (funnel depth + drop-off point + timestamps)
   useEffect(()=>{
