@@ -47,6 +47,7 @@ async function run(p) {
   await page.route("**/*", async (route) => {
     const req = route.request(), u = req.url();
     if (u.startsWith(ORIGIN + "/api/chat")) {
+      if (process.env.LLM_DOWN) { sinks.push("[llm 502 forced: all providers exhausted]"); return route.fulfill({ status: 502, contentType: "application/json", body: '{"error":"llm unavailable","exhausted":true}' }); }
       const t = Date.now();
       const res = await onRequestPost({ request: new Request(u, { method: "POST", headers: { "content-type": "application/json", origin: ORIGIN }, body: req.postData() }), env });
       const body = await res.text();

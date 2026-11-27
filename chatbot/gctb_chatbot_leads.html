@@ -330,6 +330,7 @@ function openDrawer(i){
       row('Researched abroad before?', esc(sd.researched_before||''))+
 
       '<div class="sec">What they asked</div>'+ qaHtml +
+      ((sd.counsellor_questions||[]).length ? ('<div class="sec">For the counsellor (AI was unavailable)</div>'+(sd.counsellor_questions||[]).map(q=>'<div class="qa">“'+esc(q)+'”</div>').join('')) : '')+
 
       '<div class="sec">Ad attribution</div>'+
       row('Campaign', esc(sd.campaign||sd.utm_campaign||''))+

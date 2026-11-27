@@ -1,14 +1,23 @@
 // Cloudflare Pages Function: POST /api/chat
-// LLM fallback for the Jhanvi chatbot. Only messages the rule-based KB cannot answer are sent here.
-// The Groq API key lives in the Pages project's environment (GROQ_API_KEY) — never in the page.
+// LLM answers for the Jhanvi chatbot, through a FREE-TIER CHAIN of providers:
+//   1. Groq (gpt-oss-120b → gpt-oss-20b)      env GROQ_API_KEY
+//   2. Cloudflare Workers AI (no key needed)   Pages binding named "AI"  (env.AI)
+//   3. Google Gemini Flash-Lite                env GEMINI_API_KEY
+// A provider that is rate-limited / out of daily quota is skipped for a cool-down period, so
+// later visitors don't wait on it. If every provider fails, this returns 502 {exhausted:true}
+// and the page shows its "our counsellor can help — pick a time" reply. Keys never reach the page.
 //
 // Request:  { messages:[{role:"user"|"assistant", content:string}], lang:"en"|"hi", lead:{...} }
-// Response: { reply:string, intent:"none"|"book_call"|"exit", model:string }  (or {error} with 4xx/5xx)
+//           or { mode:"verify", answers:{...} }
+// Response: { reply, intent:"none"|"book_call"|"exit", nurse_signal, provider, model }  |  { verdict, reason, provider, model }
 
 import { KB_FACTS, COUNTRY_FACTS } from "./_kb.js";
 
-const MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"];
+const GROQ_MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"];
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+const WORKERS_AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
+// Gemini model ids change often: GEMINI_MODEL wins; the alias is tried first, then a pinned id.
+const GEMINI_MODELS = ["gemini-flash-lite-latest", "gemini-2.5-flash-lite"];
 const MAX_MSGS = 6, MAX_CHARS = 600, MAX_BODY = 12000, TIMEOUT_MS = 9000, TOP_K = 5;
 
 // Always-on brief (kept short: the Groq free tier is 8k tokens/minute, so the prompt must stay small).
@@ -115,6 +124,127 @@ export async function onRequestOptions({ request, env }) {
   return new Response(null, { status: cors ? 204 : 403, headers: cors || {} });
 }
 
+
+// ── provider chain ─────────────────────────────────────────────────────────
+// Cool-downs live in the isolate's memory (best effort: each Cloudflare isolate keeps its own).
+const coolUntil = {};
+const cooling = (key) => (coolUntil[key] || 0) > Date.now();
+const nextUtcMidnight = () => { const d = new Date(); d.setUTCHours(24, 0, 0, 0); return d.getTime(); };
+function coolDown(key, status, retryAfter, daily) {
+  const secs = Number(retryAfter);
+  coolUntil[key] = daily ? nextUtcMidnight()
+    : Date.now() + (Number.isFinite(secs) && secs > 0 ? Math.min(secs, 3600) * 1000 : status === 429 ? 60000 : 20000);
+}
+
+// parse a JSON object out of model text (JSON mode isn't available on every provider)
+function parseJsonish(text) {
+  const t = String(text || "").trim().replace(/^```(?:json)?\s*|\s*```$/g, "");
+  try { return JSON.parse(t); } catch {}
+  const m = t.match(/\{[\s\S]*\}/);
+  if (m) { try { return JSON.parse(m[0]); } catch {} }
+  return null;
+}
+
+async function withTimeout(fn) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+  try { return await fn(ctrl.signal); } finally { clearTimeout(t); }
+}
+
+// Each provider returns { text, model } or throws { status, retryAfter, daily }.
+const PROVIDERS = [
+  {
+    name: "groq",
+    configured: (env) => !!env.GROQ_API_KEY,
+    models: () => GROQ_MODELS,
+    async call(env, model, system, messages, o) {
+      const send = (strict) => withTimeout((signal) => fetch(GROQ_URL, {
+        method: "POST", signal,
+        headers: { authorization: `Bearer ${env.GROQ_API_KEY}`, "content-type": "application/json" },
+        body: JSON.stringify({ model, messages: [{ role: "system", content: system }, ...messages],
+          temperature: o.temperature, max_tokens: o.maxTokens, reasoning_effort: "low", ...(strict ? { response_format: { type: "json_object" } } : {}) }),
+      }));
+      let r = await send(true);
+      if (r.status === 400) {
+        // JSON-mode validation failed: Groq returns what the model wrote in error.failed_generation
+        const b = await r.json().catch(() => ({}));
+        if (b.error && b.error.failed_generation) return { text: b.error.failed_generation };
+        r = await send(false);                       // otherwise retry once without strict JSON mode
+      }
+      if (!r.ok) {
+        const body = await r.text().catch(() => "");
+        throw { status: r.status, code: (body.match(/"code"\s*:\s*"([^"]+)"/) || [])[1], retryAfter: r.headers.get("retry-after"), daily: /per day|TPD|RPD/i.test(body) };
+      }
+      const d = await r.json();
+      return { text: d.choices?.[0]?.message?.content || "" };
+    },
+  },
+  {
+    name: "workers-ai",
+    configured: (env) => !!(env.AI && typeof env.AI.run === "function"),
+    models: (env) => [env.WORKERS_AI_MODEL || WORKERS_AI_MODEL],
+    async call(env, model, system, messages, o) {
+      try {
+        const d = await env.AI.run(model, { messages: [{ role: "system", content: system }, ...messages],
+          temperature: o.temperature, max_tokens: o.maxTokens });
+        const resp = d && d.response;
+        return { text: typeof resp === "string" ? resp : JSON.stringify(resp || "") };
+      } catch (e) {
+        const msg = String((e && e.message) || e);
+        // 3036 = daily free neurons used up (resets 00:00 UTC); treat other errors as short outages
+        throw { status: /3036|429|limit/i.test(msg) ? 429 : 500, daily: /3036|daily|neurons/i.test(msg) };
+      }
+    },
+  },
+  {
+    name: "gemini",
+    configured: (env) => !!env.GEMINI_API_KEY,
+    models: (env) => (env.GEMINI_MODEL ? [env.GEMINI_MODEL] : GEMINI_MODELS),
+    async call(env, model, system, messages, o) {
+      const r = await withTimeout((signal) => fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+        method: "POST", signal,
+        headers: { "x-goog-api-key": env.GEMINI_API_KEY, "content-type": "application/json" },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: system }] },
+          contents: messages.map((m) => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] })),
+          generationConfig: { temperature: o.temperature, maxOutputTokens: o.maxTokens + 200, responseMimeType: "application/json" },
+        }),
+      }));
+      if (!r.ok) {
+        const body = await r.text().catch(() => "");
+        throw { status: r.status, retryAfter: r.headers.get("retry-after"), daily: /per day|PerDay|daily/i.test(body), badModel: r.status === 404 };
+      }
+      const d = await r.json();
+      return { text: (d.candidates?.[0]?.content?.parts || []).map((p) => p.text || "").join("") };
+    },
+  },
+];
+
+// Run the chain. `accept(parsedJson, rawText)` returns a result object, or null to try the next model.
+async function runChain(env, system, messages, o, accept) {
+  const tried = [];
+  for (const p of PROVIDERS) {
+    if (!p.configured(env)) continue;
+    for (const model of p.models(env)) {
+      const key = p.name + ":" + model;
+      if (cooling(key)) { tried.push(key + "=cooling"); continue; }
+      try {
+        const { text } = await p.call(env, model, system, messages, o);
+        const out = accept(parseJsonish(text), text);
+        if (out) return { ...out, provider: p.name, model, tried };
+        tried.push(key + "=bad_output");
+      } catch (e) {
+        const status = (e && e.status) || 0;
+        if (e && e.badModel) coolDown(key, 404, 3600);                     // unknown model id: skip it for an hour
+        else if (status === 429 || status === 402 || status === 503 || status === 413) coolDown(key, status, e.retryAfter, e.daily);
+        tried.push(key + "=" + (status || (e && e.name === "AbortError" ? "timeout" : "error")) + (e && e.code ? ":" + e.code : ""));
+      }
+    }
+  }
+  return { error: true, tried };
+}
+const anyConfigured = (env) => PROVIDERS.some((p) => p.configured(env));
+
 // mode:"verify" — judge from the lead's own free-text answers whether they are really a nurse.
 // The page combines this with its rule-based checks; it never blocks a lead, it only flags it.
 const VERIFY_PROMPT = `You screen leads for an Indian nursing-to-Germany program. Real users are Indian GNM/B.Sc/Post Basic nurses or final-year nursing students; they write informally, in English, Hindi or Hinglish, often with typos. Many non-nurses falsely tap "I am a nurse".
@@ -125,31 +255,16 @@ async function verify(body, env, cors) {
   const a = body.answers && typeof body.answers === "object" ? body.answers : {};
   const lines = ["claimed", "qualification", "workplace", "college", "researched", "council", "chat"]
     .map((k) => `${k}: ${String(a[k] || "").replace(/\s+/g, " ").slice(0, 300)}`).join("\n");
-  for (const model of MODELS) {
-    try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
-      const r = await fetch(GROQ_URL, {
-        method: "POST", signal: ctrl.signal,
-        headers: { authorization: `Bearer ${env.GROQ_API_KEY}`, "content-type": "application/json" },
-        body: JSON.stringify({ model, temperature: 0, max_tokens: 400, reasoning_effort: "low", response_format: { type: "json_object" },
-          messages: [{ role: "system", content: VERIFY_PROMPT }, { role: "user", content: lines }] }),
-      });
-      clearTimeout(t);
-      if (!r.ok) continue;
-      const d = await r.json();
-      const out = JSON.parse(d.choices?.[0]?.message?.content || "{}");
-      if (!["likely_nurse", "unclear", "likely_not"].includes(out.verdict)) continue;
-      return json({ verdict: out.verdict, reason: String(out.reason || "").slice(0, 120), model }, 200, cors);
-    } catch { /* next model */ }
-  }
-  return json({ error: "llm unavailable" }, 502, cors);
+  const res = await runChain(env, VERIFY_PROMPT, [{ role: "user", content: lines }], { temperature: 0, maxTokens: 400 },
+    (out) => out && ["likely_nurse", "unclear", "likely_not"].includes(out.verdict) ? { verdict: out.verdict, reason: String(out.reason || "").slice(0, 120) } : null);
+  if (res.error) return json({ error: "llm unavailable", exhausted: true, tried: res.tried }, 502, cors);
+  return json(res, 200, cors);
 }
 
 export async function onRequestPost({ request, env }) {
   const cors = corsHeaders(request, env);
   if (!cors) return json({ error: "origin not allowed" }, 403);
-  if (!env.GROQ_API_KEY) return json({ error: "not configured" }, 503, cors);
+  if (!anyConfigured(env)) return json({ error: "not configured", exhausted: true }, 503, cors);
 
   const raw = await request.text();
   if (raw.length > MAX_BODY) return json({ error: "too large" }, 413, cors);
@@ -170,37 +285,21 @@ export async function onRequestPost({ request, env }) {
   if (!msgs.length || msgs[msgs.length - 1].role !== "user") return json({ error: "no user message" }, 400, cors);
 
   const ctx = retrieve(msgs.filter((m) => m.role === "user").slice(-2).map((m) => m.content).join(" "));
-  const payload = (model) => ({
-    model,
-    messages: [{ role: "system", content: systemPrompt(lang, safeLead, ctx) }, ...msgs],
-    temperature: 0.4,
-    max_tokens: 600,           // gpt-oss spends some tokens reasoning before the JSON answer
-    reasoning_effort: "low",
-    response_format: { type: "json_object" },
+  const res = await runChain(env, systemPrompt(lang, safeLead, ctx), msgs, { temperature: 0.4, maxTokens: 600 }, (out, text) => {
+    // a model that ignored the JSON instruction still gave a usable plain-text reply
+    if (!out && text && !/^\s*[{[]/.test(text)) out = { reply: text };
+    if (!out) return null;
+    // keep replies chat-sized: cut at the last sentence end before ~420 chars (never mid-word)
+    let reply = clean(out.reply).replace(/^(great|good|nice|excellent) question[!.,]*\s*/i, "");
+    if (reply.length > 420) { const cut = reply.slice(0, 420); const end = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("? "), cut.lastIndexOf("! "), cut.lastIndexOf("। ")); reply = end > 120 ? cut.slice(0, end + 1) : cut.replace(/\s+\S*$/, "") + "…"; }
+    if (!reply) return null;
+    const intent = ["book_call", "exit"].includes(out.intent) ? out.intent : "none";
+    const nurse_signal = ["nurse", "not_nurse", "proxy"].includes(out.nurse_signal) ? out.nurse_signal : "none";
+    return { reply, intent, nurse_signal };
   });
-
-  for (const model of MODELS) {
-    try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
-      const r = await fetch(GROQ_URL, {
-        method: "POST",
-        headers: { authorization: `Bearer ${env.GROQ_API_KEY}`, "content-type": "application/json" },
-        body: JSON.stringify(payload(model)),
-        signal: ctrl.signal,
-      });
-      clearTimeout(t);
-      if (!r.ok) continue;                       // rate-limited / model down → try the next model
-      const d = await r.json();
-      const out = JSON.parse(d.choices?.[0]?.message?.content || "{}");
-      // keep replies chat-sized: cut at the last sentence end before ~420 chars (never mid-word)
-      let reply = clean(out.reply).replace(/^(great|good|nice|excellent) question[!.,]*\s*/i, "");
-      if (reply.length > 420) { const cut = reply.slice(0, 420); const end = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("? "), cut.lastIndexOf("! "), cut.lastIndexOf("। ")); reply = end > 120 ? cut.slice(0, end + 1) : cut.replace(/\s+\S*$/, "") + "…"; }
-      if (!reply) continue;
-      const intent = ["book_call", "exit"].includes(out.intent) ? out.intent : "none";
-      const nurse_signal = ["nurse", "not_nurse", "proxy"].includes(out.nurse_signal) ? out.nurse_signal : "none";
-      return json({ reply, intent, nurse_signal, model }, 200, cors);
-    } catch { /* timeout or bad JSON → next model */ }
-  }
-  return json({ error: "llm unavailable" }, 502, cors);
+  if (res.error) return json({ error: "llm unavailable", exhausted: true, tried: res.tried }, 502, cors);
+  return json(res, 200, cors);
 }
+
+// exposed for the local test harness
+export const __test = { PROVIDERS, coolUntil };

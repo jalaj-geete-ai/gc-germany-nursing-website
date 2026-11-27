@@ -860,7 +860,7 @@ function App(){
     if(!rowIdRef.current) return;
     const t=setTimeout(()=> patchStaging(lead), 700);
     return ()=> clearTimeout(t);
-  }, [lead.qCount, lead.hubN, lead.gN, lead.gpushed, lead.videoStarted, lead.videoPct, lead.videoCompleted, lead.slot, lead.nurse, lead.qualification, lead.country, lead.abroad, lead.language, lead.verifyVerdict, lead.verifyScore, lead.aiVerdict, lead.workplace, lead.council, lead.college, lead.currentSalary, lead.researched, lead.llmN, lead.lastStage]);
+  }, [lead.qCount, lead.hubN, lead.gN, lead.gpushed, lead.videoStarted, lead.videoPct, lead.videoCompleted, lead.slot, lead.nurse, lead.qualification, lead.country, lead.abroad, lead.language, lead.verifyVerdict, lead.verifyScore, lead.aiVerdict, lead.workplace, lead.council, lead.college, lead.currentSalary, lead.researched, lead.llmN, lead.genericN, lead.lastStage]);
 
   // Custom YouTube player: controls hidden (controls=0) + our own overlay so NO YouTube chrome (title, channel, logo) ever shows.
   useEffect(()=>{
@@ -987,7 +987,7 @@ function App(){
         nurse_check:(data.checkAns||[]).map(a=>({ q:a.id, a:a.label, correct:a.correct, ms:a.ms })), nurse_check_score:(data.checkAns||[]).filter(a=>a.correct).length,
         verify_score:(data.verifyScore===undefined?null:data.verifyScore), verify_verdict:data.verifyVerdict||null, verify_flags:data.verifyFlags||[],
         ai_verdict:data.aiVerdict||null, ai_reason:data.aiReason||null, non_nurse_signals:data.nonNurseHits||[], asking_for_someone:!!data.proxy, reconfirm:data.reconfirm||null,
-        llm_answers:(data.llmN||0),
+        llm_answers:(data.llmN||0), counsellor_questions:data.counsellorQs||[],
         current_salary:data.currentSalary||null, researched_before:data.researched||null,
         preferred_time:data.slot||null, chat_query:data.question||null, captured_at:data.capturedAt||null,
         phone_valid: data.phoneValid===undefined ? null : data.phoneValid, phone_flag: data.phoneFlag||null,
@@ -1241,7 +1241,8 @@ function App(){
     setStage("checkwait");
     say(M("Thank you! Give me a second, let me check your Germany eligibility…","शुक्रिया! एक second, मैं आपकी Germany eligibility check कर रही हूँ…"), 500);
     const t0 = Date.now();
-    const ai = await aiVerify(d0);
+    const pre = withVerify(d0);
+    const ai = (pre.verifyScore >= 80 || pre.verifyScore <= 15) ? null : await aiVerify(d0);   // AI only for borderline cases
     const nn = NON_NURSE_RX.test(v) || PROXY_RX.test(v);
     const d = withVerify({ ...d0, aiVerdict: ai ? ai.verdict : null, aiReason: ai ? ai.reason : null,
       nonNurseHits: (NON_NURSE_RX.test(v) ? [...(d0.nonNurseHits||[]), v.slice(0,80)] : d0.nonNurseHits), proxy: d0.proxy || PROXY_RX.test(v) });
@@ -1418,16 +1419,40 @@ function App(){
       const j = await r.json(); return (j && j.reply) ? j : null;
     }catch(e){ clearTimeout(tm); return null; }
   };
-  const kbAnswer = (e, back, v)=>{
-    if(NON_NURSE_RX.test(v||"")){ say(M("Thank you for telling me! This Germany program is only for qualified nurses (GNM / B.Sc / Post Basic B.Sc) and final-year nursing students. If you're thinking of studying nursing first, I can explain how that path works.",
-        "बताने के लिए शुक्रिया! यह Germany program सिर्फ़ qualified nurses (GNM / B.Sc / Post Basic B.Sc) और final-year nursing students के लिए है। अगर आप पहले nursing पढ़ने का सोच रहे हैं, तो मैं वो रास्ता समझा सकती हूँ।")); return; }
-    if(e && CASUAL_IDS.has(e.id) && norm(v||"").split(" ").length>4) e = null;
-    if(e){ const a=A(e); say(a); if(!back()) followUp(a); return; }
-    setLead((l)=>({ ...l, question:v }));
-    say(M("Good question — I'd rather get you an exact answer than guess, so I've noted it for your counsellor. Meanwhile, ask me anything about salary, German classes, visa or fees!",
-          "अच्छा सवाल — अंदाज़ा लगाने के बजाय मैं आपको सही जवाब दिलवाऊँगी, इसलिए इसे counsellor के लिए note कर लिया है। तब तक salary, German classes, visa या fees के बारे में कुछ भी पूछिए!"));
-    back();
+  // every AI provider is out (or this visitor hit the per-session cap): hand the question to a counsellor
+  const counsellorAnswer = (v)=>{
+    setLead((l)=>{ const ql=[...(l.qList||[])]; if(ql.length) ql[ql.length-1] = { ...ql[ql.length-1], topic:"for_counsellor" };
+      return { ...l, question:v, qList:ql, counsellorQs:[...(l.counsellorQs||[]), v.slice(0,160)].slice(-10), genericN:(l.genericN||0)+1 }; });
+    if(NON_NURSE_RX.test(v||"") || lead.verifyVerdict==="not_nurse" || (lead.nurse==="no" && !lead.proxy)){
+      say(M("Thank you for asking! I've noted your question. Just so you know, this Germany program and our counsellor calls are only for nurses and nursing students.",
+            "पूछने के लिए शुक्रिया! मैंने आपका सवाल note कर लिया है। बस इतना बता दूँ — यह Germany program और counsellor calls सिर्फ़ nurses और nursing students के लिए हैं।"));
+      return;
+    }
+    if(lead.slot){
+      say(M(`That's a great one for your counsellor — I've added it to your call notes, so they'll answer it properly on your ${lead.slot} call. Anything else on your mind?`,
+            `यह सवाल आपके counsellor के लिए बिल्कुल सही है — मैंने इसे आपकी call notes में जोड़ दिया है, ${lead.slot} वाली call पर वो इसका पूरा जवाब देंगे। और कुछ पूछना है?`));
+      return;
+    }
+    // they're asking for the call itself: no "noted", just say yes and show the times
+    if(/(call|baat|talk|speak|counsel|contact|phone|book)/i.test(v||"")){
+      say(M("Of course! Pick a time that suits you and our counsellor will call you 👇","ज़रूर! अपना सुविधाजनक समय चुनिए, counsellor आपको call करेंगे 👇"), 600);
+      setTimeout(()=> setStage("slot"), 900); return;
+    }
+    if((lead.genericN||0) >= 1){
+      const R = [
+        ["Noted that one too — your counsellor will go through all your questions together on the call. Pick a time below whenever you're ready 👇","यह भी note कर लिया — counsellor call पर आपके सारे सवाल एक साथ समझा देंगे। जब ठीक लगे, नीचे से समय चुन लीजिए 👇"],
+        ["Good one — added to your list for the counsellor. They'll give you the exact answer for your profile 👇","बढ़िया सवाल — counsellor की list में जोड़ दिया। वो आपकी profile के हिसाब से सही जवाब देंगे 👇"],
+        ["Got it, saved for your call. You're asking all the right questions — the counsellor will love this 👇","समझ गई, call के लिए save कर लिया। आप बिल्कुल सही सवाल पूछ रही हैं 👇"],
+      ];
+      const r = R[((lead.genericN||1)-1) % R.length];
+      say(M(r[0], r[1]));
+      setTimeout(()=> setStage("slot"), 600); return;
+    }
+    say(M("That's a really good question, and our counsellors can answer it properly for your exact profile — they help nurses with exactly this every day. I've noted it for them. When would be a good time for a quick free call? 👇",
+          "यह बहुत अच्छा सवाल है, और हमारे counsellors आपकी profile के हिसाब से इसका सही जवाब दे सकते हैं — वो रोज़ nurses की इसी में मदद करते हैं। मैंने इसे उनके लिए note कर लिया है। आपसे free call के लिए कौन-सा समय ठीक रहेगा? 👇"));
+    setTimeout(()=> setStage("slot"), 900);
   };
+
   const afterLLM = (j)=>{
     if(j.nurse_signal==="not_nurse" || j.nurse_signal==="proxy"){
       setLead((l)=> withVerify({ ...l, proxy: l.proxy || j.nurse_signal==="proxy", nonNurseHits: j.nurse_signal==="not_nurse" ? [...(l.nonNurseHits||[]), "llm:"+String((l.qList||[]).slice(-1)[0]?.q||"").slice(0,70)].slice(-5) : l.nonNurseHits }));
@@ -1451,14 +1476,14 @@ function App(){
     if(e && e.id==="process" && inG && !flagged){ offerVideo(); return; }
     if(e && CASUAL_IDS.has(e.id) && words<=4 && !flagged){ say(A(e)); return; }   // small talk: instant canned reply
     const canLLM = !!CONFIG.LLM_ENDPOINT && (lead.llmN||0) < CONFIG.LLM_MAX_PER_SESSION;
-    if(!canLLM){ kbAnswer(e, back, v); return; }
+    if(!canLLM){ counsellorAnswer(v); return; }
     busyRef.current = true; setTyping(true);
     const t0 = Date.now();
     const j = await askLLM(v);
     const minShow = j ? Math.min(1700, 600 + j.reply.length*10) : 0;   // natural "typing…" time
     setTimeout(()=>{
       setTyping(false); busyRef.current = false;
-      if(!j){ kbAnswer(e, back, v); return; }
+      if(!j){ counsellorAnswer(v); return; }
       push({ from:"bot", node:j.reply });
       const wantsCall = /(call|baat|talk|speak|counsel|enrol|enroll|join|start|apply|register|book|contact|phone|yes|haan|ha |ok)/i.test(v);
       if(j.intent==="book_call" && !wantsCall) j.intent = "none";
