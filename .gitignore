@@ -26,3 +26,4 @@ yarn-error.log*
 
 # Vite
 .vite/
+chatbot/tests/out/
