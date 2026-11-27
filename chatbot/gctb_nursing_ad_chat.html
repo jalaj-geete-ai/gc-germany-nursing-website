@@ -1460,6 +1460,8 @@ function App(){
       setTyping(false); busyRef.current = false;
       if(!j){ kbAnswer(e, back, v); return; }
       push({ from:"bot", node:j.reply });
+      const wantsCall = /(call|baat|talk|speak|counsel|enrol|enroll|join|start|apply|register|book|contact|phone|yes|haan|ha |ok)/i.test(v);
+      if(j.intent==="book_call" && !wantsCall) j.intent = "none";
       const booking = j.intent==="book_call" && !lead.slot;
       setLead((l)=>{ const ql=[...(l.qList||[])]; if(ql.length) ql[ql.length-1] = { ...ql[ql.length-1], topic:"llm"+(e?":"+e.id:""), a:j.reply.slice(0,240) }; return { ...l, llmN:(l.llmN||0)+1, qList:ql }; });
       if(!booking) back();   // don't stack an auto "Explore Germany?" on top of the slot picker
@@ -1521,7 +1523,7 @@ function App(){
   const sendClick = ()=> stage==="name" ? saveName() : stage==="phone" ? savePhone() : stage==="workplace" ? saveWorkplace() : stage==="specialization" ? saveSpecialization() : stage==="college" ? saveCollege() : stage==="researched" ? saveResearched() : handleFreeText();
 
   // the text box stays visible on chip stages too (gpush / video / book offers) so a nurse can always type a question
-  const showInput = ["name","phone","hub","ghub","workplace","specialization","college","researched","gpush","nudge","video_lang","video_feedback","book_offer","country"].includes(stage);
+  const showInput = ["name","phone","hub","ghub","workplace","specialization","college","researched","gpush","nudge","video_lang","video_feedback","book_offer","country","slot"].includes(stage);
   const placeholder = stage==="name" ? "Type your name" : stage==="phone" ? "Your mobile number" : stage==="workplace" ? M("Hospital name, ward…","Hospital का नाम, ward…") : stage==="specialization" ? M("Type your specialization","अपनी specialization type करें") : stage==="college" ? M("Type your college name","अपने college का नाम type करें") : stage==="researched" ? M("Type what you've found…","जो पता चला, type कीजिए…") : M("Ask Jhanvi anything","झांवी से कुछ भी पूछें");
 
   // show Jhanvi's face only on the last bot message of a run
