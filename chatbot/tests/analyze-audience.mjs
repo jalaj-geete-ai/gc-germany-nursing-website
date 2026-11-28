@@ -35,7 +35,7 @@ const rows = runs.map((r) => {
     verifyCalls: llm.filter((s) => /"verdict"/.test(s)).length,
     leaks: bot.filter((b) => /"intent"|"reply"|nurse_signal|\{"|"\}|undefined|NaN|\[object/.test(b.text)).map((b) => b.text.slice(0, 90)),
     langSlips,
-    snapshot: m.some((x) => /Germany snapshot/.test(x.text)), booked: !!L.slot,
+    snapshot: m.some((x) => /snapshot|के तौर पर Germany में/i.test(x.text)), booked: !!L.slot,
     verdict: L.verifyVerdict || "-", quality: L.leadQuality || "-",
     errors: realErrors, pageErrors: r.errors.filter((e) => !/^no (button|input)/.test(e)), endStage: r.stage, ms: r.ms,
   };

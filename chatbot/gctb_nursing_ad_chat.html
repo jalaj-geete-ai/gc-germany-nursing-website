@@ -800,6 +800,7 @@ function verifyOf(d){
   s = Math.max(0, Math.min(100, s));
   let verdict = s>=60 ? "verified" : s>=35 ? "review" : "suspect";
   if(verdict==="verified" && d.qualification==="ANM") verdict = "review";   // ANM alone usually isn't enough for Germany
+  if(verdict==="verified" && d.workplaceVague && !isNursingCollege(d.college)){ verdict = "review"; flags.push("vague_profile"); }   // quiz answers can be googled; specifics can't
   return { score:s, verdict, flags };
 }
 // first name without titles ("Dr Merin Joseph" -> "Merin")
@@ -1528,8 +1529,14 @@ function App(){
     setLead((l)=>{ const ql=[...(l.qList||[])]; if(ql.length) ql[ql.length-1] = { ...ql[ql.length-1], topic:"for_counsellor" };
       return { ...l, question:v, qList:ql, counsellorQs:[...(l.counsellorQs||[]), v.slice(0,160)].slice(-10), genericN:(l.genericN||0)+1 }; });
     if(NON_NURSE_RX.test(v||"") || lead.verifyVerdict==="not_nurse" || (lead.nurse==="no" && !lead.proxy)){
-      say(M("Thank you for asking! I've noted your question. Just so you know, this Germany program and our counsellor calls are only for nurses and nursing students.",
-            "पूछने के लिए शुक्रिया! मैंने आपका सवाल note कर लिया है। बस इतना बता दूँ — यह Germany program और counsellor calls सिर्फ़ nurses और nursing students के लिए हैं।"));
+      const NN = [
+        ["Thank you for asking! I've noted your question. Just so you know, this Germany program and our counsellor calls are only for nurses and nursing students.","पूछने के लिए शुक्रिया! मैंने आपका सवाल note कर लिया है। बस इतना बता दूँ — यह Germany program और counsellor calls सिर्फ़ nurses और nursing students के लिए हैं।"],
+        ["Noted! Honestly, I can only properly help with the nursing route to Germany, so I don't want to give you a half answer.","Note कर लिया! सच कहूँ तो मैं सिर्फ़ nursing वाले Germany route में ही सही मदद कर सकती हूँ, आधा-अधूरा जवाब नहीं देना चाहती।"],
+        ["Got it. If you ever decide to study nursing (GNM or B.Sc), this path opens up for you. Tap below if you'd like to see what nurses earn there.","समझ गई। अगर कभी nursing (GNM या B.Sc) पढ़ने का सोचें, तो यह रास्ता आपके लिए खुल जाएगा। Nurses वहाँ कितना कमाती हैं, देखना हो तो नीचे tap कीजिए।"],
+        ["Noted that too.","यह भी note कर लिया।"],
+      ];
+      const k = Math.min(lead.genericN||0, NN.length-1);   // genericN = deferrals before this one
+      say(M(NN[k][0], NN[k][1]));
       return;
     }
     if(lead.slot){
@@ -1541,6 +1548,11 @@ function App(){
     if(/(call|baat|talk|speak|counsel|contact|phone|book)/i.test(v||"")){
       say(M("Of course! Pick a time that suits you and our counsellor will call you 👇","ज़रूर! अपना सुविधाजनक समय चुनिए, counsellor आपको call करेंगे 👇"), 600);
       queueStage("slot"); return;
+    }
+    if((lead.genericN||0) === 3){
+      say(M("I've got all your questions saved for the counsellor. Meanwhile, I can show you a few things right now: tap Salary, PR & family, or watch the short video below.",
+            "आपके सारे सवाल counsellor के लिए save हैं। तब तक मैं आपको अभी कुछ चीज़ें दिखा सकती हूँ: नीचे Salary, PR & family tap कीजिए, या छोटा video देखिए।"));
+      setLead((l)=>({ ...l, gpushed:true })); queueStage("ghub"); return;
     }
     if((lead.genericN||0) >= 1){
       const R = [

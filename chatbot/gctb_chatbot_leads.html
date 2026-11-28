@@ -178,7 +178,7 @@ document.querySelectorAll('#seg button').forEach(b=> b.onclick = ()=>{
 // ---- qualification logic ----
 const FLAG_TEXT = { check_wrong:'got a nursing-round question wrong', check_unsure:'unsure on a nursing-round question', workplace_not_health:'workplace is not healthcare', workplace_vague:'workplace answer is vague',
   college_unclear:'college unclear', council_none:'no nursing council', said_non_nurse_things:'said something non-nurse in chat', contradicted_after_reconfirm:'contradicted their "I am a nurse" later',
-  ai_likely_not:'AI review: likely not a nurse', anm_only:'ANM only (usually not eligible alone)', asking_for_someone:'asking for someone else' };
+  ai_likely_not:'AI review: likely not a nurse', anm_only:'ANM only (usually not eligible alone)', vague_profile:'vague workplace + non-nursing college', both_checks_wrong:'got both nursing-round questions wrong', asking_for_someone:'asking for someone else' };
 const flagList = (sd)=> (sd.verify_flags||[]).map(f=>FLAG_TEXT[f]||f);
 function qualify(sd){
   sd = sd || {};
