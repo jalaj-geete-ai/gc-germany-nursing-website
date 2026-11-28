@@ -775,7 +775,7 @@ const isNursingCollege = (t)=> /(nurs|gnm|b\.?\s?sc|con\b|medical|health|paramed
 // (a) about THEMSELVES, checked in everything they type ("my husband is a driver" must NOT count)
 const NON_NURSE_RX = /\b(?:i am|i'm|im|i m|main|mai|mein)\s+(?:(?:actually|just|only|a|an|ek)\s+)*(?:b\.?\s?a\b|b\.?\s?com|bba|bca|b\.?\s?tech|mba|engineer|driver|teacher|salesman|security guard|delivery boy|12th pass|10th pass|graduate in (?:arts|commerce))|\b(?:not a nurse|i am not (?:a )?nurse|i'm not (?:a )?nurse|nurse nahi(?:n)? hu|any job (?:is )?(?:fine|ok|okay|chalega)|koi bhi job)\b/i;
 // (b) job words that only count when given as THEIR workplace / college
-const NON_HEALTH_WORK_RX = /\b(call ?cent(?:er|re)|bpo|data entry|software|it company|office|shop|store|showroom|factory|warehouse|delivery|driver|bank|tuition|coaching|business|restaurant|hotel|mall|amazon|flipkart|zomato|swiggy)\b/i;
+const NON_HEALTH_WORK_RX = /\b(b\.?\s?a\b|ba final|b\.?\s?com|bba|bca|iti|12th|10th|call ?cent(?:er|re)|bpo|data entry|software|it company|office|shop|store|showroom|factory|warehouse|delivery|driver|bank|tuition|coaching|business|restaurant|hotel|mall|amazon|flipkart|zomato|swiggy)\b/i;
 const PROXY_RX = /\b(for|asking for|on behalf of) (my )?(daughter|son|wife|husband|sister|brother|friend|cousin|niece|beti|behen|bhai)\b|\bmy (daughter|wife|sister|son|niece|beti|behen) (is|does|did|wants)\b/i;
 // verify score 0–100 from everything we know; verdict drives lead quality + the re-confirm step
 function verifyOf(d){
@@ -793,7 +793,10 @@ function verifyOf(d){
   if(d.reconfirm==="nurse" && hits > (d.reconfirmHitN||0)) flags.push("contradicted_after_reconfirm");
   if(d.proxy) flags.push("asking_for_someone");
   if(d.aiVerdict==="likely_not"){ s -= 20; flags.push("ai_likely_not"); } else if(d.aiVerdict==="likely_nurse") s += 8;
-  if(d.reconfirm==="nurse" && hits <= (d.reconfirmHitN||0)) s = Math.max(s, 35);   // their word counts, unless they contradict it later
+  const bothWrong = ch.length===2 && ch.every(a=>!a.correct && !a.unsure);
+  if(bothWrong) flags.push("both_checks_wrong");
+  const hard = flags.some(f=> ["workplace_not_health","said_non_nurse_things","ai_likely_not","both_checks_wrong"].includes(f));
+  if(d.reconfirm==="nurse" && hits <= (d.reconfirmHitN||0) && !hard) s = Math.max(s, 35);   // their word counts, unless hard red flags or they contradict it later
   s = Math.max(0, Math.min(100, s));
   let verdict = s>=60 ? "verified" : s>=35 ? "review" : "suspect";
   if(verdict==="verified" && d.qualification==="ANM") verdict = "review";   // ANM alone usually isn't enough for Germany
@@ -805,7 +808,7 @@ const firstName = (n)=>{ const w=String(n||"").trim().split(/\s+/).filter(x=>!/^
 const CASUAL_IDS = new Set(["ack","positive","thanks","greet","howru","bye","love","rude","robot","hindi"]);
 
 /* ── Understanding typed answers (people type on WhatsApp, they don't only tap) ── */
-const isQuestion = (t)=> /\?|^\s*(what|how|why|when|where|which|who|can|could|is|are|do|does|will|should|kya|kaise|kab|kitna|kitni|kitne|kyu|kyon|kahan|kaun|क्या|कैसे|कब|कितना|कितनी|क्यों|कहाँ)\b/i.test(t||"");
+const isQuestion = (t)=> /\?|^\s*(what|how|why|when|where|which|who|can|could|is|are|do|does|will|should|tell me|batao|bataiye)\b|\b(kya|kaise|kab|kitna|kitni|kitne|kyu|kyun|kyon|kahan|kaun|batao|bataiye|chalega|milega|milegi)\b|(क्या|कैसे|कब|कितना|कितनी|क्यों|कहाँ|बताइए|बताओ)/i.test(t||"");
 const YES_RX = /^\s*(y|yes|yeah|yep|yup|ya|haa*n*|haan ji|han ji|ji|ji haan|sure|ok|okay|of course|bilkul|zaroor|correct|right|हाँ|हां|जी)\b/i;
 const NO_RX  = /^\s*(n|no|nope|nah|nahi|nahin|na|not really|never|नहीं|ना)\b/i;
 function findQual(t){ const x=String(t||"").toLowerCase();
@@ -985,7 +988,8 @@ function App(){
   const typeMs = (t)=> Math.min(2400, Math.max(650, 420 + String(t).length*16));
   const say  = (node, opts=null)=>{
     const o = (opts && typeof opts==="object") ? opts : {};
-    const parts = typeof node==="string" ? splitBubbles(node.replace(/\s*👇/g,"")) : [node];
+    const clean = typeof node==="string" ? node.replace(/\s*👇/g,"") : node;
+    const parts = typeof node!=="string" ? [node] : o.split===false ? [clean] : splitBubbles(clean);
     parts.forEach((part, i)=> enqueue(async ()=>{
       const first = i===0;
       await wait(first ? (qLen.current>1 ? 280 : 350 + Math.random()*450) : 300 + Math.random()*250);   // "reading" / breath between bubbles
@@ -1277,6 +1281,7 @@ function App(){
   const saveCollege = ()=>{
     const v = input.trim(); if(!v) return;
     me(v); setInput(""); scanText(v);
+    if(NON_HEALTH_WORK_RX.test(v) && !/(nurs|medical|health)/i.test(v)) setLead((l)=>({ ...l, nonNurseHits:[...(l.nonNurseHits||[]), "college:"+v.slice(0,70)].slice(-5) }));
     const ok = validateCollege(v);
     setLead((l)=>({ ...l, college:v, collegeValid:ok }));
     say(M("Thank you! Almost done — are you registered with a Nursing Council? 👇",
@@ -1339,8 +1344,7 @@ function App(){
     setLead((l)=>({ ...l, researched:v }));
     setStage("checkwait");
     const rr = researchedReaction(v);
-    say(M(rr[0], rr[1]));
-    say(M("Give me a second, let me check your Germany eligibility…","एक second, मैं आपकी Germany eligibility check कर रही हूँ…"));
+    say(M(rr[0]+" Give me a second, let me check your Germany eligibility…", rr[1]+" एक second, मैं आपकी Germany eligibility check कर रही हूँ…"));
     const t0 = Date.now();
     const pre = withVerify(d0);
     const ai = (pre.verifyScore >= 80 || pre.verifyScore <= 15) ? null : await aiVerify(d0);   // AI only for borderline cases
@@ -1379,11 +1383,10 @@ function App(){
   const showPlan = (d)=>{
     const mult = d.nurse==="student" ? null : { "<20k":"10×", "20-35k":"6–10×", "35-50k":"4–6×", "50k+":"3–4×" }[d.currentSalary];
     const who = d.nurse==="student" ? M("Once you qualify, as a nurse","Qualify होने के बाद nurse") : M("As a "+({ "GNM":"GNM nurse", "B.Sc Nursing":"B.Sc nurse", "Post Basic B.Sc":"Post Basic B.Sc nurse" }[d.qualification]||"nurse"), (d.qualification||"nurse"));
-    say(M(`Here's your Germany snapshot, ${firstName(d.name)} 👇`, `${firstName(d.name)}, यह रहा आपका Germany snapshot 👇`), 500);
     queuePush({ from:"bot", card:"salary" });
     setTimeout(()=> say(
-      M(`${who} in Germany you could earn ${mult ? "about "+mult+" your current salary" : "around ₹2–2.5 lakh a month"} — with no IELTS, and your family can join you. Your path: German A1→B2 (about 10–12 months) → degree recognition → job + visa through licensed recruiters.`,
-        `${who} के तौर पर Germany में आप${mult ? " अपनी अभी की salary का लगभग "+mult : " करीब ₹2–2.5 लाख महीना"} कमा सकती हैं — बिना IELTS, और family भी साथ आ सकती है। आपका रास्ता: German A1→B2 (करीब 10–12 महीने) → degree recognition → licensed recruiters के ज़रिए job + visa।`), 900), 1500);
+      M(`${firstName(d.name)}, here's your snapshot: ${who.charAt(0).toLowerCase()+who.slice(1)} in Germany you could earn ${mult ? "about "+mult+" your current salary" : "around ₹2–2.5 lakh a month"} — with no IELTS, and your family can join you. Your path: German A1→B2 (about 10–12 months) → degree recognition → job + visa through licensed recruiters.`,
+        `${firstName(d.name)}, ${who} के तौर पर Germany में आप${mult ? " अपनी अभी की salary का लगभग "+mult : " करीब ₹2–2.5 लाख महीना"} कमा सकती हैं — बिना IELTS, और family भी साथ आ सकती है। आपका रास्ता: German A1→B2 (करीब 10–12 महीने) → degree recognition → licensed recruiters के ज़रिए job + visa।`), { split:false }), 1500);
     setTimeout(()=> say(M("Which country is on your mind the most? If you're comparing a few, pick one — I'll compare them side by side for you 👇","आपके मन में सबसे ज़्यादा कौन-सा देश है? अगर कुछ देशों में सोच रही हैं, तो एक चुनिए — मैं उन्हें side-by-side compare कर दूँगी 👇"), 700), 3300);
     queueStage("country");
   };
@@ -1654,12 +1657,12 @@ function App(){
         return false;
       case "gpush":
         if((short && YES_RX.test(x)) || /tell|bata|show/.test(x)) return t(()=> pickGpush(true));
-        if(NO_RX.test(x) || /later|baad/.test(x)) return t(()=> pickGpush(false));
+        if(short && (NO_RX.test(x) || /later|baad/.test(x))) return t(()=> pickGpush(false));
         return false;
       case "video_lang":
         if(/hindi|हिं/.test(x)) return t(()=> playVideoLang("Hindi"));
         if(/english/.test(x) || (short && YES_RX.test(x))) return t(()=> playVideoLang("English"));
-        if(/short|bata|tell|no video|nahi|no\b/.test(x)) return t(()=> skipVideo());
+        if(short && /short|bata|tell|no video|nahi|no\b/.test(x)) return t(()=> skipVideo());
         return false;
       case "video_feedback":
         if(/(didn'?t|confus|samajh nahi|not clear|nahi samjha)/.test(x)) return t(()=> vidFeedback("confused"));
@@ -1671,7 +1674,7 @@ function App(){
         return false;
       case "book_offer":
         if((short && YES_RX.test(x)) || /book|call/.test(x)) { typedRef.current = v; me(v); askSlot(); return true; }
-        if(NO_RX.test(x) || /later|baad/.test(x)) { typedRef.current = v; me(v); say(M("Sure! Ask me anything else.","ज़रूर! और कुछ भी पूछिए।")); setStage(lead.gpushed ? "ghub" : "hub"); return true; }
+        if(short && (NO_RX.test(x) || /later|baad/.test(x))) { typedRef.current = v; me(v); say(M("Sure! Ask me anything else.","ज़रूर! और कुछ भी पूछिए।")); setStage(lead.gpushed ? "ghub" : "hub"); return true; }
         return false;
       case "slot": { if(isQuestion(v)) return false; const sl = parseSlot(v, SLOTS); if(!sl) return false; typedRef.current = v; me(v); finish(sl); return true; }
       default: return false;
@@ -1760,7 +1763,17 @@ function App(){
     if(stage==="college") return saveCollege();
     if(stage==="researched") return saveResearched();
     if(typedChip(v)){ setInput(""); return; }
-    if(MIDFLOW.has(stage)) return isQuestion(v) ? sideAnswer(v) : didntGetIt(v);
+    if(MIDFLOW.has(stage)){
+      if(/(call me|call kar|can (someone|you) call|callback|call back|talk to|speak (to|with)|baat kar)/i.test(v)){
+        me(v); setInput(""); setLead((l)=>({ ...l, wantsCall:true }));
+        const b = REASK[stage]; say(M("Sure, I'll set up the call! Just answer this one first, so the right counsellor calls you. "+b[0], "ज़रूर, call set कर दूँगी! बस पहले इसका जवाब दे दीजिए, ताकि सही counsellor आपको call करें। "+b[1])); return; }
+      if(stage==="reconfirm" && (lead.reconfirmMiss||0) >= 1){
+        // second non-answer: don't trap them, carry on (the lead stays flagged as a suspect)
+        me(v); setInput(""); setLead((l)=>({ ...l, reconfirm:"no_answer" }));
+        say(M("No problem, let's keep going.","कोई बात नहीं, चलिए आगे बढ़ते हैं।")); showPlan(lead); return; }
+      if(stage==="reconfirm") setLead((l)=>({ ...l, reconfirmMiss:(l.reconfirmMiss||0)+1 }));
+      return isQuestion(v) ? sideAnswer(v) : didntGetIt(v);
+    }
     return handleFreeText();
   };
 

@@ -5,7 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), "out", "audience");
-const runs = fs.readdirSync(dir).filter((f) => f.endsWith(".json")).map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), "utf8")));
+const runs = fs.readdirSync(dir).filter((f) => f.endsWith(".json") && !f.startsWith("_")).map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), "utf8")));
 const DEV = /[ऀ-ॿ]/;
 const isCard = (t) => /What nurses earn|SALARY \/ MONTH|BEST VALUE/.test(t);
 

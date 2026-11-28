@@ -66,7 +66,7 @@ export function makeAudience(n = 100, seed = 20261128) {
       steps.push(typer ? t(pick(["18000", "25k", "30 hazar", "40000", "prefer not to say", "stipend 6000"])) : c(pick(["Below ₹20,000", "₹20,000 – ₹35,000", "₹35,000 – ₹50,000", L("Prefer not to say", "बताना नहीं चाहती")])));
       steps.push(t(pick(RESEARCH)));
       // suspects may get the re-confirm question
-      steps.push({ maybe: seg === "fake" ? c("I'm a qualified nurse") : c("I'm a qualified nurse"), ifStage: "reconfirm", alt: seg === "fake" && chance(0.4) ? c("I'm not a nurse") : null });
+      steps.push({ maybe: c(/qualified nurse/), ifStage: "reconfirm", alt: seg === "fake" && chance(0.4) ? c(/not a nurse|nurse नहीं/) : null });
       steps.push(typer ? t(pick(["germany", "Germany", hindi ? "जर्मनी" : "germany pakka", "UK", "not sure"])) : c(L(pick(["Germany", "Germany", "UK", "Canada"]), "जर्मनी")));
     }
     // chat in the hub
