@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Chatbot Leads · Testbook Global</title>
+<style>
+  :root{
+    --bg:#f4f6f8; --card:#ffffff; --ink:#0f1b24; --muted:#6a7a85; --line:#e4e9ec;
+    --brand:#12182a; --cyan:#20cbe6; --green:#0a7a5f; --accent:#075e54;
+    --ok:#1a9d6b; --okbg:#e6f6ee; --warn:#c77700; --warnbg:#fdf2e2; --bad:#c0392b; --badbg:#fdecea;
+    --chip:#eef3f5;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0d1419; --card:#141d24; --ink:#e9eef1; --muted:#9fb0ba; --line:#243139;
+      --chip:#1c272e; --okbg:#10291f; --warnbg:#2a2113; --badbg:#2a1715;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0d1419; --card:#141d24; --ink:#e9eef1; --muted:#9fb0ba; --line:#243139;
+    --chip:#1c272e; --okbg:#10291f; --warnbg:#2a2113; --badbg:#2a1715;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{ font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased; }
+  a{ color:var(--green); }
+
+  .wrap{ max-width:1200px; margin:0 auto; padding:16px; }
+
+  /* header */
+  header{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:6px 0 14px; }
+  .logo{ display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--line); padding:7px 13px; border-radius:999px; }
+  .logo svg{ width:22px; height:19px; display:block; }
+  .logo b{ font-size:16px; letter-spacing:-.5px; color:var(--ink); }
+  .htitle{ font-size:17px; font-weight:800; }
+  .htitle span{ color:var(--muted); font-weight:600; font-size:13px; display:block; margin-top:1px; }
+  .spacer{ flex:1; }
+  .btn{ border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:10px; padding:9px 14px; font-size:13.5px; font-weight:700; cursor:pointer; font-family:inherit; }
+  .btn:active{ transform:scale(.98); }
+  .btn.primary{ background:var(--accent); color:#fff; border-color:var(--accent); }
+
+  /* KPIs */
+  .kpis{ display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin-bottom:14px; }
+  .kpi{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:13px 14px; }
+  .kpi .n{ font-size:25px; font-weight:800; line-height:1; }
+  .kpi .l{ font-size:11.5px; color:var(--muted); margin-top:6px; font-weight:600; text-transform:uppercase; letter-spacing:.3px; }
+  .kpi.ok .n{ color:var(--ok); } .kpi.warn .n{ color:var(--warn); } .kpi.bad .n{ color:var(--bad); }
+  @media(max-width:760px){ .kpis{ grid-template-columns:repeat(2,1fr); } .htitle{ font-size:15px; } }
+
+  /* filters */
+  .filters{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+  .seg{ display:inline-flex; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .seg button{ border:0; background:transparent; color:var(--muted); padding:8px 13px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; border-right:1px solid var(--line); }
+  .seg button:last-child{ border-right:0; }
+  .seg button.on{ background:var(--accent); color:#fff; }
+  input.search{ flex:1; min-width:180px; border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:10px; padding:9px 13px; font-size:14px; font-family:inherit; }
+
+  /* table */
+  .tablecard{ background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  thead th{ text-align:left; padding:11px 12px; color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.4px; border-bottom:1px solid var(--line); white-space:nowrap; background:var(--chip); }
+  tbody td{ padding:11px 12px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  tbody tr{ cursor:pointer; }
+  tbody tr:hover{ background:var(--chip); }
+  tbody tr:last-child td{ border-bottom:0; }
+  .nm{ font-weight:700; }
+  .sub{ color:var(--muted); font-size:12px; }
+  .pill{ display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:999px; font-size:11.5px; font-weight:800; white-space:nowrap; }
+  .pill.ok{ background:var(--okbg); color:var(--ok); } .pill.warn{ background:var(--warnbg); color:var(--warn); } .pill.bad{ background:var(--badbg); color:var(--bad); } .pill.neu{ background:var(--chip); color:var(--muted); }
+  .tick{ font-weight:800; } .tick.y{ color:var(--ok);} .tick.n{ color:var(--bad);} .tick.q{ color:var(--muted);}
+  .hide-sm{ }
+  @media(max-width:760px){ .hide-sm{ display:none; } .wrap{ padding:10px; } }
+
+  .empty{ padding:40px; text-align:center; color:var(--muted); }
+  .loading{ padding:40px; text-align:center; color:var(--muted); }
+
+  /* drawer */
+  .scrim{ position:fixed; inset:0; background:rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:opacity .2s; z-index:40; }
+  .scrim.show{ opacity:1; pointer-events:auto; }
+  .drawer{ position:fixed; top:0; right:0; height:100%; width:min(440px,100%); background:var(--card); box-shadow:-10px 0 40px rgba(0,0,0,.3); transform:translateX(100%); transition:transform .24s cubic-bezier(.4,0,.2,1); z-index:41; overflow-y:auto; }
+  .drawer.show{ transform:none; }
+  .dh{ position:sticky; top:0; background:var(--card); border-bottom:1px solid var(--line); padding:16px; display:flex; align-items:flex-start; gap:10px; }
+  .dh .x{ margin-left:auto; cursor:pointer; font-size:20px; color:var(--muted); line-height:1; padding:2px 6px; }
+  .dh h2{ margin:0; font-size:18px; }
+  .dbody{ padding:16px; }
+  .verdict{ border-radius:12px; padding:13px 14px; margin-bottom:16px; font-weight:700; }
+  .verdict.ok{ background:var(--okbg); color:var(--ok); } .verdict.warn{ background:var(--warnbg); color:var(--warn); } .verdict.bad{ background:var(--badbg); color:var(--bad); }
+  .verdict small{ display:block; font-weight:600; opacity:.9; margin-top:4px; font-size:12.5px; }
+  .sec{ font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); font-weight:800; margin:18px 0 8px; }
+  .row{ display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px dashed var(--line); font-size:13.5px; }
+  .row .k{ color:var(--muted); } .row .v{ text-align:right; font-weight:600; max-width:60%; }
+  .qa{ background:var(--chip); border-radius:10px; padding:10px 12px; margin:7px 0; font-size:13px; }
+  .qa .t{ color:var(--muted); font-size:11px; margin-top:3px; }
+  .checks{ display:flex; gap:8px; flex-wrap:wrap; margin-top:4px; }
+
+  /* gate */
+  .gate{ position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:60; }
+  .gate .box{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:26px; width:min(340px,90%); text-align:center; }
+  .gate input{ width:100%; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--bg); color:var(--ink); font-size:15px; margin:14px 0 10px; font-family:inherit; }
+  .gate .err{ color:var(--bad); font-size:12.5px; min-height:16px; }
+</style>
+</head>
+<body>
+  <div class="gate" id="gate">
+    <div class="box">
+      <div class="logo" style="margin:0 auto 6px;">
+        <svg viewBox="0 0 44 38" xmlns="http://www.w3.org/2000/svg"><path d="M3 11 L21 6 L21 33 L3 30 Z" fill="#20CBE6"/><path d="M39 11 L21 6 L21 33 L39 30 Z" fill="#12182a"/></svg>
+        <b>testbook</b>
+      </div>
+      <div style="font-weight:800;font-size:15px;margin-top:8px;">Chatbot Leads</div>
+      <input id="pw" type="password" placeholder="Enter password" autocomplete="off" />
+      <div class="err" id="gateErr"></div>
+      <button class="btn primary" style="width:100%;" onclick="checkPw()">Open dashboard</button>
+    </div>
+  </div>
+
+  <div class="wrap" id="app" style="display:none;">
+    <header>
+      <div class="logo">
+        <svg viewBox="0 0 44 38" xmlns="http://www.w3.org/2000/svg"><path d="M3 11 L21 6 L21 33 L3 30 Z" fill="#20CBE6"/><path d="M39 11 L21 6 L21 33 L39 30 Z" fill="#12182a"/></svg>
+        <b>testbook</b>
+      </div>
+      <div class="htitle">Chatbot Leads <span>Testbook Global · Germany Nursing</span></div>
+      <div class="spacer"></div>
+      <button class="btn" onclick="exportCSV()">⭳ CSV</button>
+      <button class="btn primary" onclick="load()">↻ Refresh</button>
+    </header>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="filters">
+      <div class="seg" id="seg">
+        <button data-f="all" class="on">All</button>
+        <button data-f="qualified">✅ Qualified</button>
+        <button data-f="partial">⚠️ Nurse · incomplete</button>
+        <button data-f="suspect">🚩 Suspected fake</button>
+        <button data-f="proxy">👪 Family enquiry</button>
+        <button data-f="not_nurse">❌ Not a nurse</button>
+        <button data-f="unknown">⚪ Dropped early</button>
+      </div>
+      <input class="search" id="search" placeholder="Search name, phone, college, specialization…" oninput="render()" />
+    </div>
+
+    <div class="tablecard">
+      <div id="tablehost"><div class="loading">Loading leads…</div></div>
+    </div>
+    <p class="sub" style="margin:10px 2px;">Qualified = claims to be a nurse/nursing student <b>and</b> answered the verification questions (workplace/specialization, college & nursing council) <b>and</b> passed the chatbot's nurse check (2-question nursing round, workplace, AI review). Leads from before the check use the old rule. 🚩 Suspected fake = said nurse but failed the check — verify before calling. Tap any row for the full answer sheet.</p>
+  </div>
+
+  <div class="scrim" id="scrim" onclick="closeDrawer()"></div>
+  <div class="drawer" id="drawer"></div>
+
+<script>
+const CFG = {
+  url:  "https://lrcimdchhbsgbnvdmpwd.supabase.co",
+  anon: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyY2ltZGNoaGJzZ2JudmRtcHdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MzAwMzcsImV4cCI6MjA5MDAwNjAzN30.1MfNvTNGTUNuUIL-lN3vZH7Kpcn6t1naiq07KTUEDEk",
+  password: "nurse2026"   // change me: shared view password
+};
+
+// ---- gate ----
+function checkPw(){
+  const v = document.getElementById('pw').value;
+  if(v === CFG.password){ try{ sessionStorage.setItem('gc_cb_ok','1'); }catch(e){} openApp(); }
+  else { document.getElementById('gateErr').textContent = "Wrong password"; }
+}
+document.getElementById('pw').addEventListener('keydown', e=>{ if(e.key==='Enter') checkPw(); });
+function openApp(){ document.getElementById('gate').style.display='none'; document.getElementById('app').style.display='block'; load(); }
+try{ if(sessionStorage.getItem('gc_cb_ok')==='1') openApp(); }catch(e){}
+
+// ---- state ----
+let ROWS = [], FILTER = 'all';
+document.querySelectorAll('#seg button').forEach(b=> b.onclick = ()=>{
+  document.querySelectorAll('#seg button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); FILTER = b.dataset.f; render();
+});
+
+// ---- qualification logic ----
+const FLAG_TEXT = { check_wrong:'got a nursing-round question wrong', check_unsure:'unsure on a nursing-round question', workplace_not_health:'workplace is not healthcare', workplace_vague:'workplace answer is vague',
+  college_unclear:'college unclear', council_none:'no nursing council', said_non_nurse_things:'said something non-nurse in chat', contradicted_after_reconfirm:'contradicted their "I am a nurse" later',
+  ai_likely_not:'AI review: likely not a nurse', anm_only:'ANM only (usually not eligible alone)', vague_profile:'vague workplace + non-nursing college', both_checks_wrong:'got both nursing-round questions wrong', asking_for_someone:'asking for someone else' };
+const flagList = (sd)=> (sd.verify_flags||[]).map(f=>FLAG_TEXT[f]||f);
+function qualify(sd){
+  sd = sd || {};
+  // v5 leads carry the chatbot's verification verdict
+  if(sd.verify_verdict){
+    const v = sd.verify_verdict, fl = flagList(sd);
+    const answered = !!(sd.college && sd.nursing_council && (sd.workplace || sd.specialization));
+    if(v==='not_nurse') return { s:'not_nurse', label:'Not a nurse', cls:'bad', why:'Told us they are not a nurse.' };
+    if(v==='proxy') return { s:'proxy', label:'Family enquiry', cls:'warn', why:'Asking on behalf of a family member who is (or is studying to be) a nurse. Worth a call — ask for the nurse.' };
+    if(v==='suspect') return { s:'suspect', label:'Suspected fake', cls:'bad', why:'Said they are a nurse, but '+(fl.join('; ')||'failed the nurse check')+'. Verify before calling.' };
+    if(!answered) return { s:'partial', label:'Nurse · incomplete', cls:'warn', why:'Did not finish the verification questions.' };
+    if(v==='review') return { s:'qualified', label:'Qualified · review', cls:'warn', why:'Answered everything, but '+(fl.join('; ')||'some answers were weak')+'.' };
+    return { s:'qualified', label:'Qualified', cls:'ok', why:'Passed the nurse check'+(sd.nurse_check_score!=null?(' ('+sd.nurse_check_score+'/2 nursing round)'):'')+' and answered all verification questions.' };
+  }
+  const nurse = String(sd.is_nurse||'').toLowerCase();
+  const isNurse = nurse==='nurse' || nurse==='student';
+  const notNurse = nurse==='no' || nurse==='not_nurse' || nurse==='none' || nurse==='exploring';
+  const hasSpec = !!(sd.specialization && String(sd.specialization).trim());
+  const hasCollege = !!(sd.college && String(sd.college).trim());
+  const hasCouncil = !!(sd.nursing_council && String(sd.nursing_council).trim());
+  const answered = hasSpec && hasCollege && hasCouncil;
+  const specBad = sd.specialization_valid === false;
+  const collBad = sd.college_valid === false;
+
+  if(isNurse && answered){
+    const flags = [];
+    if(specBad) flags.push("specialization looks off");
+    if(collBad) flags.push("college looks off");
+    if(flags.length) return { s:'qualified', label:'Qualified · review', cls:'warn', why:'Nurse and answered everything, but '+flags.join(' & ')+'.' };
+    return { s:'qualified', label:'Qualified', cls:'ok', why:'Is a nurse/student and answered all verification questions.' };
+  }
+  if(notNurse) return { s:'not_nurse', label:'Not a nurse', cls:'bad', why:'Told us they are not a nurse.' };
+  if(isNurse && !answered){
+    const miss = [];
+    if(!hasSpec) miss.push('specialization'); if(!hasCollege) miss.push('college'); if(!hasCouncil) miss.push('council');
+    return { s:'partial', label:'Nurse · incomplete', cls:'warn', why:'Claims to be a nurse but did not answer: '+miss.join(', ')+'.' };
+  }
+  return { s:'unknown', label:'Dropped early', cls:'neu', why:'Left before telling us if they are a nurse.' };
+}
+
+function fmtDate(iso){ if(!iso) return '—'; const d=new Date(iso); if(isNaN(d)) return '—';
+  return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function tick(v){ return v===true?'<span class="tick y">✓</span>':v===false?'<span class="tick n">✗</span>':'<span class="tick q">–</span>'; }
+function cap(s){ s=String(s||''); return s? s.charAt(0).toUpperCase()+s.slice(1):'—'; }
+function salaryLabel(k){ return ({'<20k':'Below ₹20,000','20-35k':'₹20,000 – ₹35,000','35-50k':'₹35,000 – ₹50,000','50k+':'Above ₹50,000','na':'Prefer not to say'})[k] || (k||''); }
+
+// ---- load ----
+async function load(){
+  document.getElementById('tablehost').innerHTML = '<div class="loading">Loading leads…</div>';
+  try{
+    const r = await fetch(CFG.url+"/rest/v1/v2_staging?source=eq.chatbot&select=id,name,phone,status,created_at,source_detail&order=created_at.desc&limit=5000",
+      { headers:{ apikey:CFG.anon, Authorization:"Bearer "+CFG.anon } });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    ROWS = await r.json();
+    ROWS.forEach(x=> x._q = qualify(x.source_detail));
+    renderKPIs(); render();
+  }catch(e){
+    document.getElementById('tablehost').innerHTML = '<div class="empty">Could not load leads.<br><span class="sub">'+esc(e.message)+'</span></div>';
+  }
+}
+
+function renderKPIs(){
+  const n = ROWS.length;
+  const qual = ROWS.filter(x=>x._q.s==='qualified').length;
+  const nurses = ROWS.filter(x=>{ const v=String((x.source_detail||{}).is_nurse||'').toLowerCase(); return v==='nurse'||v==='student'; }).length;
+  const answered = ROWS.filter(x=>{ const sd=x.source_detail||{}; return sd.specialization&&sd.college&&sd.nursing_council; }).length;
+  const notN = ROWS.filter(x=>x._q.s==='not_nurse').length;
+  const sus = ROWS.filter(x=>x._q.s==='suspect').length;
+  document.getElementById('kpis').innerHTML =
+    kpi(n,'Total leads','') + kpi(nurses,'Claim nurse','') + kpi(answered,'Answered all Qs','') +
+    kpi(qual,'Qualified','ok') + kpi(sus,'Suspected fake','bad') + kpi(notN,'Not a nurse','bad');
+}
+function kpi(n,l,c){ return '<div class="kpi '+c+'"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'; }
+
+function render(){
+  const q = (document.getElementById('search').value||'').toLowerCase().trim();
+  let rows = ROWS.slice();
+  if(FILTER!=='all') rows = rows.filter(x=>x._q.s===FILTER);
+  if(q) rows = rows.filter(x=>{ const sd=x.source_detail||{};
+    return [x.name,x.phone,sd.college,sd.specialization,sd.qualification,sd.campaign,sd.ad].join(' ').toLowerCase().includes(q); });
+
+  if(!rows.length){ document.getElementById('tablehost').innerHTML = '<div class="empty">No leads match.</div>'; return; }
+  let h = '<table><thead><tr>'+
+    '<th>Lead</th><th>Status</th><th class="hide-sm">Nurse</th><th class="hide-sm">Check</th><th class="hide-sm">Specialization</th>'+
+    '<th class="hide-sm">College</th><th class="hide-sm">Council</th><th class="hide-sm">Answered</th><th class="hide-sm">When</th>'+
+    '</tr></thead><tbody>';
+  rows.forEach((x,i)=>{ const sd=x.source_detail||{}; const Q=x._q;
+    const idx = ROWS.indexOf(x);
+    const ans = (sd.specialization?1:0)+(sd.college?1:0)+(sd.nursing_council?1:0);
+    h += '<tr onclick="openDrawer('+idx+')">'+
+      '<td><div class="nm">'+esc(x.name||'—')+'</div><div class="sub">'+esc(x.phone||'—')+(sd.preferred_language?(' · '+esc(sd.preferred_language)):'')+'</div></td>'+
+      '<td><span class="pill '+Q.cls+'">'+esc(Q.label)+'</span></td>'+
+      '<td class="hide-sm">'+cap(sd.is_nurse)+'</td>'+
+      '<td class="hide-sm">'+(sd.verify_score!=null && !['proxy','not_nurse'].includes(sd.verify_verdict)?('<b>'+sd.verify_score+'</b><span class="sub">/100 · '+(sd.nurse_check_score!=null?sd.nurse_check_score:'–')+'/2</span>'):'<span class="sub">—</span>')+'</td>'+
+      '<td class="hide-sm">'+(sd.specialization?esc(sd.specialization)+' '+tick(sd.specialization_valid):'<span class="sub">—</span>')+'</td>'+
+      '<td class="hide-sm">'+(sd.college?esc(trunc(sd.college,20))+' '+tick(sd.college_valid):'<span class="sub">—</span>')+'</td>'+
+      '<td class="hide-sm">'+(sd.nursing_council?'<span class="tick y">✓</span>':'<span class="tick q">–</span>')+'</td>'+
+      '<td class="hide-sm">'+ans+'/3</td>'+
+      '<td class="hide-sm sub">'+fmtDate(x.created_at)+'</td>'+
+      '</tr>';
+  });
+  h += '</tbody></table>';
+  document.getElementById('tablehost').innerHTML = h;
+}
+function trunc(s,n){ s=String(s||''); return s.length>n? s.slice(0,n)+'…':s; }
+
+// ---- drawer ----
+function openDrawer(i){
+  const x = ROWS[i]; if(!x) return; const sd = x.source_detail||{}; const Q = x._q;
+  const act = sd.activity||{};
+  const ql = act.question_list || sd.question_list || [];
+  const row = (k,v)=> '<div class="row"><span class="k">'+esc(k)+'</span><span class="v">'+(v==null||v===''?'—':v)+'</span></div>';
+  let qaHtml = '';
+  if(ql.length){ qaHtml = ql.map(o=> '<div class="qa">“'+esc(o.q||o.question||'')+'”'+(o.a?('<div class="sub" style="margin-top:4px">↳ Jhanvi (AI): '+esc(o.a)+'</div>'):'')+'<div class="t">'+esc(o.topic||'')+(o.at?(' · '+fmtDate(o.at)):'')+'</div></div>').join(''); }
+  else qaHtml = '<div class="sub">No free-text questions logged.</div>';
+
+  const html =
+    '<div class="dh"><div><h2>'+esc(x.name||'Lead')+'</h2><div class="sub">'+esc(x.phone||'')+' '+tick(sd.phone_valid)+(sd.phone_flag?(' <span class="sub">('+esc(sd.phone_flag)+')</span>'):'')+'</div></div><div class="x" onclick="closeDrawer()">✕</div></div>'+
+    '<div class="dbody">'+
+      '<div class="verdict '+Q.cls+'">'+esc(Q.label)+'<small>'+esc(Q.why)+'</small></div>'+
+
+      '<div class="sec">Nurse verification</div>'+
+      row('Is a nurse?', cap(sd.is_nurse))+
+      row('Qualification', esc(sd.qualification||''))+
+      (sd.verify_verdict ? (
+        row('Nurse-check score', sd.verify_score!=null ? ('<b>'+sd.verify_score+'</b>/100 · '+esc(cap(sd.verify_verdict))) : '')+
+        row('Nursing round', (sd.nurse_check||[]).map(a=> (a.correct?'<span class="tick y">✓</span> ':'<span class="tick n">✗</span> ')+esc(a.a)+(a.ms?(' <span class="sub">('+Math.round(a.ms/1000)+'s)</span>'):'')).join('<br>'))+
+        row('Workplace', sd.workplace ? (esc(sd.workplace)+' '+tick(sd.workplace_valid)) : '')+
+        row('AI review', sd.ai_verdict ? (esc(cap(String(sd.ai_verdict).replace('_',' ')))+(sd.ai_reason?(' — <span class="sub">'+esc(sd.ai_reason)+'</span>'):'')) : '')+
+        row('Red flags', flagList(sd).map(esc).join('<br>'))+
+        row('Non-nurse signals', (sd.non_nurse_signals||[]).map(esc).join('<br>'))
+      ) : '')+
+      row('Current salary', esc(salaryLabel(sd.current_salary)))+
+      row('Specialization', sd.specialization? (esc(sd.specialization)+' '+tick(sd.specialization_valid)) : '')+
+      row('College', sd.college? (esc(sd.college)+' '+tick(sd.college_valid)) : '')+
+      row('Nursing council', esc(sd.nursing_council||''))+
+      row('Bot confidence', cap(sd.nurse_confidence))+
+      row('Bot lead quality', cap(sd.lead_quality))+
+
+      '<div class="sec">Engagement</div>'+
+      row('Preferred language', cap(sd.preferred_language))+
+      row('Questions asked', (act.questions_asked!=null?act.questions_asked:(sd.questions_asked||0)))+
+      row('Nurture score', (act.nurture_score!=null?act.nurture_score+' ('+cap(act.nurture_tier)+')':'—'))+
+      row('Explored Germany', sd.lead_stage? esc(sd.lead_stage):'—')+
+      row('Preferred call time', esc(sd.preferred_time||''))+
+      row('City', esc(sd.city||''))+
+
+      row('Researched abroad before?', esc(sd.researched_before||''))+
+
+      '<div class="sec">What they asked</div>'+ qaHtml +
+      ((sd.counsellor_questions||[]).length ? ('<div class="sec">For the counsellor (AI was unavailable)</div>'+(sd.counsellor_questions||[]).map(q=>'<div class="qa">“'+esc(q)+'”</div>').join('')) : '')+
+
+      '<div class="sec">Ad attribution</div>'+
+      row('Campaign', esc(sd.campaign||sd.utm_campaign||''))+
+      row('Ad set', esc(sd.adset||sd.utm_term||''))+
+      row('Ad creative', esc(sd.ad||sd.utm_content||''))+
+      row('Placement', esc(sd.placement||''))+
+      row('Source / medium', esc((sd.utm_source||'')+(sd.utm_medium?(' / '+sd.utm_medium):'')))+
+
+      '<div class="sec">CRM</div>'+
+      row('Status', '<span class="pill '+(x.status==='assigned'?'ok':'neu')+'">'+esc(cap(x.status))+'</span>')+
+      row('Captured', fmtDate(x.created_at))+
+      row('Staging id', '<span class="sub">'+esc(x.id)+'</span>')+
+    '</div>';
+  document.getElementById('drawer').innerHTML = html;
+  document.getElementById('drawer').classList.add('show');
+  document.getElementById('scrim').classList.add('show');
+}
+function closeDrawer(){ document.getElementById('drawer').classList.remove('show'); document.getElementById('scrim').classList.remove('show'); }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
+
+// ---- CSV ----
+function exportCSV(){
+  const cols = ['name','phone','status','qualification_verdict','is_nurse','nursing_qualification','current_salary','specialization','specialization_valid','college','college_valid','nursing_council','researched_before','workplace','nurse_check_score','verify_score','verify_verdict','verify_flags','ai_verdict','bot_confidence','bot_quality','language','preferred_time','questions_asked','campaign','adset','ad','captured_at'];
+  const lines = [cols.join(',')];
+  ROWS.forEach(x=>{ const sd=x.source_detail||{}; const act=sd.activity||{};
+    const vals = [x.name,x.phone,x.status,x._q.label,sd.is_nurse,sd.qualification,salaryLabel(sd.current_salary),sd.specialization,sd.specialization_valid,sd.college,sd.college_valid,sd.nursing_council,sd.researched_before,sd.workplace,sd.nurse_check_score,sd.verify_score,sd.verify_verdict,(sd.verify_flags||[]).join('; '),sd.ai_verdict,sd.nurse_confidence,sd.lead_quality,sd.preferred_language,sd.preferred_time,(act.questions_asked||0),(sd.campaign||sd.utm_campaign),(sd.adset||sd.utm_term),(sd.ad||sd.utm_content),x.created_at];
+    lines.push(vals.map(v=>{ v=v==null?'':String(v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }).join(','));
+  });
+  const blob = new Blob([lines.join('\n')],{type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'chatbot_leads_'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
+}
+</script>
+</body>
+</html>
