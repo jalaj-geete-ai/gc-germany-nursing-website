@@ -64,4 +64,20 @@ export const PERSONAS = [
       t("PHC me ANM hu, gaon me"), t("ANM training centre Gaya"), c("मेरी State Nursing Council"),
       c("Below ₹20,000"), t("nahi"), c("जर्मनी"),
       t("kya ANM wale bhi ja sakte hain?"), t("agar main GNM kar lu to?")] },
+
+  // ── people who TYPE instead of tapping (v6) ──
+  { name: "typer_hinglish", desc: "Types everything WhatsApp-style, asks a question mid-flow, gives salary as '28k', picks a time by typing",
+    name_input: "Neha Sharma",
+    steps: [t("english"), t("yes i am GNM nurse"), t("wait is this course paid or free?"), q("right"), t("pata nahi"),
+      t("Max hospital saket, ICU"), t("RAK college of nursing delhi"), t("yes delhi nursing council"),
+      t("28k"), t("my cousin went to UK, she said IELTS is very tough"), t("germany"),
+      t("mummy papa are scared to send me alone"), t("how long it will take to learn german? i am working 12 hr shifts"),
+      t("ok can someone call me"), t("evening after 6")] },
+
+  { name: "typer_hindi_student", desc: "Final-year student who types in Hindi, asks a side question during the nursing round",
+    name_input: "Riya Patel",
+    steps: [t("हिंदी"), t("मैं B.Sc nursing final year में हूँ"), t("क्या ये online है?"), q("right"), q("right"),
+      t("civil hospital ahmedabad me posting chal rahi hai, medicine ward"), t("Government College of Nursing Ahmedabad"),
+      t("abhi registration nahi hua, final year hai"), t("stipend 8000 milta hai"), t("nahi"), t("जर्मनी"),
+      t("kya main exam ke baad turant ja sakti hu?")] },
 ];

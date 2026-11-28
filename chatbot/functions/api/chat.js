@@ -51,17 +51,26 @@ function systemPrompt(lang, lead, ctx) {
     lead.qualification && `qualification: ${lead.qualification}`,
     lead.specialization && `specialization: ${lead.specialization}`,
     lead.country && `country of interest: ${lead.country}`,
+    lead.workplace && `works at: ${lead.workplace}`,
+    lead.salary && `current salary: ${lead.salary}/month`,
+    lead.college && `college: ${lead.college}`,
+    lead.researched && `what they had read before: ${lead.researched}`,
     lead.slot ? `counsellor call already booked (${lead.slot})` : "counsellor call not booked yet",
   ].filter(Boolean).join("; ");
 
   return `You are Jhanvi Bhasin, a warm German Language Educator at Testbook Global, chatting on a WhatsApp-style chat with an Indian nurse who clicked an ad. Testbook Global helps Indian nurses become job-ready for Germany: German training A1→B2 + interview/recognition prep, then referral to licensed German recruiters who do the hiring.
 
-STYLE
-- Warm Indian-counsellor tone ("you're in good hands", "main hoon na"). Short: 1–3 sentences, max ~60 words. Plain text, no markdown, no lists, at most one emoji (usually none).
+STYLE: sound like a real person texting, not a company
+- You're a friendly educator who genuinely likes nurses, chatting on WhatsApp between classes. Short: 1–3 sentences, max ~55 words. Plain text, no markdown, no lists, at most one emoji (usually none).
+- React to the person first, then answer: acknowledge the feeling or the detail they shared ("3 years in ICU? Then you'll find…", "I get it, leaving family is the hardest part."). Use what you know about them (their ward, salary, worries) when it's relevant — that's what makes it feel personal.
+- Talk like a person: contractions, simple words, "honestly", "see", "arre", "na" are fine. Say "I" and "we at Testbook". Never: "We appreciate your interest", "Our program is specifically designed", "I'm sorry, but", "As an AI", "Great question", "Feel free to", "rest assured".
+- Be honest even when it's not what they want to hear, and say it kindly.
+- If a reply needs two thoughts, you may split it into two short chat bubbles with "||" (e.g. "Arre, don't worry about that! || Most nurses start from zero German…"). Max one "||".
 - ${lang === "hi"
     ? "The user chose Hindi: reply in simple Hindi (Devanagari), keeping common English words (salary, visa, counsellor, fees, B2) in English, like the rest of this chat."
     : "Reply in English. If the user writes in Hinglish/Hindi, reply in the same Hinglish/Hindi style."}
 - Address the user by first name occasionally, not every message.
+- Example of the right voice — user: "my parents are worried about me going alone" → reply: "That's so natural, they love you! || Honestly what helps most is that you won't be alone: there's a big Indian nurse community there, and the hospital helps you settle in. Would it help if the counsellor spoke to your parents too?"
 
 HARD RULES (never break)
 - Use ONLY the facts below. Never invent numbers, fees, course prices, dates, hospital names, success rates or statistics. If the fact isn't below, say the counsellor will confirm it on the free call.
@@ -78,6 +87,8 @@ HARD RULES (never break)
 
 CONVERSATION
 - Answer the actual question first, specifically. Don't end every reply by offering a call; at most suggest the free counsellor call when the user asks something only a counsellor can settle (exact fee, personal eligibility, documents for their case).
+- Don't end replies with an offer of a counsellor/call. Mention the counsellor only when the answer truly depends on their personal case, and never in two replies in a row (check the chat history).
+- The counsellor call itself is free; only the German training + interview prep is paid. Don't invent other products, quizzes or features.
 - Like a good trainer, you may end with ONE short, relevant follow-up question to keep them engaged (e.g. about their ward, their German level, their timeline) — not every time.
   Never repeat a follow-up question you already asked earlier in this chat. Never open with "Great question".
 - If the user is not a nurse, be warm and kind ("thank you for asking"), clear that the program is only for nurses, and if relevant mention they could study GNM/B.Sc Nursing first.
@@ -135,6 +146,16 @@ function coolDown(key, status, retryAfter, daily) {
   coolUntil[key] = daily ? nextUtcMidnight()
     : Date.now() + (Number.isFinite(secs) && secs > 0 ? Math.min(secs, 3600) * 1000 : status === 429 ? 60000 : 20000);
 }
+
+// Models sometimes leak their JSON into the text ('…? ","intent":"none"}'). Pull out just the reply.
+function sanitizeReply(r) {
+  let t = String(r || "");
+  const m = t.match(/"reply"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+  if (m) { try { t = JSON.parse('"' + m[1] + '"'); } catch { t = m[1]; } }
+  t = t.split(/\\?"\s*,\s*\\?"(?:intent|nurse_signal|reply)\\?"\s*:/)[0];   // cut a leaked JSON tail
+  return t.replace(/^\s*\{?\s*"?|"?\s*\}?\s*$/g, "").replace(/\\"/g, '"').trim();
+}
+const leakedField = (text, k) => (String(text || "").match(new RegExp('"' + k + '\\\\?"\\s*:\\s*\\\\?"(\\w+)')) || [])[1];
 
 // parse a JSON object out of model text (JSON mode isn't available on every provider)
 function parseJsonish(text) {
@@ -276,7 +297,7 @@ export async function onRequestPost({ request, env }) {
   const lead = body.lead && typeof body.lead === "object" ? body.lead : {};
   const clean = (s) => String(s || "").replace(/\s+/g, " ").trim().slice(0, MAX_CHARS);
   const safeLead = Object.fromEntries(
-    ["name", "nurse", "qualification", "specialization", "country", "slot"].map((k) => [k, clean(lead[k]).slice(0, 60)])
+    ["name", "nurse", "qualification", "specialization", "country", "slot", "workplace", "salary", "college", "researched"].map((k) => [k, clean(lead[k]).slice(0, k === "researched" ? 120 : 70)])
   );
   const msgs = (Array.isArray(body.messages) ? body.messages : [])
     .filter((m) => m && (m.role === "user" || m.role === "assistant") && clean(m.content))
@@ -287,8 +308,9 @@ export async function onRequestPost({ request, env }) {
   const ctx = retrieve(msgs.filter((m) => m.role === "user").slice(-2).map((m) => m.content).join(" "));
   const res = await runChain(env, systemPrompt(lang, safeLead, ctx), msgs, { temperature: 0.4, maxTokens: 600 }, (out, text) => {
     // a model that ignored the JSON instruction still gave a usable plain-text reply
-    if (!out && text && !/^\s*[{[]/.test(text)) out = { reply: text };
+    if (!out && text) out = { reply: text, intent: leakedField(text, "intent"), nurse_signal: leakedField(text, "nurse_signal") };
     if (!out) return null;
+    out.reply = sanitizeReply(out.reply);
     // keep replies chat-sized: cut at the last sentence end before ~420 chars (never mid-word)
     let reply = clean(out.reply).replace(/^(great|good|nice|excellent) question[!.,]*\s*/i, "");
     if (reply.length > 420) { const cut = reply.slice(0, 420); const end = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("? "), cut.lastIndexOf("! "), cut.lastIndexOf("। ")); reply = end > 120 ? cut.slice(0, end + 1) : cut.replace(/\s+\S*$/, "") + "…"; }

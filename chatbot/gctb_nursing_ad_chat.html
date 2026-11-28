@@ -804,6 +804,50 @@ const firstName = (n)=>{ const w=String(n||"").trim().split(/\s+/).filter(x=>!/^
 // KB entries that are just small talk: answer these instantly; everything else can go to the LLM
 const CASUAL_IDS = new Set(["ack","positive","thanks","greet","howru","bye","love","rude","robot","hindi"]);
 
+/* ── Understanding typed answers (people type on WhatsApp, they don't only tap) ── */
+const isQuestion = (t)=> /\?|^\s*(what|how|why|when|where|which|who|can|could|is|are|do|does|will|should|kya|kaise|kab|kitna|kitni|kitne|kyu|kyon|kahan|kaun|क्या|कैसे|कब|कितना|कितनी|क्यों|कहाँ)\b/i.test(t||"");
+const YES_RX = /^\s*(y|yes|yeah|yep|yup|ya|haa*n*|haan ji|han ji|ji|ji haan|sure|ok|okay|of course|bilkul|zaroor|correct|right|हाँ|हां|जी)\b/i;
+const NO_RX  = /^\s*(n|no|nope|nah|nahi|nahin|na|not really|never|नहीं|ना)\b/i;
+function findQual(t){ const x=String(t||"").toLowerCase();
+  if(/post\s*basic|p\.?\s*b\.?\s*b\.?\s*sc/.test(x)) return "Post Basic B.Sc";
+  if(/\bm\.?\s?sc\b|b\.?\s?sc|\bbsc\b|bachelor/.test(x)) return "B.Sc Nursing";
+  if(/\bgnm\b|general nursing/.test(x)) return "GNM";
+  if(/\banm\b|auxiliary/.test(x)) return "ANM";
+  return null; }
+function parseSalary(t){ const x=String(t||"").toLowerCase().replace(/,/g,"");
+  if(/(prefer not|not say|won'?t say|nahi batana|private|skip|chhodo)/.test(x)) return "na";
+  const m = x.match(/(\d+(?:\.\d+)?)\s*(k\b|thousand|hazar|hajar|lakh|lac)?/); if(!m) return /(nothing|no salary|not working|0)/.test(x) ? "<20k" : null;
+  let n = parseFloat(m[1]); const u = m[2]||"";
+  if(/lakh|lac/.test(u)) n *= 100000; else if(u) n *= 1000; else if(n < 1000) n *= 1000;   // "25" on a salary question means 25k
+  return n < 20000 ? "<20k" : n < 35000 ? "20-35k" : n < 50000 ? "35-50k" : "50k+"; }
+function parseSlot(t, slots){ const x=String(t||"").toLowerCase();
+  let h = null; const m = x.match(/\b(\d{1,2})(?::\d{2})?\s*(am|pm|baje)?/);
+  if(m){ h = +m[1]; const ap = m[2]; if(ap==="pm" && h<12) h += 12; else if(!ap || ap==="baje"){ if(h>=1 && h<=7) h += 12; } }
+  else if(/morning|subah|सुबह/.test(x)) h = 10; else if(/lunch|noon|dopahar|दोपहर/.test(x)) h = 12;
+  else if(/afternoon/.test(x)) h = 15; else if(/evening|shaam|sham|शाम/.test(x)) h = 18; else if(/night|raat|रात/.test(x)) h = 19;
+  if(h==null) return null;
+  const starts = slots.map(sl=>{ const a = sl.match(/^(\d+)-\d+\s*(AM|PM)/); let st = +a[1]; if(a[2]==="PM" && st<10) st += 12; if(a[1]==="11" && a[2]==="PM") st = 11; return st; });
+  let best = 0; starts.forEach((st,i)=>{ if(Math.abs(st-h) < Math.abs(starts[best]-h)) best = i; });
+  return slots[best]; }
+const COUNTRY_WORDS = { germany:/german|germany|जर्मनी|deutsch/, uk:/\buk\b|england|britain|london|nhs|यूके/, ireland:/ireland|irish|आयरलैंड/, canada:/canada|कनाडा/, australia:/australia|ऑस्ट्रेलिया/, gulf:/gulf|dubai|uae|saudi|qatar|kuwait|oman|गल्फ|दुबई|सऊदी/ };
+// reacting like a person to what they shared
+function workplaceReaction(t){ const x=String(t||"").toLowerCase();
+  if(/icu|critical|ccu|micu|sicu|intensive/.test(x)) return ["ICU experience is gold. Critical-care nurses are always in demand in German hospitals.","ICU experience तो सोने जैसा है। German hospitals में critical-care nurses की हमेशा ज़रूरत रहती है।"];
+  if(/\bot\b|operation theat|surgical|surgery/.test(x)) return ["OT experience is really valued, those surgical skills travel well.","OT experience की बहुत क़द्र होती है, surgical skills हर जगह काम आती हैं।"];
+  if(/emergency|casualty|trauma|\ber\b/.test(x)) return ["Emergency! You must be great under pressure, and that really shows in interviews.","Emergency! आप pressure में अच्छा काम करती होंगी, interviews में यह बहुत काम आता है।"];
+  if(/nicu|picu|paed|pediatric|peds|child/.test(x)) return ["Paediatrics, such caring work, and very much needed.","Paediatrics, बहुत प्यारा काम है, और इसकी ज़रूरत हर जगह है।"];
+  if(/cardiac|cath|cardio|heart/.test(x)) return ["Cardiac experience makes for a strong profile.","Cardiac experience से profile काफ़ी strong बनती है।"];
+  if(/dialysis/.test(x)) return ["Dialysis is a specialised skill, great to have.","Dialysis एक specialised skill है, बहुत बढ़िया।"];
+  if(/labou?r|maternity|obg|gyn|delivery/.test(x)) return ["Maternity care, beautiful work, and needed everywhere.","Maternity care, बहुत सुंदर काम है, और हर जगह ज़रूरत है।"];
+  if(/oncolog|cancer/.test(x)) return ["Oncology takes a lot of heart. Respect.","Oncology में बहुत हिम्मत लगती है। Respect।"];
+  return ["Nice, that's solid hands-on experience.","बढ़िया, यह अच्छा hands-on experience है।"]; }
+function researchedReaction(t){ const x=String(t||"").toLowerCase();
+  if(/ielts|oet/.test(x)) return ["Right, UK, Ireland and Australia need IELTS or OET. Germany doesn't, only German.","सही, UK, Ireland और Australia में IELTS/OET लगता है। Germany में नहीं, सिर्फ़ German।"];
+  if(/agent|scam|fraud|cheat|dhokha|lakh/.test(x)) return ["Good that you're careful, there are bad agents out there. We'll keep everything transparent with you.","अच्छा है कि आप सावधान हैं, बाहर कई गलत agents हैं। हम आपके साथ सब कुछ साफ़-साफ़ रखेंगे।"];
+  if(/german|germany/.test(x)) return ["Great, you've already started looking at Germany!","बढ़िया, आप पहले से Germany देख रही हैं!"];
+  if(/^\s*(no|nahi|nahin|not really|nothing|na|never|नहीं)\b/.test(x)) return ["No worries at all, that's exactly what I'm here for.","कोई बात नहीं, इसीलिए तो मैं यहाँ हूँ।"];
+  return ["Thanks for sharing that.","बताने के लिए शुक्रिया।"]; }
+
 function App(){
   const _sv = (()=>{ try{ const o=JSON.parse(localStorage.getItem("gc_chat_state")||"null"); if(o && o.phase && (Date.now()-(o.savedAt||0) < 12*3600*1000)) return o; }catch(e){} return null; })();
   const [msgs, setMsgs] = useState(_sv ? _sv.msgs||[] : []);
@@ -915,26 +959,70 @@ function App(){
 
   const nowT = ()=> new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
   const push = (m)=> setMsgs((prev)=>[...prev, {...m, at:m.at||nowT()}]);
-  const me   = (text)=> push({ from:"user", node:text });
-  const say  = (node, delay=null)=>{
-    // natural, length-scaled "typing…" pause when no explicit delay is given
-    const txt = (typeof node === "string") ? node : "";
-    const nat = Math.min(1800, Math.max(600, Math.round(txt.length * 24)));
-    const d = (delay==null ? nat : delay);
-    setTyping(true);
-    setTimeout(()=>{ setTyping(false); push({ from:"bot", node }); }, d);
+  const typedRef = useRef(null);   // when the user TYPED an answer to a chip question, show their words, not the chip label
+  const me   = (text)=>{ const t = typedRef.current!=null ? typedRef.current : text; typedRef.current = null; push({ from:"user", node:t }); };
+
+  /* Human rhythm: every bot action goes through ONE queue, so messages never overlap.
+     Each bubble: a short "reading" pause → "typing…" for a time that scales with length → the bubble.
+     Long replies are split into two bubbles at a sentence break (or at "||"), like a person sending two messages. */
+  const qRef = useRef(Promise.resolve());
+  const qLen = useRef(0);
+  const wait = (ms)=> new Promise(r=> setTimeout(r, ms));
+  const enqueue = (fn)=>{
+    qLen.current++;
+    qRef.current = qRef.current.then(fn).catch(()=>{}).then(()=>{ if(--qLen.current<=0){ qLen.current=0; setTyping(false); } });
+  };
+  const queueStage = (st)=> enqueue(async ()=>{ await wait(260); setStage(st); });
+  const queuePush  = (m)=>  enqueue(async ()=>{ setTyping(true); await wait(650); setTyping(false); push(m); });
+  const splitBubbles = (t)=>{
+    if(t.includes("||")) return t.split("||").map(x=>x.trim()).filter(Boolean).slice(0,3);
+    if(t.length < 190) return [t];
+    const mid = t.length/2; let best = -1;
+    t.replace(/[.!?।](\s)/g, (m0, sp, i)=>{ if(best<0 || Math.abs(i-mid) < Math.abs(best-mid)) best = i; return m0; });
+    return (best > 50 && best < t.length-40) ? [t.slice(0,best+1).trim(), t.slice(best+1).trim()] : [t];
+  };
+  const typeMs = (t)=> Math.min(2400, Math.max(650, 420 + String(t).length*16));
+  const say  = (node, opts=null)=>{
+    const o = (opts && typeof opts==="object") ? opts : {};
+    const parts = typeof node==="string" ? splitBubbles(node.replace(/\s*👇/g,"")) : [node];
+    parts.forEach((part, i)=> enqueue(async ()=>{
+      const first = i===0;
+      await wait(first ? (qLen.current>1 ? 280 : 350 + Math.random()*450) : 300 + Math.random()*250);   // "reading" / breath between bubbles
+      setTyping(true);
+      await wait(Math.max(250, typeMs(typeof part==="string" ? part : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") - (first ? (o.elapsed||0) : 0)));
+      setTyping(false); push({ from:"bot", node:part });
+    }));
   };
 
   useEffect(()=>{ endRef.current?.scrollIntoView({ behavior:"smooth" }); }, [msgs, typing, stage]);
+
+  // gone quiet in the Q&A for ~70s: one gentle, personal check-in (never more than once)
+  useEffect(()=>{
+    if(phase!=="chat" || typing || lead.idleNudged || !["hub","ghub"].includes(stage)) return;
+    const last = msgs[msgs.length-1]; if(!last || last.from!=="bot") return;
+    const tm = setTimeout(()=>{
+      setLead((l)=>({ ...l, idleNudged:true }));
+      const q = lead.qualification ? lead.qualification+" " : "";
+      say(M(`Still there, ${firstName(lead.name)}? No rush at all. Most ${q}nurses I talk to ask me next about the salary after tax, or how long learning German takes. Want me to tell you about either?`,
+            `${firstName(lead.name)}, आप अभी भी यहाँ हैं? कोई जल्दी नहीं। ज़्यादातर ${q}nurses मुझसे आगे tax के बाद की salary, या German सीखने में कितना समय लगता है, यह पूछती हैं। इनमें से कुछ बताऊँ?`));
+    }, 70000);
+    return ()=> clearTimeout(tm);
+  }, [msgs.length, typing, stage, phase]);
+  // came back to an old chat (>10 min): greet them like a person would
+  useEffect(()=>{
+    if(!_sv || phase!=="chat" || !(_sv.msgs||[]).length || Date.now()-(_sv.savedAt||0) < 10*60*1000) return;
+    say(M(`Welcome back, ${firstName(_sv.lead && _sv.lead.name)}! Let's pick up where we left off.`, `वापसी पर स्वागत है, ${firstName(_sv.lead && _sv.lead.name)}! चलिए वहीं से शुरू करते हैं जहाँ छोड़ा था।`));
+  }, []);
   useEffect(()=>{ if(["name","phone","faq"].includes(stage)) inRef.current?.focus(); }, [stage]);
 
   // Jhanvi's opening — fires when the chat phase starts (name/number already captured on the welcome screen)
   useEffect(()=>{
     if(phase!=="chat" || msgs.length) return;
     const nm = firstName(lead.name);
-    say(`Hey ${nm}! I'm Jhanvi from Testbook Global. So glad you reached out — you're in the right place`, 550);
+    const h = new Date().getHours(), tod = h<12 ? "Good morning" : h<17 ? "Good afternoon" : "Good evening";
+    say(`${tod} ${nm}! I'm Jhanvi from Testbook Global. So glad you reached out, you're in the right place.`);
     setTimeout(()=> say("Let's find you a nursing career abroad that can pay ₹2–3 lakh a month. I'll be right here at every step. First, which language feels most comfortable for you? 👇", 950), 1350);
-    setTimeout(()=> setStage("lang"), 2600);
+    queueStage("lang");
   }, [phase]);
 
   const utmParams = ()=> gcAttr();
@@ -1059,7 +1147,7 @@ function App(){
     pushToOCRM(next); submitLead(next, "phone_captured");
     say("Thank you so much! You're in good hands now.", 550);
     setTimeout(()=> say("Which language are you most comfortable chatting in? 👇", 500), 1000);
-    setTimeout(()=> setStage("lang"), 1500);
+    queueStage("lang");
   };
 
   const pickLang = (o)=>{
@@ -1068,7 +1156,7 @@ function App(){
     const m = (en,hi)=> code==="hi" ? hi : en;
     say(m("Perfect, let's get started! First things first — are you a nurse, or still studying nursing? 👇",
           "बढ़िया, चलिए शुरू करते हैं! सबसे पहले — क्या आप nurse हैं, या nursing की पढ़ाई कर रही हैं? 👇"), 600);
-    setTimeout(()=> setStage("nurse"), 1150);
+    queueStage("nurse");
   };
 
   // apply a verify result to the lead (score, verdict, CRM quality fields)
@@ -1084,18 +1172,19 @@ function App(){
     return nn || px;
   };
 
-  const pickNurse = (o)=>{
+  const pickNurse = (o, knownQual=null)=>{
     me(o.label); setLead((l)=>({ ...l, nurse:o.key }));
+    if(knownQual && o.key!=="no"){ pickQual(knownQual, true); return; }
     if(o.key==="no"){
       setLead((l)=> withVerify({ ...l, nurse:"no" }));
       say(M("Thanks for being honest! This Germany program is only for qualified nurses and final-year nursing students. Are you asking for someone in your family who is a nurse? 👇",
             "सच बताने के लिए शुक्रिया! यह Germany program सिर्फ़ qualified nurses और final-year nursing students के लिए है। क्या आप family में किसी nurse के लिए पूछ रहे हैं? 👇"), 600);
-      setTimeout(()=> setStage("notnurse"), 1150); return;
+      queueStage("notnurse"); return;
     }
     say(o.key==="student"
       ? M("Lovely — final year is the perfect time to start! Which course are you in? 👇", "बढ़िया — final year शुरू करने का सबसे अच्छा समय है! आप कौन-सा course कर रही हैं? 👇")
       : M("That's wonderful! Which nursing qualification do you have? 👇", "बढ़िया! आपकी nursing qualification क्या है? 👇"), 500);
-    setTimeout(()=> setStage("qual"), 1000);
+    queueStage("qual");
   };
   const pickNotNurse = (forFamily)=>{
     if(forFamily){
@@ -1108,12 +1197,14 @@ function App(){
       say(M("No problem at all! Ask me anything you're curious about. Just so you know, the Germany path and our counsellor calls are only for nurses — but if you're planning to study nursing, I can tell you how it works. 👇",
             "कोई बात नहीं! जो भी जानना हो, पूछिए। बस इतना बता दूँ — Germany वाला रास्ता और counsellor calls सिर्फ़ nurses के लिए हैं — पर अगर आप nursing पढ़ने का सोच रहे हैं, तो मैं बता सकती हूँ कैसे। 👇"), 700);
     }
-    setTimeout(()=> setStage("hub"), 1300);
+    queueStage("hub");
   };
 
-  const pickQual = (o)=>{
+  const pickQual = (o, silent=false)=>{
     const qs = makeCheck(); checkQsRef.current = qs;
-    me(o); setLead((l)=>({ ...l, qualification:o, checkQs: qs, checkIdx:0, checkAns:[] }));
+    if(!silent) me(o);
+    setLead((l)=>({ ...l, qualification:o, checkQs: qs, checkIdx:0, checkAns:[] }));
+    if(o!=="ANM") say(M(`${o}, perfect. That's exactly what German recognition works with.`, `${o}, बढ़िया। German recognition इसी के साथ होता है।`));
     if(o==="ANM"){
       say(M("Thank you! Honestly, ANM on its own is usually not enough for Germany — they need GNM or B.Sc level. But many ANMs upgrade to GNM and then go, so let's still check your profile.",
             "शुक्रिया! सच बताऊँ तो सिर्फ़ ANM आमतौर पर Germany के लिए काफ़ी नहीं होता — GNM या B.Sc level चाहिए। पर कई ANM पहले GNM करके फिर जाती हैं, तो चलिए आपका profile फिर भी check करते हैं।"), 600);
@@ -1128,7 +1219,7 @@ function App(){
     const d = checkDef(c.id);
     setLead((l)=>({ ...l, checkIdx:i }));
     say(M(`Q${i+1}. ${d.q.en}`, `सवाल ${i+1}. ${d.q.hi}`), 500);
-    setTimeout(()=>{ checkShownRef.current = Date.now(); setStage("check"); }, 900);
+    enqueue(async ()=>{ await wait(260); checkShownRef.current = Date.now(); setStage("check"); });
   };
   const answerCheck = (optIdx)=>{
     const i = lead.checkIdx||0, c = (lead.checkQs||[])[i]; if(!c) return;
@@ -1150,7 +1241,7 @@ function App(){
                    "अभी आपकी clinical posting कहाँ चल रही है? Hospital का नाम और ward बताइए (जैसे \"District Hospital Jaipur, Medical ward\")।")
                : M("Where are you working right now? Hospital name and ward/department, please (e.g. \"AIIMS Delhi, Medical ICU\"). If you're not working currently, just say so.",
                    "आप अभी कहाँ काम कर रही हैं? Hospital का नाम और ward/department बताइए (जैसे \"AIIMS Delhi, Medical ICU\")। अगर अभी काम नहीं कर रहीं, तो वही बता दीजिए।")), 700), 1000);
-    setTimeout(()=> setStage("workplace"), 1800);
+    queueStage("workplace");
   };
 
   const saveWorkplace = ()=>{
@@ -1166,9 +1257,9 @@ function App(){
     setLead((l)=>({ ...l, workplace:v, workplaceValid:ok, specialization: l.specialization || (sp.valid ? sp.matched : v), specializationValid: sp.valid || ok===true, specializationMatched: sp.matched }));
     say(notWorking
       ? M("That's completely okay — a break doesn't stop you from going to Germany. Which college did you do your nursing from? 🏫","बिल्कुल ठीक है — break से Germany जाना नहीं रुकता। आपने किस nursing college से पढ़ाई की? 🏫")
-      : ok ? M("Nice! That's real experience German hospitals value. Which college did you do your nursing from? Please type the full name 🏫","बढ़िया! यह असली experience है जिसकी German hospitals कद्र करते हैं। आपने किस nursing college से पढ़ाई की? पूरा नाम type कर दीजिए 🏫")
+      : ok ? (()=>{ const r = workplaceReaction(v); return M(r[0]+" And which college did you do your nursing from?", r[1]+" और आपने किस college से nursing की?"); })()
       : M("Thanks! And which college did you do your nursing from? Please type the full name 🏫","शुक्रिया! और आपने किस nursing college से पढ़ाई की? पूरा नाम type कर दीजिए 🏫"), 600);
-    setTimeout(()=> setStage("college"), 1100);
+    queueStage("college");
   };
 
   // kept for old saved sessions that are mid-way through the v4 "specialization" step
@@ -1179,7 +1270,7 @@ function App(){
     setLead((l)=>({ ...l, specialization:v, specializationValid:sp.valid, specializationMatched:sp.matched }));
     say(M("Lovely! And which college did you do your nursing from? Please type the full name 🏫",
           "बढ़िया! और आपने किस nursing college से पढ़ाई की? पूरा नाम type कर दीजिए। 🏫"), 600);
-    setTimeout(()=> setStage("college"), 1100);
+    queueStage("college");
   };
 
   const saveCollege = ()=>{
@@ -1189,7 +1280,7 @@ function App(){
     setLead((l)=>({ ...l, college:v, collegeValid:ok }));
     say(M("Thank you! Almost done — are you registered with a Nursing Council? 👇",
           "शुक्रिया! बस थोड़ा और — क्या आप किसी Nursing Council में registered हैं? 👇"), 600);
-    setTimeout(()=> setStage("council"), 1100);
+    queueStage("council");
   };
 
   const pickCouncil = (o)=>{
@@ -1199,12 +1290,12 @@ function App(){
       setLead((l)=> withVerify({ ...l, nurse:"no" }));
       say(M("Thanks for telling me honestly! The Germany path is only for registered nurses and final-year nursing students, so our counsellor calls are for them. But ask me anything you're curious about 👇",
             "सच बताने के लिए शुक्रिया! Germany का रास्ता सिर्फ़ registered nurses और final-year nursing students के लिए है, इसलिए counsellor calls भी उन्हीं के लिए हैं। पर जो भी जानना हो, पूछिए 👇"), 600);
-      setTimeout(()=> setStage("hub"), 1200); return;
+      queueStage("hub"); return;
     }
     if(bookRef.current){ bookRef.current=false; say(M("Perfect — you're all set! ✅","बढ़िया — सब तैयार है! ✅"), 500); setTimeout(()=> askSlot(), 1100); return; }
     say(M("Got it. If you don't mind sharing — what's your current monthly salary? It helps me show you a real comparison. 👇",
           "समझ गई। अगर बुरा न लगे तो बताइए — अभी आपकी monthly salary कितनी है? इससे मैं आपको सही comparison दिखा पाऊँगी। 👇"), 550);
-    setTimeout(()=> setStage("salary"), 1050);
+    queueStage("salary");
   };
 
   const SALARY_OPTS = [
@@ -1216,9 +1307,16 @@ function App(){
   ];
   const pickSalary = (o)=>{
     me(o.label); setLead((l)=>({ ...l, currentSalary:o.key }));
-    say(M("Thanks! Last one — have you looked into going abroad as a nurse before? Tell me anything you've read or heard (or just say \"no\"). 👇",
-          "शुक्रिया! आख़िरी सवाल — क्या आपने पहले nurse के तौर पर विदेश जाने के बारे में कुछ पढ़ा या सुना है? जो भी पता हो, type कीजिए (या बस \"नहीं\" लिख दीजिए)। 👇"), 550);
-    setTimeout(()=> setStage("researched"), 1050);
+    const react = { "<20k":["Honestly, that's far too little for the work nurses do.","सच कहूँ तो nurses के काम के हिसाब से यह बहुत कम है।"],
+      "20-35k":["That's the usual range in India, and nurses work so hard for it.","India में यही आम range है, और nurses इसके लिए कितनी मेहनत करती हैं।"],
+      "35-50k":["That's a good salary for India. Germany would still be a big jump.","India के हिसाब से अच्छी salary है। Germany में फिर भी बड़ा jump होगा।"],
+      "50k+":["That's a strong salary already, and Germany could still be 3 to 4 times that.","यह पहले से अच्छी salary है, और Germany में यह 3-4 गुना हो सकती है।"],
+      "na":["No problem at all.","कोई बात नहीं।"] }[o.key];
+    if(lead.nurse==="student" && o.key==="<20k") react[0]="Stipend days are tough, but they don't last forever!", react[1]="Stipend वाले दिन मुश्किल होते हैं, पर हमेशा नहीं रहते!";
+    if(react) say(M(react[0], react[1]));
+    say(M("Last one — have you looked into going abroad as a nurse before? Tell me anything you've read or heard (or just say \"no\"). 👇",
+          "आख़िरी सवाल — क्या आपने पहले nurse के तौर पर विदेश जाने के बारे में कुछ पढ़ा या सुना है? जो भी पता हो, type कीजिए (या बस \"नहीं\" लिख दीजिए)। 👇"), 550);
+    queueStage("researched");
   };
 
   // AI second opinion on the free-text answers (non-blocking: times out to null)
@@ -1239,7 +1337,9 @@ function App(){
     const d0 = { ...lead, researched:v };
     setLead((l)=>({ ...l, researched:v }));
     setStage("checkwait");
-    say(M("Thank you! Give me a second, let me check your Germany eligibility…","शुक्रिया! एक second, मैं आपकी Germany eligibility check कर रही हूँ…"), 500);
+    const rr = researchedReaction(v);
+    say(M(rr[0], rr[1]));
+    say(M("Give me a second, let me check your Germany eligibility…","एक second, मैं आपकी Germany eligibility check कर रही हूँ…"));
     const t0 = Date.now();
     const pre = withVerify(d0);
     const ai = (pre.verifyScore >= 80 || pre.verifyScore <= 15) ? null : await aiVerify(d0);   // AI only for borderline cases
@@ -1258,7 +1358,7 @@ function App(){
     setLead((l)=>({ ...l, reconfirmAsked:true }));
     say(M(`Thanks, ${firstName(lead.name)}! One honest check before I share your plan — this program is only for qualified nurses and final-year nursing students, and our counsellors only call nurses. Which of these describes you? 👇`,
           `शुक्रिया, ${firstName(lead.name)}! Plan बताने से पहले एक honest check — यह program सिर्फ़ qualified nurses और final-year nursing students के लिए है, और हमारे counsellors सिर्फ़ nurses को call करते हैं। आप इनमें से कौन हैं? 👇`), 700);
-    setTimeout(()=> setStage("reconfirm"), 1300);
+    queueStage("reconfirm");
   };
   const pickReconfirm = (k, label)=>{
     me(label);
@@ -1266,7 +1366,7 @@ function App(){
       setLead((l)=> withVerify({ ...l, nurse:"no", reconfirm:"no" }));
       say(M("Thank you for being honest — I really appreciate it! I can't book a counsellor call for this program, but ask me anything you like 👇",
             "सच बताने के लिए दिल से शुक्रिया! इस program के लिए मैं counsellor call book नहीं कर सकती, पर जो भी जानना हो, पूछिए 👇"), 600);
-      setTimeout(()=> setStage("hub"), 1200); return;
+      queueStage("hub"); return;
     }
     if(k==="proxy"){ setLead((l)=> withVerify({ ...l, proxy:true, reconfirm:"proxy" })); pickNotNurse(true); return; }
     setLead((l)=> withVerify({ ...l, reconfirm:"nurse", reconfirmHitN:(l.nonNurseHits||[]).length, nurse:(k==="student"?"student":l.nurse==="no"?"nurse":l.nurse) }));
@@ -1279,19 +1379,19 @@ function App(){
     const mult = d.nurse==="student" ? null : { "<20k":"10×", "20-35k":"6–10×", "35-50k":"4–6×", "50k+":"3–4×" }[d.currentSalary];
     const who = d.nurse==="student" ? M("Once you qualify, as a nurse","Qualify होने के बाद nurse") : M("As a "+({ "GNM":"GNM nurse", "B.Sc Nursing":"B.Sc nurse", "Post Basic B.Sc":"Post Basic B.Sc nurse" }[d.qualification]||"nurse"), (d.qualification||"nurse"));
     say(M(`Here's your Germany snapshot, ${firstName(d.name)} 👇`, `${firstName(d.name)}, यह रहा आपका Germany snapshot 👇`), 500);
-    setTimeout(()=> push({ from:"bot", card:"salary" }), 1000);
+    queuePush({ from:"bot", card:"salary" });
     setTimeout(()=> say(
       M(`${who} in Germany you could earn ${mult ? "about "+mult+" your current salary" : "around ₹2–2.5 lakh a month"} — with no IELTS, and your family can join you. Your path: German A1→B2 (about 10–12 months) → degree recognition → job + visa through licensed recruiters.`,
         `${who} के तौर पर Germany में आप${mult ? " अपनी अभी की salary का लगभग "+mult : " करीब ₹2–2.5 लाख महीना"} कमा सकती हैं — बिना IELTS, और family भी साथ आ सकती है। आपका रास्ता: German A1→B2 (करीब 10–12 महीने) → degree recognition → licensed recruiters के ज़रिए job + visa।`), 900), 1500);
     setTimeout(()=> say(M("Which country is on your mind the most? If you're comparing a few, pick one — I'll compare them side by side for you 👇","आपके मन में सबसे ज़्यादा कौन-सा देश है? अगर कुछ देशों में सोच रही हैं, तो एक चुनिए — मैं उन्हें side-by-side compare कर दूँगी 👇"), 700), 3300);
-    setTimeout(()=> setStage("country"), 4100);
+    queueStage("country");
   };
 
   const pickAbroad = (o)=>{
     me(o.label); setLead((l)=>({ ...l, abroad:o.key }));
     say(M("Wonderful! Which country is on your mind the most? We can compare a few too 👇",
           "बढ़िया! कौन-सा देश आपको सबसे ज़्यादा पसंद है? बाकी की compare भी कर सकती हैं। 👇"), 500);
-    setTimeout(()=> setStage("country"), 1000);
+    queueStage("country");
   };
 
   const pickCountry = (k)=>{
@@ -1299,7 +1399,7 @@ function App(){
     setLead((l)=>({ ...l, country:k==="none"?null:k }));
     say(M(k==="germany" ? "Great choice! Ask me anything 👇 — salary, German classes, visa, cost, or compare it with other countries." : "Great! Ask me anything 👇 — compare countries, which pays best, visa & documents, or the cost of going. I'm right here for you.",
           k==="germany" ? "बहुत बढ़िया choice! कुछ भी पूछिए 👇 — salary, German classes, visa, खर्च, या बाकी देशों से compare।" : "बढ़िया! कुछ भी पूछिए 👇 — देशों की compare करें, कौन ज़्यादा pay करता है, visa & documents, या जाने का खर्च।"), 600);
-    setTimeout(()=> setStage("hub"), 1150);
+    queueStage("hub");
   };
 
   const bumpHub = ()=>{ const n=(lead.hubN||0)+1; setLead((l)=>({ ...l, hubN:n }));
@@ -1311,7 +1411,7 @@ function App(){
     me(M("Compare countries","देशों की तुलना"));
     setCmpSel(["germany"]);
     say(M("Sure! Germany is always in the comparison. Pick up to 2 more countries you'd like to compare it with 👇","ज़रूर! Germany हमेशा comparison में रहेगा। इसके साथ compare करने के लिए 2 और देश चुन लीजिए 👇"), 650);
-    setTimeout(()=> setStage("compare_pick"), 1150);
+    queueStage("compare_pick");
   };
   const toggleCmp = (k)=>{
     if(k==="germany") return;   // Germany is locked in
@@ -1321,8 +1421,7 @@ function App(){
     const sel = cmpSel.slice();
     me(sel.map(k=>cName(k)).join("  vs  "));
     setStage("hub");
-    setTyping(true);
-    setTimeout(()=>{ setTyping(false); push({ from:"bot", card:"compare", sel }); }, 850);
+    queuePush({ from:"bot", card:"compare", sel });
     setTimeout(()=> say(M("See? Others may pay a bit more on paper, but Germany needs NO IELTS, costs less to start, and has a clear PR + family path — the best overall value. Want the cost of going next? 👇",
                           "देखा? बाकी कागज़ पर थोड़ा ज़्यादा दे सकते हैं, पर Germany में IELTS नहीं चाहिए, शुरू करना सस्ता है, और PR + family का साफ़ रास्ता है — सबसे बढ़िया overall value। अब जाने का खर्च बताऊँ? 👇"), 800), 1750);
     bumpHub();
@@ -1364,7 +1463,7 @@ function App(){
     say(auto
       ? M("By the way — for most Indian nurses, Germany turns out to be the best overall choice. Want me to show you why? 👇 🇩🇪","वैसे — ज़्यादातर Indian nurses के लिए Germany सबसे अच्छा overall option निकलता है। बताऊँ क्यों? 👇 🇩🇪")
       : M("Great! Let me show you why Germany is the top pick. 🇩🇪","बढ़िया! चलिए बताती हूँ Germany सबसे अच्छा क्यों है। 🇩🇪"), 650);
-    setTimeout(()=> setStage("gpush"), auto?1250:1050);
+    queueStage("gpush");
   };
   const pickGpush = (yes)=>{
     if(yes){ me(M("Yes, tell me","हाँ, बताइए")); gBenefits(); }
@@ -1372,11 +1471,11 @@ function App(){
   };
   const gBenefits = ()=>{
     say(M("Here is why nurses love Germany 🇩🇪","Nurses को Germany क्यों पसंद है 🇩🇪"), 600);
-    setTimeout(()=> push({ from:"bot", card:"salary" }), 1150);
+    queuePush({ from:"bot", card:"salary" });
     setTimeout(()=> say(M("• ₹2–2.5 lakh/month   • No IELTS (German instead)   • Huge nurse shortage   • Family can join   • Long-term PR path   • Low starting cost, easy EMI",
                           "• ₹2–2.5 लाख/month   • कोई IELTS नहीं (German)   • nurses की भारी कमी   • family साथ आ सकती है   • long-term PR   • कम शुरुआती खर्च, easy EMI"), 850), 1550);
     setTimeout(()=> say(M("Do you have any questions about Germany?","Germany के बारे में कोई सवाल है?"), 600), 2700);
-    setTimeout(()=> setStage("ghub"), 3300);
+    queueStage("ghub");
   };
 
   const offerVideo = ()=>{ say(M("Would you like to watch a short video about the Germany path — English or Hindi? 👇 🎬","Germany के रास्ते पर एक छोटा video देखना चाहेंगी — English या Hindi? 👇 🎬")); setStage("video_lang"); };
@@ -1413,7 +1512,8 @@ function App(){
     const ctrl = new AbortController(); const tm = setTimeout(()=>ctrl.abort(), 10000);
     try{
       const r = await fetch(CONFIG.LLM_ENDPOINT, { method:"POST", headers:{ "Content-Type":"application/json" }, signal:ctrl.signal,
-        body: JSON.stringify({ lang:LANG, lead:{ name:firstName(lead.name), nurse:(lead.proxy ? "asking for a family member who is a nurse/nursing student" : lead.nurse), qualification:lead.qualification, specialization:lead.specialization, country:lead.country, slot:lead.slot },
+        body: JSON.stringify({ lang:LANG, lead:{ name:firstName(lead.name), nurse:(lead.proxy ? "asking for a family member who is a nurse/nursing student" : lead.nurse), qualification:lead.qualification, specialization:lead.specialization, country:lead.country, slot:lead.slot,
+            workplace:lead.workplace, salary:({"<20k":"below ₹20k","20-35k":"₹20–35k","35-50k":"₹35–50k","50k+":"above ₹50k"})[lead.currentSalary], researched:lead.researched, college:lead.college },
           messages:[...llmHistory(), { role:"user", content:v }] }) });
       clearTimeout(tm); if(!r.ok) return null;
       const j = await r.json(); return (j && j.reply) ? j : null;
@@ -1436,7 +1536,7 @@ function App(){
     // they're asking for the call itself: no "noted", just say yes and show the times
     if(/(call|baat|talk|speak|counsel|contact|phone|book)/i.test(v||"")){
       say(M("Of course! Pick a time that suits you and our counsellor will call you 👇","ज़रूर! अपना सुविधाजनक समय चुनिए, counsellor आपको call करेंगे 👇"), 600);
-      setTimeout(()=> setStage("slot"), 900); return;
+      queueStage("slot"); return;
     }
     if((lead.genericN||0) >= 1){
       const R = [
@@ -1446,11 +1546,11 @@ function App(){
       ];
       const r = R[((lead.genericN||1)-1) % R.length];
       say(M(r[0], r[1]));
-      setTimeout(()=> setStage("slot"), 600); return;
+      queueStage("slot"); return;
     }
     say(M("That's a really good question, and our counsellors can answer it properly for your exact profile — they help nurses with exactly this every day. I've noted it for them. When would be a good time for a quick free call? 👇",
           "यह बहुत अच्छा सवाल है, और हमारे counsellors आपकी profile के हिसाब से इसका सही जवाब दे सकते हैं — वो रोज़ nurses की इसी में मदद करते हैं। मैंने इसे उनके लिए note कर लिया है। आपसे free call के लिए कौन-सा समय ठीक रहेगा? 👇"));
-    setTimeout(()=> setStage("slot"), 900);
+    queueStage("slot");
   };
 
   const afterLLM = (j)=>{
@@ -1480,18 +1580,120 @@ function App(){
     busyRef.current = true; setTyping(true);
     const t0 = Date.now();
     const j = await askLLM(v);
-    const minShow = j ? Math.min(1700, 600 + j.reply.length*10) : 0;   // natural "typing…" time
-    setTimeout(()=>{
-      setTyping(false); busyRef.current = false;
-      if(!j){ counsellorAnswer(v); return; }
-      push({ from:"bot", node:j.reply });
+    busyRef.current = false;
+    {
+      if(!j){ setTyping(false); counsellorAnswer(v); return; }
+      say(j.reply, { elapsed: Date.now()-t0 });   // thinking time counts as typing time
       const wantsCall = /(call|baat|talk|speak|counsel|enrol|enroll|join|start|apply|register|book|contact|phone|yes|haan|ha |ok)/i.test(v);
       if(j.intent==="book_call" && !wantsCall) j.intent = "none";
       const booking = j.intent==="book_call" && !lead.slot;
       setLead((l)=>{ const ql=[...(l.qList||[])]; if(ql.length) ql[ql.length-1] = { ...ql[ql.length-1], topic:"llm"+(e?":"+e.id:""), a:j.reply.slice(0,240) }; return { ...l, llmN:(l.llmN||0)+1, qList:ql }; });
       if(!booking) back();   // don't stack an auto "Explore Germany?" on top of the slot picker
       afterLLM(j);
-    }, Math.max(0, minShow-(Date.now()-t0)));
+    }
+  };
+
+  // ── typed answers on button steps ───────────────────────────────────────
+  // what to say to steer back to the pending question after a side question
+  const REASK = {
+    lang:["Which language would you like to chat in, English or Hindi?","आप किस भाषा में बात करना चाहेंगी, English या Hindi?"],
+    nurse:["Coming back to my question: are you a nurse, or studying nursing?","अपने सवाल पर वापस आती हूँ: क्या आप nurse हैं, या nursing पढ़ रही हैं?"],
+    qual:["So, which nursing qualification do you have?","तो, आपकी nursing qualification क्या है?"],
+    check:["Back to our nursing round, just tap your answer.","चलिए nursing round पर वापस, बस अपना answer tap कीजिए।"],
+    salary:["And roughly what's your monthly salary right now? You can skip it too.","और अभी आपकी monthly salary लगभग कितनी है? चाहें तो skip भी कर सकती हैं।"],
+    council:["And are you registered with a Nursing Council?","और क्या आप किसी Nursing Council में registered हैं?"],
+    workplace:["So, where are you working right now? Hospital and ward is enough.","तो, आप अभी कहाँ काम कर रही हैं? Hospital और ward बता दीजिए।"],
+    college:["And which college did you do your nursing from?","और आपने किस college से nursing की?"],
+    notnurse:["Are you asking for someone in your family who's a nurse?","क्या आप family में किसी nurse के लिए पूछ रहे हैं?"],
+    reconfirm:["Which of these describes you best?","इनमें से आप कौन हैं?"],
+  };
+  const MIDFLOW = new Set(Object.keys(REASK));
+  const typedChip = (v)=>{
+    const x = v.toLowerCase(), t = (fn)=>{ typedRef.current = v; fn(); return true; };
+    // "can someone call me" wins over whatever the buttons were asking (outside the qualification steps)
+    if(!MIDFLOW.has(stage) && stage!=="slot" && /(call me|call kar|call karo|can (someone|you) call|callback|call back|talk to (someone|a counsel|the counsel|counsel)|speak (to|with)|baat kar(ni|na|wa))/.test(x)){
+      typedRef.current = v; me(v); askSlot(); return true; }
+    const short = x.split(/\s+/).length <= 3;   // a bare "ok"/"yes" answers the buttons; longer text is a message
+    switch(stage){
+      case "lang": return t(()=> pickLang(/hindi|हिं|हिन्दी/.test(x) || /[ऀ-ॿ]/.test(v) ? CHAT_LANGS[1] : CHAT_LANGS[0]));
+      case "nurse": {
+        const q = findQual(v);
+        if(/student|studying|final year|last year|internship|padh|पढ़/.test(x)) return t(()=> pickNurse({ key:"student", label:"" }, q));
+        if(/not a nurse|nurse nahi|i am not|i'm not/.test(x) || (NO_RX.test(x) && !q)) return t(()=> pickNurse({ key:"no", label:"" }));
+        if(YES_RX.test(x) || /nurse|staff|नर्स/.test(x) || q) return t(()=> pickNurse({ key:"nurse", label:"" }, q));
+        return false; }
+      case "qual": { const q = findQual(v); return q ? t(()=> pickQual(q)) : false; }
+      case "check": {
+        const c = (lead.checkQs||[])[lead.checkIdx||0]; if(!c) return false; const d = checkDef(c.id);
+        if(/not sure|don'?t know|dont know|pata nahi|idk|no idea|पता नहीं/.test(x)) return t(()=> answerCheck(-1));
+        const nx = norm(v);
+        const hit = d.opts.findIndex(o=>{ const a = norm(o.en), b = norm(o.hi); return nx && (nx===a || nx===b || (nx.length>3 && (a.includes(nx) || nx.includes(a) || b.includes(nx)))); });
+        if(hit >= 0) return t(()=> answerCheck(hit));
+        const num = nx.match(/\d+/); if(num){ const h2 = d.opts.findIndex(o=> o.en.split(/\D+/).includes(num[0])); if(h2 >= 0) return t(()=> answerCheck(h2)); }
+        return false; }
+      case "salary": { const k = parseSalary(v); return k ? t(()=> pickSalary(SALARY_OPTS.find(o=>o.key===k))) : false; }
+      case "council": {
+        if(/(not a nurse|just exploring)/.test(x)) return t(()=> pickCouncil({ key:"none", label:"" }));
+        if(/(final year|not yet|applied|pending|in process|abhi nahi|studying)/.test(x)) return t(()=> pickCouncil({ key:"studying", label:"" }));
+        if(!NO_RX.test(x) && /(state|\binc\b|indian nursing|registered|registration|council|\d{3,})/.test(x) || YES_RX.test(x)) return t(()=> pickCouncil({ key:"registered", label:"" }));
+        return false; }
+      case "country": {
+        if(/not sure|don'?t know|pata nahi|decide/.test(x)) return t(()=> pickCountry("none"));
+        const k = Object.keys(COUNTRY_WORDS).find(k2=> COUNTRY_WORDS[k2].test(x));
+        return k && !isQuestion(v) ? t(()=> pickCountry(k)) : false; }
+      case "notnurse":
+        if(/(daughter|son|wife|husband|sister|brother|beti|behen|bahu|family|friend|cousin|niece)/.test(x) || YES_RX.test(x)) return t(()=> pickNotNurse(true));
+        if(NO_RX.test(x) || /explor|just looking|dekh/.test(x)) return t(()=> pickNotNurse(false));
+        return false;
+      case "reconfirm":
+        if(/(daughter|wife|sister|beti|behen|family|for my|asking for)/.test(x)) return t(()=> pickReconfirm("proxy", v));
+        if(/(student|final year)/.test(x)) return t(()=> pickReconfirm("student", v));
+        if(/(not a nurse|i am not|i'm not|nahi hu|nahin hu)/.test(x) || NO_RX.test(x)) return t(()=> pickReconfirm("no", v));
+        if(/(nurse|gnm|bsc|b\.sc|qualified)/.test(x) || YES_RX.test(x)) return t(()=> pickReconfirm("nurse", v));
+        return false;
+      case "gpush":
+        if((short && YES_RX.test(x)) || /tell|bata|show/.test(x)) return t(()=> pickGpush(true));
+        if(NO_RX.test(x) || /later|baad/.test(x)) return t(()=> pickGpush(false));
+        return false;
+      case "video_lang":
+        if(/hindi|हिं/.test(x)) return t(()=> playVideoLang("Hindi"));
+        if(/english/.test(x) || (short && YES_RX.test(x))) return t(()=> playVideoLang("English"));
+        if(/short|bata|tell|no video|nahi|no\b/.test(x)) return t(()=> skipVideo());
+        return false;
+      case "video_feedback":
+        if(/(didn'?t|confus|samajh nahi|not clear|nahi samjha)/.test(x)) return t(()=> vidFeedback("confused"));
+        if(/(loved|love|good|great|nice|accha|achha|badhiya|helpful|amazing)/.test(x)) return t(()=> vidFeedback("good"));
+        return false;
+      case "nudge":
+        if(/(call|book)/.test(x)) { typedRef.current = v; me(v); askSlot(); return true; }
+        if((short && YES_RX.test(x)) || /more|tell/.test(x)) { typedRef.current = v; me(v); setStage(lead.gpushed ? "ghub" : "hub"); say(M("Ask me anything!","कुछ भी पूछिए!")); return true; }
+        return false;
+      case "book_offer":
+        if((short && YES_RX.test(x)) || /book|call/.test(x)) { typedRef.current = v; me(v); askSlot(); return true; }
+        if(NO_RX.test(x) || /later|baad/.test(x)) { typedRef.current = v; me(v); say(M("Sure! Ask me anything else.","ज़रूर! और कुछ भी पूछिए।")); setStage(lead.gpushed ? "ghub" : "hub"); return true; }
+        return false;
+      case "slot": { if(isQuestion(v)) return false; const sl = parseSlot(v, SLOTS); if(!sl) return false; typedRef.current = v; me(v); finish(sl); return true; }
+      default: return false;
+    }
+  };
+  // a question typed in the middle of the qualification steps: answer it, then pick the thread back up
+  const sideAnswer = async (v)=>{
+    me(v); setInput(""); scanText(v);
+    setLead((l)=>({ ...l, qCount:(l.qCount||0)+1, qList:[...(l.qList||[]).slice(-14), { q:v, topic:"side", at:new Date().toISOString() }] }));
+    const back = REASK[stage];
+    const e = matchFor(v);
+    if(e && CASUAL_IDS.has(e.id) && norm(v).split(" ").length<=4){ say(A(e)); if(back) say(M(back[0], back[1])); return; }
+    let j = null;
+    if(CONFIG.LLM_ENDPOINT && (lead.llmN||0) < CONFIG.LLM_MAX_PER_SESSION){ busyRef.current = true; setTyping(true); const t0 = Date.now(); j = await askLLM(v); busyRef.current = false;
+      if(j){ say(j.reply, { elapsed: Date.now()-t0 }); setLead((l)=>({ ...l, llmN:(l.llmN||0)+1 })); } }
+    if(!j){ setTyping(false); say(M("Good question, and I'll make sure you get a proper answer on that. Let me just finish your quick eligibility check first.","अच्छा सवाल है, इसका सही जवाब ज़रूर मिलेगा। बस पहले आपका छोटा-सा eligibility check पूरा कर लेती हूँ।")); }
+    if(back) say(M(back[0], back[1]));
+  };
+  const didntGetIt = (v)=>{
+    me(v); setInput("");
+    const back = REASK[stage] || ["Could you tap one of the options?","क्या आप कोई option tap कर सकती हैं?"];
+    const lead0 = [["Sorry, I didn't quite catch that.","माफ़ कीजिए, मैं ठीक से समझ नहीं पाई।"],["Hmm, I'm not sure I got that.","हम्म, मैं ठीक से समझी नहीं।"]][Math.floor(Math.random()*2)];
+    say(M(lead0[0]+" "+back[0], lead0[1]+" "+back[1]));
   };
 
   const askSlot = ()=>{
@@ -1499,7 +1701,7 @@ function App(){
       say(M("Our counsellor calls are only for nurses and nursing students, so I can't book one here — but I'm happy to answer anything you'd like to know!","हमारी counsellor calls सिर्फ़ nurses और nursing students के लिए हैं, इसलिए मैं यहाँ book नहीं कर सकती — पर जो भी जानना हो, खुशी से बताऊँगी!"));
       setStage(lead.gpushed ? "ghub" : "hub"); return;
     }
-    say(M("Great! One last thing — when should our counsellor call you?","बढ़िया! बस आख़िरी बात — counsellor आपको कब call करें?")); setStage("slot"); };
+    say(M("Of course! When would be a good time for our counsellor to call you?","ज़रूर! Counsellor आपको किस समय call करें?")); setStage("slot"); };
   // Camera icon → opens the demo German class on its own full screen (a video-call style screen)
   const openDemo = ()=>{
     setMenuOpen(false);
@@ -1523,14 +1725,14 @@ function App(){
     if(lead.council){ askSlot(); return; }
     bookRef.current = true;
     say(M("Love it! Quick check so our counsellor can help you best — are you a nurse, or studying nursing? 👇","बढ़िया! बस एक quick check ताकि counsellor सही मदद कर सकें — क्या आप nurse हैं, या nursing पढ़ रही हैं? 👇"), 500);
-    setTimeout(()=> setStage("nurse"), 1000);
+    queueStage("nurse");
   };
   const nudgeExit = ()=>{
     if(lead.nudged){ askSlot(); return; }
     setLead((l)=>({ ...l, nudged:true }));
     say(M("Wait — before you go! Most nurses don't realise Germany needs NO IELTS, pays ₹2–2.5 lakh/month, and your family can join you. Can I do a quick free eligibility check for you?",
           "रुकिए — जाने से पहले ज़्यादातर nurses को नहीं पता कि Germany में IELTS नहीं चाहिए, ₹2–2.5 लाख/महीना मिलता है, और family साथ आ सकती है। क्या मैं एक quick free eligibility check कर दूँ?"), 650);
-    setTimeout(()=> setStage("nudge"), 1150);
+    queueStage("nudge");
   };
   const finish = (slot)=>{
     const s = slot || lead.slot || null;
@@ -1539,17 +1741,31 @@ function App(){
     say(M(`You are all set, ${(lead.name||"there").split(" ")[0]}! Our counsellor will call you${s ? " in your "+s+" slot" : " soon"}. Keep your phone handy, okay?`,
           `सब set है, ${(lead.name||"").split(" ")[0]}! हमारे counsellor आपको${s ? " आपके "+s+" slot में" : " जल्दी"} call करेंगे। बस phone पास रखिए!`));
     // DON'T end the chat — keep it alive and keep nurturing while they wait for the call
-    setTimeout(()=> say(M("While you wait for the call, I'm right here Want me to show what nurses earn in Germany, the step-by-step process, or the cost & easy EMI? Ask me anything 👇",
-                          "Call का इंतज़ार करते हुए मैं यहीं हूँ बताऊँ कि Germany में nurses कितना कमाते हैं, पूरा step-by-step process, या cost & easy EMI? कुछ भी पूछिए 👇"), 950), 1600);
+    setTimeout(()=> say(M("While you wait for the call, I'm right here. Want me to show what nurses earn in Germany, the step-by-step process, or the cost & easy EMI? Ask me anything 👇",
+                          "Call का इंतज़ार करते हुए मैं यहीं हूँ। बताऊँ कि Germany में nurses कितना कमाते हैं, पूरा step-by-step process, या cost & easy EMI? कुछ भी पूछिए 👇"), 950), 1600);
     setStage(lead.gpushed ? "ghub" : "hub");
   };
 
   const onKey = (e)=>{ if(e.key!=="Enter") return; sendClick(); };
-  const sendClick = ()=> stage==="name" ? saveName() : stage==="phone" ? savePhone() : stage==="workplace" ? saveWorkplace() : stage==="specialization" ? saveSpecialization() : stage==="college" ? saveCollege() : stage==="researched" ? saveResearched() : handleFreeText();
+  const sendClick = ()=>{
+    const v = input.trim(); if(!v || busyRef.current) return;
+    if(stage==="name") return saveName();
+    if(stage==="phone") return savePhone();
+    // a question typed where we expect a hospital / college name: answer it instead of saving it as the answer
+    if(stage==="workplace" && isQuestion(v) && !validateWorkplace(v)) return sideAnswer(v);
+    if(stage==="college" && isQuestion(v) && !validateCollege(v)) return sideAnswer(v);
+    if(stage==="workplace") return saveWorkplace();
+    if(stage==="specialization") return saveSpecialization();
+    if(stage==="college") return saveCollege();
+    if(stage==="researched") return saveResearched();
+    if(typedChip(v)){ setInput(""); return; }
+    if(MIDFLOW.has(stage)) return isQuestion(v) ? sideAnswer(v) : didntGetIt(v);
+    return handleFreeText();
+  };
 
-  // the text box stays visible on chip stages too (gpush / video / book offers) so a nurse can always type a question
-  const showInput = ["name","phone","hub","ghub","workplace","specialization","college","researched","gpush","nudge","video_lang","video_feedback","book_offer","country","slot"].includes(stage);
-  const placeholder = stage==="name" ? "Type your name" : stage==="phone" ? "Your mobile number" : stage==="workplace" ? M("Hospital name, ward…","Hospital का नाम, ward…") : stage==="specialization" ? M("Type your specialization","अपनी specialization type करें") : stage==="college" ? M("Type your college name","अपने college का नाम type करें") : stage==="researched" ? M("Type what you've found…","जो पता चला, type कीजिए…") : M("Ask Jhanvi anything","झांवी से कुछ भी पूछें");
+  // the text box is always there (like WhatsApp): buttons are a shortcut, typing always works
+  const showInput = !["greet","start","done","checkwait"].includes(stage);
+  const placeholder = stage==="name" ? "Type your name" : stage==="phone" ? "Your mobile number" : stage==="workplace" ? M("Hospital name, ward…","Hospital का नाम, ward…") : stage==="specialization" ? M("Type your specialization","अपनी specialization type करें") : stage==="college" ? M("Type your college name","अपने college का नाम type करें") : stage==="researched" ? M("Type what you've found…","जो पता चला, type कीजिए…") : MIDFLOW.has(stage) || ["country","slot","gpush","video_lang","video_feedback","book_offer","nudge"].includes(stage) ? M("Tap an option or type…","Option चुनें या type करें…") : M("Ask Jhanvi anything","झांवी से कुछ भी पूछें");
 
   // show Jhanvi's face only on the last bot message of a run
   const lastBot = (i)=> msgs[i].from==="bot" && (!msgs[i+1] || msgs[i+1].from!=="bot") && !typing;
