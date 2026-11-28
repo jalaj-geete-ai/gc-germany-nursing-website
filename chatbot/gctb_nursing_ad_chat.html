@@ -879,6 +879,7 @@ function App(){
   const playerRef = useRef(null);
   const pollRef = useRef(null);
   useEffect(()=>{ window.__lead = lead; window.__nurseCheck = NURSE_CHECK; }, [lead]);   // debug/test hook
+  useEffect(()=>{ window.__stage = stage; }, [stage]);
   const checkShownRef = useRef(Date.now());   // when the current nursing-round question appeared (answer time)
   const busyRef = useRef(false);              // an LLM reply is in flight
   const checkQsRef = useRef(null);            // this session's nursing-round questions

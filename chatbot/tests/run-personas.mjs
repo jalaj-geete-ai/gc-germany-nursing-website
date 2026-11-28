@@ -11,6 +11,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { PERSONAS } from "./personas.mjs";
+import { makeAudience } from "./audience.mjs";
 // resolve playwright locally or from the global install
 const req = createRequire(import.meta.url);
 let pw; try { pw = req("playwright"); } catch { pw = req(execSync("npm root -g").toString().trim() + "/playwright"); }
@@ -24,7 +25,10 @@ const html = fs.readFileSync(pageFile, "utf8");
 const { onRequestPost } = await import(path.join(here, "..", "functions", "api", "chat.js"));
 const env = { GROQ_API_KEY: process.env.GROQ_API_KEY || "dummy" };
 const ORIGIN = "https://chat.test";
-fs.mkdirSync(path.join(here, "out"), { recursive: true });
+// AUDIENCE=100 runs a random ad audience instead of the fixed personas (CONC=parallel chats, SEED=reproducible mix)
+const LIST = process.env.AUDIENCE ? makeAudience(+process.env.AUDIENCE, +(process.env.SEED || 20261128)) : PERSONAS;
+const OUT = path.join(here, "out", process.env.AUDIENCE ? "audience" : "");
+fs.mkdirSync(OUT, { recursive: true });
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const browser = await chromium.launch({ proxy: process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY } : undefined });
@@ -65,6 +69,7 @@ async function run(p) {
     return route.continue();
   });
   const errors = [];
+  const t0 = Date.now();
   page.on("pageerror", (e) => errors.push(e.message));
 
   await page.goto(ORIGIN + "/gctb_nursing_ad_chat?utm_source=facebook&utm_campaign=test_" + p.name);
@@ -76,7 +81,14 @@ async function run(p) {
   await settle(page);
 
   for (const step of p.steps) {
-    if (step.check) {
+    if (step.maybe) {
+      // only if the bot is currently asking this (e.g. the re-confirm question for suspects)
+      const st = await page.evaluate(() => window.__stage);
+      if (st !== step.ifStage) continue;
+      const s2 = step.alt || step.maybe;
+      const btn = page.locator("button.opt").filter({ hasText: s2.click }).first();
+      if (await btn.count()) await btn.click();
+    } else if (step.check) {
       // answer the randomised nursing round by role: right / wrong / unsure
       const label = await page.evaluate((mode) => {
         const l = window.__lead || {}, c = (l.checkQs || [])[l.checkIdx || 0], bank = window.__nurseCheck || [];
@@ -109,17 +121,24 @@ async function run(p) {
       if (t) out.push(`${who}: ${t.replace(/\n+/g, " | ")}`);
     });
     const chips = [...document.querySelectorAll("button.opt, button.chip")].map((b) => b.innerText.trim());
-    return { out: [...new Set(out.map((x, i) => i + "\u0000" + x))].map((x) => x.split("\u0000")[1]), chips, lead: window.__lead };
+    return { out, chips, lead: window.__lead, stage: window.__stage };
   });
   const L = state.lead || {};
   const summary = `lead: nurse=${L.nurse} qual=${L.qualification} spec="${L.specialization || ""}"(${L.specializationValid}) college="${L.college || ""}"(${L.collegeValid}) council=${L.council} conf=${L.nurseConfidence} quality=${L.leadQuality} verify=${L.verifyVerdict}/${L.verifyScore} flags=${(L.verifyFlags || []).join(',')} ai=${L.aiVerdict} slot=${L.slot || ""} q=${L.qCount || 0}`;
   const text = [`# ${p.name} — ${p.desc}`, ...state.out, "", `chips now: ${state.chips.join(" · ")}`, summary, ...(errors.length ? ["ERRORS: " + errors.join(" | ")] : []), "", ...sinks].join("\n");
-  fs.writeFileSync(path.join(here, "out", p.name + ".txt"), text);
+  fs.writeFileSync(path.join(OUT, p.name + ".txt"), text);
+  fs.writeFileSync(path.join(OUT, p.name + ".json"), JSON.stringify({ name: p.name, segment: p.segment, hindi: p.hindi, typer: p.typer, ms: Date.now() - t0,
+    msgs: state.out.map((x) => { const i = x.indexOf(": "); return { who: x.slice(0, i), text: x.slice(i + 2) }; }), chips: state.chips, stage: state.stage,
+    lead: L, sinks, errors }, null, 1));
   console.log(`✓ ${p.name}: ${state.out.length} lines, ${errors.length} errors — ${summary}`);
   await ctx.close();
 }
 
-for (const p of PERSONAS) if (!only.size || only.has(p.name)) {
-  try { await run(p); } catch (e) { console.log(`✗ ${p.name}: ${e.message}`); }
-}
+const todo = LIST.filter((p) => !only.size || only.has(p.name));
+const CONC = Math.max(1, +(process.env.CONC || 1));
+let next = 0;
+await Promise.all(Array.from({ length: CONC }, async () => {
+  while (next < todo.length) { const p = todo[next++];
+    try { await run(p); } catch (e) { console.log(`✗ ${p.name}: ${e.message}`); } }
+}));
 await browser.close();
